@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My mouse drawbling</title>
+  <style>
+    /* Body with vertical scroll enabled and gradient background */
+    body {
+      margin: 0;
+      min-height: 200vh; /* allow vertical scrolling */
+      background: linear-gradient(135deg, #ffeb3b, #4caf50);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #2e2e2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 80px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fun VFX background: animated floating circles */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: transparent;
+      overflow: visible;
+      animation: floatBackground 20s linear infinite;
+    }
+
+    /* Create multiple floating circles using box-shadow */
+    body::before {
+      width: 100vw;
+      height: 100vh;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(255, 235, 59, 0.3) 15px, transparent 16px),
+        radial-gradient(circle at 30% 80%, rgba(76, 175, 80, 0.3) 20px, transparent 21px),
+        radial-gradient(circle at 50% 40%, rgba(205, 220, 57, 0.3) 18px, transparent 19px),
+        radial-gradient(circle at 70% 70%, rgba(139, 195, 74, 0.3) 22px, transparent 23px),
+        radial-gradient(circle at 90% 30%, rgba(255, 235, 59, 0.3) 14px, transparent 15px);
+      background-repeat: no-repeat;
+      animation: floatBackground 30s linear infinite;
+    }
+
+    @keyframes floatBackground {
+      0% {
+        background-position:
+          10% 20%,
+          30% 80%,
+          50% 40%,
+          70% 70%,
+          90% 30%;
+      }
+      50% {
+        background-position:
+          12% 22%,
+          28% 78%,
+          52% 42%,
+          68% 72%,
+          88% 32%;
+      }
+      100% {
+        background-position:
+          10% 20%,
+          30% 80%,
+          50% 40%,
+          70% 70%,
+          90% 30%;
+      }
+    }
+
+    /* Container to keep content above background */
+    main {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Title styling */
+    h1 {
+      margin: 0 0 30px;
+      font-size: 3rem;
+      text-shadow:
+        2px 2px 4px rgba(0,0,0,0.3),
+        0 0 10px #a5d6a7,
+        0 0 20px #cddc39;
+      user-select: none;
+    }
+
+    /* Image styling - 80% of viewport width and height */
+    img {
+      width: 80vw;
+      height: 80vh;
+      max-height: 80vh;
+      object-fit: contain;
+      border: 5px solid #a5d6a7;
+      border-radius: 15px;
+      box-shadow:
+        0 0 15px 5px #cddc39,
+        inset 0 0 10px #7cb342;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      filter: drop-shadow(0 0 5px #7cb342);
+      margin-bottom: 40px;
+    }
+    img:hover {
+      transform: scale(1.05) rotate(2deg);
+      filter: drop-shadow(0 0 15px #cddc39);
+    }
+
+    /* Button styling */
+    a.button {
+      padding: 12px 28px;
+      background: linear-gradient(45deg, #7cb342, #cddc39);
+      color: #2e2e2e;
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-decoration: none;
+      border-radius: 30px;
+      box-shadow:
+        0 4px 8px rgba(124,179,66,0.6),
+        0 0 10px #cddc39;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    a.button:hover {
+      background: linear-gradient(45deg, #cddc39, #7cb342);
+      box-shadow:
+        0 6px 12px rgba(205,220,57,0.9),
+        0 0 20px #aeea00;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>My mouse drawbling</h1>
+    <img src="1drawble1a.jpg" alt="My mouse drawbling artwork" />
+    <a class="button" href="https://hduty7krhqkffwnxurxhwrh3ixnoyripieypv3b5xqjuj7btxl5a.arweave.net/OOk8fVE8FFLZt6Rue0T7RdrsRQ9BMPrsPbwTRPwzuvo/" target="_blank" rel="noopener noreferrer">
+      My thornberrys fan site
+    </a>
+  </main>
+</body>
+</html>

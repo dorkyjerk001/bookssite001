@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Air Airlines — Chip &amp; Dale Themed Gallery</title>
+  <style>
+    :root{
+      --bg:#0b2340;
+      --accent:#ffc857;
+      --muted:#9fb3c8;
+      --glass: rgba(255,255,255,0.04);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;color:#eaf6ff;background:linear-gradient(180deg,var(--bg),#042033);}
+    header{display:flex;align-items:center;gap:16px;padding:20px 28px}
+    .logo{display:flex;align-items:center;gap:12px}
+    .badge{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#ffd89b,#ff7b54);display:flex;align-items:center;justify-content:center;font-weight:700;color:#2b1b00}
+    h1{margin:0;font-size:20px}
+    .sub{color:var(--muted);font-size:13px}
+    main{display:flex;gap:28px;align-items:flex-start;padding:20px 28px}
+    .viewer{width:40%;min-width:320px;background:var(--glass);border-radius:var(--radius);padding:14px;box-shadow:0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);backdrop-filter: blur(6px);}
+    .frame{position:relative;width:100%;padding-top:62%;overflow:hidden;border-radius:10px;background:linear-gradient(180deg,#06263a,#0b3450);cursor:pointer}
+    .frame img{position:absolute;inset:0;margin:auto;width:100%;height:100%;object-fit:cover;transition:transform .45s ease,opacity .45s ease}
+    .controls{display:flex;gap:8px;justify-content:center;margin-top:12px}
+    button{background:transparent;border:1px solid rgba(255,255,255,0.07);color:var(--accent);padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+    button.primary{background:linear-gradient(90deg,#ffb26b,#ff7b54);border:none;color:#1b1200}
+    .info{margin-top:12px;color:var(--muted);font-size:13px;text-align:center}
+    .side{flex:1;min-width:260px;background:linear-gradient(180deg,rgba(255,255,255,0.03),transparent);border-radius:var(--radius);padding:12px;}
+    .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .thumbs img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;cursor:pointer;opacity:.88;transition:transform .18s,opacity .18s}
+    .thumbs img:hover{transform:scale(1.04);opacity:1}
+    footer{padding:18px 28px;color:var(--muted);font-size:13px}
+    @media (max-width:880px){main{flex-direction:column}.viewer{width:100%}.thumbs{grid-template-columns:repeat(5,1fr)}}
+    /* fullscreen overlay */
+    #fsOverlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.9);z-index:9999;cursor:zoom-out;}
+    #fsOverlay img{max-width:95%;max-height:95%;border-radius:12px;box-shadow:0 0 40px rgba(0,0,0,0.8);transition:transform .3s ease;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="badge">AA</div>
+      <div>
+        <h1>Air Airlines</h1>
+        <div class="sub">Chip &amp; Dale — playful airport-themed gallery</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="viewer" aria-label="Main viewer">
+      <div class="frame" id="frame"></div>
+      <div class="controls" role="toolbar" aria-label="Gallery controls">
+        <button id="prev" title="Previous">◀ Prev</button>
+        <button id="play" class="primary" title="Play / Pause">Play</button>
+        <button id="next" title="Next">Next ▶</button>
+        <button id="fs" title="Fullscreen">⤢ Zoom</button>
+      </div>
+      <div class="info" id="caption">Image 1 / 37</div>
+    </section>
+
+    <aside class="side">
+      <div style="font-weight:700;margin-bottom:8px">Gallery</div>
+      <div class="thumbs" id="thumbs"></div>
+    </aside>
+  </main>
+
+  <div id="fsOverlay"><img id="fsImage" alt="fullscreen image"></div>
+
+  <footer>Made with ✈️ and a hint of acorn mischief.</footer>
+
+  <script>
+    const images = [
+      '1air001.jpg','1air002.jpg','1air003.jpg','1air004.jpg','1air005.jpg','1air006.jpg','1air007.jpg','1air008.jpg','1air009.jpg','1air010.jpg','1air011.jpg','1air012.jpg','1air013.jpg','1air014.jpg','1air015.jpg','1air016.jpg','1air017.jpg','1air018.jpg','1air019.jpg','1air020.jpg','1air021.jpg','1air022.jpg','1air023.jpg','1air024.jpg','1air025.jpg','1air026.jpg','1air027.jpg','1air028.jpg','1air029.jpg','1air030.jpg','1air031.jpg','1air032.jpg','1air033.jpg','1air034.jpg','1air035.jpg','1air036.jpg','1air037.jpg'
+    ];
+
+    const frame=document.getElementById('frame');
+    const thumbs=document.getElementById('thumbs');
+    const caption=document.getElementById('caption');
+    const fsOverlay=document.getElementById('fsOverlay');
+    const fsImage=document.getElementById('fsImage');
+    let idx=0, playing=false, timer=null;
+
+    function renderImage(i){
+      i=(i+images.length)%images.length;idx=i;
+      caption.textContent=`Image ${i+1} / ${images.length} — ${images[i]}`;
+      const img=document.createElement('img');
+      img.src=images[i];
+      img.alt=`Air Airlines ${i+1}`;
+      img.style.opacity='0';img.style.transform='scale(1.06)';
+      const prevs=frame.querySelectorAll('img');
+      frame.appendChild(img);
+      requestAnimationFrame(()=>{img.style.opacity='1';img.style.transform='scale(1)';});
+      setTimeout(()=>{prevs.forEach(p=>p!==img&&p.remove());},450);
+      Array.from(thumbs.children).forEach((t,ti)=>{t.style.outline=ti===i?'3px solid rgba(255,200,100,0.18)':'none';});
+    }
+
+    images.forEach((src,i)=>{
+      const t=document.createElement('img');
+      t.src=src;t.alt=`Thumb ${i+1}`;
+      t.addEventListener('click',()=>{renderImage(i);stop();});
+      thumbs.appendChild(t);
+    });
+
+    document.getElementById('prev').onclick=()=>{renderImage(idx-1);stop();};
+    document.getElementById('next').onclick=()=>{renderImage(idx+1);stop();};
+    document.getElementById('play').onclick=()=>{playing?stop():play();};
+
+    function play(){playing=true;document.getElementById('play').textContent='Pause';timer=setInterval(()=>renderImage(idx+1),2200);}
+    function stop(){playing=false;document.getElementById('play').textContent='Play';if(timer){clearInterval(timer);timer=null;}}
+
+    // Fullscreen overlay zoom
+    document.getElementById('fs').onclick=()=>{
+      fsImage.src=images[idx];
+      fsOverlay.style.display='flex';
+      fsImage.style.transform='scale(1.2)';
+      setTimeout(()=>fsImage.style.transform='scale(1)',50);
+    };
+
+    fsOverlay.onclick=()=>{fsOverlay.style.display='none';};
+
+    frame.onclick=()=>{renderImage(idx+1);stop();};
+    window.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'){renderImage(idx+1);stop();}
+      if(e.key==='ArrowLeft'){renderImage(idx-1);stop();}
+      if(e.key===' '){e.preventDefault();playing?stop():play();}
+      if(e.key==='Escape'){fsOverlay.style.display='none';}
+    });
+
+    renderImage(0);
+  </script>
+</body>
+</html>

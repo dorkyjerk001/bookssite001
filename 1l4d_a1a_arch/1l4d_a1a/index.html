@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Left 4 Dead Achievements</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0;
+    height: 100%;
+    background: #0b0b0b;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #a0f0ff;
+    user-select: none;
+  }
+  /* Container */
+  #container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    perspective: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Title with glowing effect */
+  h1 {
+    font-size: 3.5rem;
+    margin: 1rem 0 2rem;
+    color: #00ffff;
+    text-shadow:
+      0 0 5px #00ffff,
+      0 0 10px #00ffff,
+      0 0 20px #00ffff,
+      0 0 40px #00ffff;
+    user-select: none;
+  }
+  /* Particle canvas */
+  #particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* Image container with fake 3D tilt */
+  .image-wrapper {
+    width: 80vw;
+    max-width: 1200px;
+    filter: drop-shadow(0 0 10px #00ffffaa);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    will-change: transform;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow:
+      0 0 20px #00ffffaa,
+      inset 0 0 30px #00ffff55;
+  }
+  .image-wrapper:hover {
+    transform: rotateX(8deg) rotateY(8deg) scale(1.05);
+    filter: drop-shadow(0 0 20px #00ffffee);
+  }
+  /* Pixelated glow effect on image */
+  .image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+    filter:
+      drop-shadow(0 0 8px #00ffffcc)
+      drop-shadow(0 0 15px #00ffffaa)
+      saturate(1.5);
+    transition: filter 0.3s ease;
+  }
+  .image-wrapper:hover img {
+    filter:
+      drop-shadow(0 0 15px #00ffffee)
+      drop-shadow(0 0 30px #00ffffdd)
+      saturate(2);
+  }
+
+  /* Fullscreen viewer */
+  #viewer {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(11, 11, 11, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    overflow: hidden;
+    cursor: grab;
+  }
+  #viewer.active {
+    display: flex;
+  }
+  #viewer img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 20px;
+    filter:
+      drop-shadow(0 0 30px #00ffffcc)
+      saturate(1.5);
+    transition: transform 0.1s ease-out;
+    user-select: none;
+    will-change: transform;
+    image-rendering: pixelated;
+    background: #000;
+  }
+  #viewer:active {
+    cursor: grabbing;
+  }
+
+  /* Close button */
+  #closeBtn {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-size: 36px;
+    background: #00ffffcc;
+    border: none;
+    border-radius: 12px;
+    color: #000;
+    padding: 5px 15px;
+    cursor: pointer;
+    user-select: none;
+    z-index: 10001;
+    font-weight: bold;
+    box-shadow:
+      0 0 15px #00ffffcc;
+    transition: background 0.3s ease;
+  }
+  #closeBtn:hover {
+    background: #00ffffee;
+  }
+</style>
+</head>
+<body>
+  <div id="container">
+    <h1>My Left 4 Dead Achievements</h1>
+    <div class="image-wrapper" tabindex="0" aria-label="Left 4 Dead achievement image, click to zoom">
+      <img src="1achive133a.jpg" alt="Left 4 Dead Achievement" />
+    </div>
+  </div>
+
+  <canvas id="particles"></canvas>
+
+  <div id="viewer" role="dialog" aria-modal="true" aria-label="Zoomed achievement image viewer">
+    <button id="closeBtn" aria-label="Close viewer">&times;</button>
+    <img src="1achive133a.jpg" alt="Zoomed Left 4 Dead Achievement" />
+  </div>
+
+<script>
+  // Particle system for glowing dots
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let particles = [];
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.size = 1 + Math.random() * 2;
+      this.speedX = (Math.random() - 0.5) * 0.3;
+      this.speedY = (Math.random() - 0.5) * 0.3;
+      this.alpha = 0.1 + Math.random() * 0.3;
+      this.alphaChange = 0.005 + Math.random() * 0.01;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.alpha += this.alphaChange;
+      if (this.alpha <= 0.1 || this.alpha >= 0.4) this.alphaChange *= -1;
+      if (this.x < 0) this.x = width;
+      else if (this.x > width) this.x = 0;
+      if (this.y < 0) this.y = height;
+      else if (this.y > height) this.y = 0;
+    }
+    draw() {
+      ctx.beginPath();
+      const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 4);
+      gradient.addColorStop(0, `rgba(0,255,255,${this.alpha})`);
+      gradient.addColorStop(1, 'rgba(0,255,255,0)');
+      ctx.fillStyle = gradient;
+      ctx.arc(this.x, this.y, this.size * 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function initParticles(count = 80) {
+    particles = [];
+    for (let i = 0; i < count; i++) {
+      particles.push(new Particle());
+    }
+  }
+  initParticles();
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Image zoom, pan, scroll viewer
+  const imageWrapper = document.querySelector('.image-wrapper');
+  const viewer = document.getElementById('viewer');
+  const viewerImg = viewer.querySelector('img');
+  const closeBtn = document.getElementById('closeBtn');
+
+  let scale = 1;
+  let originX = 0;
+  let originY = 0;
+  let startX = 0;
+  let startY = 0;
+  let isDragging = false;
+
+  function resetTransform() {
+    scale = 1;
+    originX = 0;
+    originY = 0;
+    updateTransform();
+  }
+  function updateTransform() {
+    viewerImg.style.transform = `translate(${originX}px, ${originY}px) scale(${scale})`;
+  }
+
+  imageWrapper.addEventListener('click', () => {
+    viewer.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    resetTransform();
+    viewerImg.focus();
+  });
+  imageWrapper.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      viewer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      resetTransform();
+      viewerImg.focus();
+    }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    viewer.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+  viewer.addEventListener('click', e => {
+    if (e.target === viewer) {
+      viewer.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Zoom with wheel
+  viewerImg.addEventListener('wheel', e => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    let newScale = scale + delta;
+    newScale = Math.min(Math.max(newScale, 1), 5);
+    if (newScale !== scale) {
+      const rect = viewerImg.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+      const dx = (offsetX - originX) / scale;
+      const dy = (offsetY - originY) / scale;
+
+      originX -= dx * (newScale - scale);
+      originY -= dy * (newScale - scale);
+
+      scale = newScale;
+      updateTransform();
+    }
+  }, { passive: false });
+
+  // Pan with drag
+  viewerImg.addEventListener('mousedown', e => {
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX - originX;
+    startY = e.clientY - originY;
+    viewerImg.style.cursor = 'grabbing';
+  });
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    viewerImg.style.cursor = 'grab';
+  });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    originX = e.clientX - startX;
+    originY = e.clientY - startY;
+    updateTransform();
+  });
+
+  // Keyboard close on Esc
+  window.addEventListener('keydown', e => {
+    if (!viewer.classList.contains('active')) return;
+    if (e.key === 'Escape') {
+      viewer.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+</body>
+</html>

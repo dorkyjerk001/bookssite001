@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Sweet Memories Gallery</title>
+
+<style>
+    body {
+        margin: 0;
+        background: #111;
+        color: #fff;
+        font-family: Arial, sans-serif;
+    }
+    h1 {
+        text-align: center;
+        padding: 20px 0;
+        margin: 0;
+        font-weight: 200;
+        letter-spacing: 2px;
+    }
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 10px;
+        padding: 10px;
+    }
+    .gallery img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: 0.3s;
+    }
+    .gallery img:hover {
+        transform: scale(1.05);
+    }
+
+    /* Fullscreen modal */
+    #viewer {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.95);
+        justify-content: center;
+        align-items: center;
+    }
+    #viewer img {
+        max-width: 95%;
+        max-height: 95%;
+        border-radius: 10px;
+        box-shadow: 0 0 20px #000;
+    }
+
+    .navBtn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 60px;
+        color: #fff;
+        cursor: pointer;
+        user-select: none;
+        opacity: 0.7;
+    }
+    .navBtn:hover { opacity: 1; }
+
+    #prev { left: 30px; }
+    #next { right: 30px; }
+
+    #close {
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        font-size: 50px;
+        cursor: pointer;
+        color: #fff;
+        opacity: 0.8;
+    }
+    #close:hover { opacity: 1; }
+</style>
+</head>
+
+<body>
+
+<h1>Sweet Memories Gallery</h1>
+
+<div class="gallery" id="gallery">
+    <!-- images will auto-insert -->
+</div>
+
+<!-- Fullscreen Viewer -->
+<div id="viewer">
+    <span id="close">&times;</span>
+    <span id="prev" class="navBtn">&#10094;</span>
+    <img id="fullImage">
+    <span id="next" class="navBtn">&#10095;</span>
+</div>
+
+<script>
+    const images = [
+        "mem001.jpg","mem002.jpg","mem003.jpg","mem004.jpg","mem005.jpg","mem006.jpg","mem007.jpg","mem008.jpg","mem009.jpg","mem010.jpg",
+        "mem011.jpg","mem012.jpg","mem013.jpg","mem014.jpg","mem015.jpg","mem016.jpg","mem017.jpg","mem018.jpg","mem019.jpg","mem020.jpg",
+        "mem021.jpg","mem022.jpg","mem023.jpg","mem024.jpg","mem025.jpg","mem026.jpg","mem027.jpg","mem028.jpg","mem029.jpg","mem030.jpg",
+        "mem031.jpg","mem032.jpg","mem033.jpg","mem034.jpg","mem035.jpg","mem036.jpg","mem037.jpg","mem038.jpg","mem039.jpg","mem040.jpg",
+        "mem041.jpg","mem042.jpg","mem043.jpg","mem044.jpg","mem045.jpg","mem046.jpg","mem047.jpg","mem048.jpg","mem049.jpg","mem050.jpg",
+        "mem051.jpg","mem052.jpg","mem053.jpg","mem054.jpg","mem055.jpg","mem056.jpg","mem057.jpg","mem058.jpg","mem059.jpg","mem060.jpg",
+        "mem061.jpg","mem062.jpg","mem063.jpg","mem064.jpg","mem065.jpg","mem066.jpg","mem067.jpg","mem068.jpg","mem069.jpg","mem070.jpg",
+        "mem071.jpg","mem072.jpg","mem073.jpg","mem074.jpg","mem075.jpg","mem076.jpg","mem077.jpg","mem078.jpg","mem079.jpg","mem080.jpg",
+        "mem081.jpg","mem082.jpg","mem083.jpg","mem084.jpg","mem085.jpg","mem086.jpg","mem087.jpg","mem088.jpg","mem089.jpg","mem090.jpg",
+        "mem091.jpg","mem092.jpg","mem093.jpg","mem094.jpg","mem095.jpg","mem096.jpg","mem097.jpg","mem098.jpg","mem099.jpg","mem100.jpg",
+        "mem101.jpg","mem102.jpg","mem103.jpg","mem104.jpg","mem105.jpg","mem106.jpg","mem107.jpg","mem108.jpg","mem109.jpg","mem110.jpg",
+        "mem111.jpg","mem112.jpg","mem113.jpg","mem114.jpg","mem115.jpg","mem116.jpg","mem117.jpg","mem118.jpg","mem119.jpg","mem120.jpg",
+        "mem121.jpg","mem122.jpg","mem123.jpg","mem124.jpg","mem125.jpg","mem126.jpg","mem127.jpg","mem128.jpg","mem129.jpg","mem130.jpg",
+        "mem131.jpg","mem132.jpg","mem133.jpg","mem134.jpg","mem135.jpg","mem136.jpg","mem137.jpg","mem138.jpg","mem139.jpg","mem140.jpg",
+        "mem141.jpg","mem142.jpg","mem143.jpg","mem144.jpg","mem145.jpg","mem146.jpg","mem147.jpg","mem148.jpg","mem149.jpg","mem150.jpg",
+        "mem151.jpg","mem152.jpg","mem153.jpg","mem154.jpg","mem155.jpg","mem156.jpg","mem157.jpg","mem158.jpg","mem159.jpg","mem160.jpg",
+        "mem161.jpg","mem162.jpg","mem163.jpg","mem164.jpg","mem165.jpg","mem166.jpg","mem167.jpg","mem168.jpg","mem169.jpg","mem170.jpg",
+        "mem171.jpg","mem172.jpg","mem173.jpg","mem174.jpg","mem175.jpg","mem176.jpg","mem177.jpg","mem178.jpg","mem179.jpg","mem180.jpg",
+        "mem181.jpg","mem182.jpg","mem183.jpg","mem184.jpg","mem185.jpg","mem186.jpg","mem187.jpg","mem188.jpg","mem189.jpg","mem190.jpg",
+        "mem191.jpg","mem192.jpg","mem193.jpg","mem194.jpg","mem195.jpg","mem196.jpg","mem197.jpg","mem198.jpg","mem199.jpg","mem200.jpg",
+        "mem201.jpg","mem202.jpg","mem203.jpg","mem204.jpg","mem205.jpg","mem206.jpg","mem207.jpg","mem208.jpg","mem209.jpg","mem210.jpg",
+        "mem211.jpg","mem212.jpg","mem213.jpg","mem214.jpg","mem215.jpg","mem216.jpg","mem217.jpg","mem218.jpg","mem219.jpg","mem220.jpg",
+        "mem221.jpg","mem222.jpg","mem223.jpg","mem224.jpg","mem225.jpg","mem226.jpg","mem227.jpg","mem228.jpg","mem229.jpg","mem230.jpg",
+        "mem231.jpg","mem232.jpg","mem233.jpg","mem234.jpg","mem235.jpg","mem236.jpg","mem237.jpg","mem238.jpg","mem239.jpg","mem240.jpg",
+        "mem241.jpg","mem242.jpg","mem243.jpg","mem244.jpg","mem245.jpg","mem246.jpg","mem247.jpg","mem248.jpg","mem249.jpg","mem250.jpg",
+        "mem251.jpg","mem252.jpg","mem253.jpg","mem254.jpg","mem255.jpg","mem256.jpg","mem257.jpg","mem258.jpg","mem259.jpg","mem260.jpg",
+        "mem261.jpg","mem262.jpg","mem263.jpg","mem264.jpg","mem265.jpg","mem266.jpg","mem267.jpg","mem268.jpg","mem269.jpg","mem270.jpg",
+        "mem271.jpg","mem272.jpg","mem273.jpg","mem274.jpg","mem275.jpg","mem276.jpg","mem277.jpg","mem278.jpg","mem279.jpg","mem280.jpg",
+        "mem281.jpg","mem282.jpg","mem283.jpg","mem284.jpg","mem285.jpg","mem286.jpg","mem287.jpg","mem288.jpg","mem289.jpg","mem290.jpg",
+        "mem291.jpg","mem292.jpg","mem293.jpg","mem294.jpg","mem295.jpg","mem296.jpg","mem297.jpg","mem298.jpg","mem299.jpg","mem300.jpg",
+        "mem301.jpg","mem302.jpg","mem303.jpg","mem304.jpg","mem305.jpg","mem306.jpg","mem307.jpg","mem308.jpg","mem309.jpg","mem310.jpg",
+        "mem311.jpg","mem312.jpg","mem313.jpg","mem314.jpg","mem315.jpg","mem316.jpg","mem317.jpg","mem318.jpg","mem319.jpg","mem320.jpg",
+        "mem321.jpg"
+    ];
+
+    const gallery = document.getElementById("gallery");
+    const viewer = document.getElementById("viewer");
+    const fullImage = document.getElementById("fullImage");
+    let index = 0;
+
+    // Build gallery
+    images.forEach((src, i) => {
+        let img = document.createElement("img");
+        img.src = src;
+        img.onclick = () => openViewer(i);
+        gallery.appendChild(img);
+    });
+
+    function openViewer(i) {
+        index = i;
+        fullImage.src = images[index];
+        viewer.style.display = "flex";
+    }
+
+    function closeViewer() {
+        viewer.style.display = "none";
+    }
+
+    function nextImg() {
+        index = (index + 1) % images.length;
+        fullImage.src = images[index];
+    }
+
+    function prevImg() {
+        index = (index - 1 + images.length) % images.length;
+        fullImage.src = images[index];
+    }
+
+    // Controls
+    document.getElementById("close").onclick = closeViewer;
+    document.getElementById("next").onclick = nextImg;
+    document.getElementById("prev").onclick = prevImg;
+
+    // Close on background click
+    viewer.onclick = (e) => {
+        if (e.target === viewer) closeViewer();
+    };
+
+    // Keyboard support
+    document.onkeydown = (e) => {
+        if (viewer.style.display === "flex") {
+            if (e.key === "ArrowRight") nextImg();
+            if (e.key === "ArrowLeft") prevImg();
+            if (e.key === "Escape") closeViewer();
+        }
+    };
+</script>
+
+</body>
+</html>

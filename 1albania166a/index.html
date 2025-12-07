@@ -1,0 +1,218 @@
+<!--
+Image Host (single-file)
+Save this file alongside `1cra001.jpg` and open in a browser.
+Use it directly or embed with an <iframe src="image-host-1cra001.html"></iframe>.
+Query params supported (optional):
+  ?mode=contain      -> image fits inside window (default)
+  ?mode=cover        -> image fills window (may crop)
+  ?bg=#000000        -> page background color
+  ?showControls=1    -> show toolbar (download, actual size)
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Image Host — 1cra001.jpg</title>
+  <style>
+    html,body {
+      height:100%;
+      margin:0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: #000;
+      color: #fff;
+      overflow:hidden; /* keep single-window layout */
+    }
+
+    /* container stretches to full window */
+    .container {
+      height:100%;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+
+    /* the image element will scale while preserving aspect ratio */
+    img.hosted {
+      max-width:100%;
+      max-height:100%;
+      width:auto;
+      height:auto;
+      object-fit:contain; /* changed dynamically by JS for cover/contain */
+      display:block;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    /* optional top toolbar */
+    .toolbar {
+      position:absolute;
+      top:10px;
+      right:10px;
+      display:flex;
+      gap:8px;
+      background: rgba(0,0,0,0.4);
+      padding:6px;
+      border-radius:8px;
+      backdrop-filter: blur(6px);
+    }
+
+    .toolbar button, .toolbar a {
+      border: none;
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      padding:6px 8px;
+      border-radius:6px;
+      text-decoration:none;
+      font-size:13px;
+      cursor:pointer;
+    }
+
+    .info {
+      position:absolute;
+      left:10px;
+      bottom:10px;
+      background: rgba(0,0,0,0.35);
+      padding:8px 10px;
+      border-radius:8px;
+      font-size:13px;
+    }
+
+    /* make iframe embedding friendly (no pointer events interference) */
+    :root {
+      --mode: contain;
+    }
+
+    /* small-screen tweaks */
+    @media (max-width:420px){
+      .toolbar { top:6px; right:6px; gap:6px; }
+      .toolbar button { padding:5px 6px; font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img id="theImage" class="hosted" alt="1cra001.jpg">
+
+    <div id="toolbar" class="toolbar" style="display:none">
+      <button id="fitBtn">Actual Size</button>
+      <a id="dlLink" download="1cra001.jpg">Download</a>
+      <button id="toggleModeBtn">Mode: contain</button>
+    </div>
+
+    <div id="info" class="info" style="display:none"></div>
+  </div>
+
+  <script>
+    // Config / defaults
+    const DEFAULT_IMAGE = '1cra001.jpg';
+    const params = new URLSearchParams(location.search);
+    const mode = (params.get('mode') || 'contain').toLowerCase(); // contain or cover
+    const bg = params.get('bg') || ''; // css color string
+    const showControls = params.get('showControls') === '1' || params.get('showControls') === 'true';
+
+    const img = document.getElementById('theImage');
+    const toolbar = document.getElementById('toolbar');
+    const info = document.getElementById('info');
+    const dlLink = document.getElementById('dlLink');
+    const fitBtn = document.getElementById('fitBtn');
+    const toggleModeBtn = document.getElementById('toggleModeBtn');
+
+    // apply background if provided
+    if (bg) document.body.style.background = bg;
+
+    // set image src
+    img.src = DEFAULT_IMAGE;
+    dlLink.href = DEFAULT_IMAGE;
+
+    // set initial object-fit based on mode
+    function applyMode(m) {
+      if (m === 'cover') {
+        img.style.objectFit = 'cover';
+      } else {
+        img.style.objectFit = 'contain';
+      }
+      toggleModeBtn.textContent = 'Mode: ' + m;
+    }
+    applyMode(mode);
+
+    // show toolbar if requested or if embedded with query param
+    if (showControls) toolbar.style.display = 'flex';
+
+    // populate info and show it
+    img.addEventListener('load', () => {
+      const w = img.naturalWidth;
+      const h = img.naturalHeight;
+      info.textContent = `${w} × ${h} — ${mode}`;
+      info.style.display = 'block';
+
+      // if toolbar hidden, still let user toggle on double-click
+      if (!showControls) {
+        img.ondblclick = () => {
+          toolbar.style.display = toolbar.style.display === 'none' ? 'flex' : 'none';
+        };
+      }
+    });
+
+    // Actual size toggle
+    let actualSize = false;
+    fitBtn.addEventListener('click', () => {
+      actualSize = !actualSize;
+      if (actualSize) {
+        img.style.maxWidth = 'none';
+        img.style.maxHeight = 'none';
+        img.style.width = img.naturalWidth + 'px';
+        img.style.height = img.naturalHeight + 'px';
+        fitBtn.textContent = 'Fit to Window';
+      } else {
+        img.style.width = 'auto';
+        img.style.height = 'auto';
+        img.style.maxWidth = '100%';
+        img.style.maxHeight = '100%';
+        fitBtn.textContent = 'Actual Size';
+      }
+    });
+
+    // toggle contain/cover
+    toggleModeBtn.addEventListener('click', () => {
+      const current = img.style.objectFit === 'cover' ? 'cover' : 'contain';
+      const next = current === 'cover' ? 'contain' : 'cover';
+      applyMode(next);
+      info.textContent = `${img.naturalWidth} × ${img.naturalHeight} — ${next}`;
+    });
+
+    // keyboard shortcuts: space toggles toolbar, +/- zoom, 0 fit
+    window.addEventListener('keydown', (e) => {
+      if (e.key === ' ') {
+        e.preventDefault();
+        toolbar.style.display = toolbar.style.display === 'none' ? 'flex' : 'none';
+      } else if (e.key === '0') {
+        // reset to fit
+        actualSize = false;
+        img.style.width = 'auto';
+        img.style.height = 'auto';
+        img.style.maxWidth = '100%';
+        img.style.maxHeight = '100%';
+        fitBtn.textContent = 'Actual Size';
+      }
+    });
+
+    // if the image fails to load, show a friendly message
+    img.addEventListener('error', () => {
+      info.textContent = 'Could not load "' + DEFAULT_IMAGE + '" — make sure the file is in the same folder as this HTML file.';
+      info.style.display = 'block';
+    });
+
+    // Prevent dragging image into new tab while embedded in iframe
+    img.addEventListener('dragstart', (e) => e.preventDefault());
+
+    // Make embedding via <iframe> look good by disabling pointer-events on parent
+    // (no-op here, but the CSS/structure is iframe-friendly)
+  </script>
+</body>
+</html>

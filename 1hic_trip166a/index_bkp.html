@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trip to Hickston</title>
+<style>
+  html, body {
+    margin:0; padding:0; height:100%;
+    background:#000; color:#fff;
+    font-family:sans-serif;
+    overflow:hidden;
+  }
+  h1 {
+    text-align:center; margin:0.5em 0;
+  }
+  .slideshow {
+    position: relative;
+    width: 90vw;
+    height: 90vh;
+    margin: 0 auto;
+    background:#222;
+    overflow: hidden;
+  }
+  section {
+    position: absolute;
+    top:0; left:0; width:100%; height:100%;
+    opacity: 0;
+    pointer-events:none;
+    /* transition: opacity 0.3s ease; fade transition restored */
+  }
+  section:target {
+    opacity: 1;
+    pointer-events:auto;
+    z-index: 1;
+  }
+  /* Show first slide if none targeted */
+  .slideshow section:first-child:not(:target) {
+    opacity: 1;
+    pointer-events:auto;
+    z-index: 1;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    user-select:none;
+  }
+  .nav {
+    position: absolute;
+    top: 50%;
+    width: 3em;
+    height: 3em;
+    margin-top: -1.5em;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    font-weight: bold;
+    font-size: 2em;
+    line-height: 3em;
+    text-align: center;
+    text-decoration: none;
+    user-select:none;
+    cursor: pointer;
+    border-radius: 0.3em;
+    transition: background 0.3s;
+  }
+  .nav:hover, .nav:focus {
+    background: rgba(255,255,255,0.6);
+    outline:none;
+  }
+  .prev {
+    left: 0.5em;
+  }
+  .next {
+    right: 0.5em;
+  }
+</style>
+</head>
+<body>
+<h1>Trip to Hickston</h1>
+<div class="slideshow">
+  <!-- Slides -->
+  <section id="slide1"><img src="frames001.jpg" alt="Slide 1" />
+    <a href="#slide60" class="nav prev" aria-label="Previous slide">&#9664;</a>
+    <a href="#slide2" class="nav next" aria-label="Next slide">&#9654;</a>
+  </section>
+  <section id="slide2"><img src="frames002.jpg" alt="Slide 2" />
+    <a href="#slide1" class="nav prev">&#9664;</a>
+    <a href="#slide3" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide3"><img src="frames003.jpg" alt="Slide 3" />
+    <a href="#slide2" class="nav prev">&#9664;</a>
+    <a href="#slide4" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide4"><img src="frames004.jpg" alt="Slide 4" />
+    <a href="#slide3" class="nav prev">&#9664;</a>
+    <a href="#slide5" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide5"><img src="frames005.jpg" alt="Slide 5" />
+    <a href="#slide4" class="nav prev">&#9664;</a>
+    <a href="#slide6" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide6"><img src="frames006.jpg" alt="Slide 6" />
+    <a href="#slide5" class="nav prev">&#9664;</a>
+    <a href="#slide7" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide7"><img src="frames007.jpg" alt="Slide 7" />
+    <a href="#slide6" class="nav prev">&#9664;</a>
+    <a href="#slide8" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide8"><img src="frames008.jpg" alt="Slide 8" />
+    <a href="#slide7" class="nav prev">&#9664;</a>
+    <a href="#slide9" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide9"><img src="frames009.jpg" alt="Slide 9" />
+    <a href="#slide8" class="nav prev">&#9664;</a>
+    <a href="#slide10" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide10"><img src="frames010.jpg" alt="Slide 10" />
+    <a href="#slide9" class="nav prev">&#9664;</a>
+    <a href="#slide11" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide11"><img src="frames011.jpg" alt="Slide 11" />
+    <a href="#slide10" class="nav prev">&#9664;</a>
+    <a href="#slide12" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide12"><img src="frames012.jpg" alt="Slide 12" />
+    <a href="#slide11" class="nav prev">&#9664;</a>
+    <a href="#slide13" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide13"><img src="frames013.jpg" alt="Slide 13" />
+    <a href="#slide12" class="nav prev">&#9664;</a>
+    <a href="#slide14" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide14"><img src="frames014.jpg" alt="Slide 14" />
+    <a href="#slide13" class="nav prev">&#9664;</a>
+    <a href="#slide15" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide15"><img src="frames015.jpg" alt="Slide 15" />
+    <a href="#slide14" class="nav prev">&#9664;</a>
+    <a href="#slide16" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide16"><img src="frames016.jpg" alt="Slide 16" />
+    <a href="#slide15" class="nav prev">&#9664;</a>
+    <a href="#slide17" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide17"><img src="frames017.jpg" alt="Slide 17" />
+    <a href="#slide16" class="nav prev">&#9664;</a>
+    <a href="#slide18" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide18"><img src="frames018.jpg" alt="Slide 18" />
+    <a href="#slide17" class="nav prev">&#9664;</a>
+    <a href="#slide19" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide19"><img src="frames019.jpg" alt="Slide 19" />
+    <a href="#slide18" class="nav prev">&#9664;</a>
+    <a href="#slide20" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide20"><img src="frames020.jpg" alt="Slide 20" />
+    <a href="#slide19" class="nav prev">&#9664;</a>
+    <a href="#slide21" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide21"><img src="frames021.jpg" alt="Slide 21" />
+    <a href="#slide20" class="nav prev">&#9664;</a>
+    <a href="#slide22" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide22"><img src="frames022.jpg" alt="Slide 22" />
+    <a href="#slide21" class="nav prev">&#9664;</a>
+    <a href="#slide23" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide23"><img src="frames023.jpg" alt="Slide 23" />
+    <a href="#slide22" class="nav prev">&#9664;</a>
+    <a href="#slide24" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide24"><img src="frames024.jpg" alt="Slide 24" />
+    <a href="#slide23" class="nav prev">&#9664;</a>
+    <a href="#slide25" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide25"><img src="frames025.jpg" alt="Slide 25" />
+    <a href="#slide24" class="nav prev">&#9664;</a>
+    <a href="#slide26" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide26"><img src="frames026.jpg" alt="Slide 26" />
+    <a href="#slide25" class="nav prev">&#9664;</a>
+    <a href="#slide27" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide27"><img src="frames027.jpg" alt="Slide 27" />
+    <a href="#slide26" class="nav prev">&#9664;</a>
+    <a href="#slide28" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide28"><img src="frames028.jpg" alt="Slide 28" />
+    <a href="#slide27" class="nav prev">&#9664;</a>
+    <a href="#slide29" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide29"><img src="frames029.jpg" alt="Slide 29" />
+    <a href="#slide28" class="nav prev">&#9664;</a>
+    <a href="#slide30" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide30"><img src="frames030.jpg" alt="Slide 30" />
+    <a href="#slide29" class="nav prev">&#9664;</a>
+    <a href="#slide31" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide31"><img src="frames031.jpg" alt="Slide 31" />
+    <a href="#slide30" class="nav prev">&#9664;</a>
+    <a href="#slide32" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide32"><img src="frames032.jpg" alt="Slide 32" />
+    <a href="#slide31" class="nav prev">&#9664;</a>
+    <a href="#slide33" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide33"><img src="frames033.jpg" alt="Slide 33" />
+    <a href="#slide32" class="nav prev">&#9664;</a>
+    <a href="#slide34" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide34"><img src="frames034.jpg" alt="Slide 34" />
+    <a href="#slide33" class="nav prev">&#9664;</a>
+    <a href="#slide35" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide35"><img src="frames035.jpg" alt="Slide 35" />
+    <a href="#slide34" class="nav prev">&#9664;</a>
+    <a href="#slide36" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide36"><img src="frames036.jpg" alt="Slide 36" />
+    <a href="#slide35" class="nav prev">&#9664;</a>
+    <a href="#slide37" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide37"><img src="frames037.jpg" alt="Slide 37" />
+    <a href="#slide36" class="nav prev">&#9664;</a>
+    <a href="#slide38" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide38"><img src="frames038.jpg" alt="Slide 38" />
+    <a href="#slide37" class="nav prev">&#9664;</a>
+    <a href="#slide39" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide39"><img src="frames039.jpg" alt="Slide 39" />
+    <a href="#slide38" class="nav prev">&#9664;</a>
+    <a href="#slide40" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide40"><img src="frames040.jpg" alt="Slide 40" />
+    <a href="#slide39" class="nav prev">&#9664;</a>
+    <a href="#slide41" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide41"><img src="frames041.jpg" alt="Slide 41" />
+    <a href="#slide40" class="nav prev">&#9664;</a>
+    <a href="#slide42" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide42"><img src="frames042.jpg" alt="Slide 42" />
+    <a href="#slide41" class="nav prev">&#9664;</a>
+    <a href="#slide43" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide43"><img src="frames043.jpg" alt="Slide 43" />
+    <a href="#slide42" class="nav prev">&#9664;</a>
+    <a href="#slide44" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide44"><img src="frames044.jpg" alt="Slide 44" />
+    <a href="#slide43" class="nav prev">&#9664;</a>
+    <a href="#slide45" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide45"><img src="frames045.jpg" alt="Slide 45" />
+    <a href="#slide44" class="nav prev">&#9664;</a>
+    <a href="#slide46" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide46"><img src="frames046.jpg" alt="Slide 46" />
+    <a href="#slide45" class="nav prev">&#9664;</a>
+    <a href="#slide47" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide47"><img src="frames047.jpg" alt="Slide 47" />
+    <a href="#slide46" class="nav prev">&#9664;</a>
+    <a href="#slide48" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide48"><img src="frames048.jpg" alt="Slide 48" />
+    <a href="#slide47" class="nav prev">&#9664;</a>
+    <a href="#slide49" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide49"><img src="frames049.jpg" alt="Slide 49" />
+    <a href="#slide48" class="nav prev">&#9664;</a>
+    <a href="#slide50" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide50"><img src="frames050.jpg" alt="Slide 50" />
+    <a href="#slide49" class="nav prev">&#9664;</a>
+    <a href="#slide51" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide51"><img src="frames051.jpg" alt="Slide 51" />
+    <a href="#slide50" class="nav prev">&#9664;</a>
+    <a href="#slide52" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide52"><img src="frames052.jpg" alt="Slide 52" />
+    <a href="#slide51" class="nav prev">&#9664;</a>
+    <a href="#slide53" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide53"><img src="frames053.jpg" alt="Slide 53" />
+    <a href="#slide52" class="nav prev">&#9664;</a>
+    <a href="#slide54" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide54"><img src="frames054.jpg" alt="Slide 54" />
+    <a href="#slide53" class="nav prev">&#9664;</a>
+    <a href="#slide55" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide55"><img src="frames055.jpg" alt="Slide 55" />
+    <a href="#slide54" class="nav prev">&#9664;</a>
+    <a href="#slide56" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide56"><img src="frames056.jpg" alt="Slide 56" />
+    <a href="#slide55" class="nav prev">&#9664;</a>
+    <a href="#slide57" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide57"><img src="frames057.jpg" alt="Slide 57" />
+    <a href="#slide56" class="nav prev">&#9664;</a>
+    <a href="#slide58" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide58"><img src="frames058.jpg" alt="Slide 58" />
+    <a href="#slide57" class="nav prev">&#9664;</a>
+    <a href="#slide59" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide59"><img src="frames059.jpg" alt="Slide 59" />
+    <a href="#slide58" class="nav prev">&#9664;</a>
+    <a href="#slide60" class="nav next">&#9654;</a>
+  </section>
+  <section id="slide60"><img src="frames060.jpg" alt="Slide 60" />
+    <a href="#slide59" class="nav prev">&#9664;</a>
+    <a href="#slide1" class="nav next">&#9654;</a>
+  </section>
+</div>
+
+<script>
+(() => {
+  const totalSlides = 60;
+
+  // Helper to get current slide number from location.hash
+  function getCurrentSlide() {
+    const hash = window.location.hash;
+    if (!hash) return 1;
+    const match = hash.match(/^#slide(\d+)$/);
+    if (match) {
+      let num = parseInt(match[1], 10);
+      if (num >= 1 && num <= totalSlides) return num;
+    }
+    return 1;
+  }
+
+  // Helper to set slide by updating location.hash
+  function goToSlide(n) {
+    if (n < 1) n = totalSlides;
+    else if (n > totalSlides) n = 1;
+    window.location.hash = 'slide' + n;
+  }
+
+  // Keyboard navigation
+  window.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      goToSlide(getCurrentSlide() - 1);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      goToSlide(getCurrentSlide() + 1);
+    }
+  });
+
+  // Mouse wheel navigation (vertical scroll)
+  let wheelTimeout;
+  window.addEventListener('wheel', e => {
+    if (e.deltaY === 0) return;
+    e.preventDefault();
+    clearTimeout(wheelTimeout);
+    wheelTimeout = setTimeout(() => {
+      if (e.deltaY > 0) {
+        goToSlide(getCurrentSlide() + 1);
+      } else {
+        goToSlide(getCurrentSlide() - 1);
+      }
+    }, 100);
+  }, { passive: false });
+
+  // On page load, if no hash, set to slide1 explicitly
+  if (!window.location.hash) {
+    window.location.hash = 'slide1';
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Daily Shots</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 1em;
+    background: #111;
+    color: #eee;
+    text-align: center;
+  }
+  h1 {
+    margin-bottom: 1em;
+  }
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+  }
+  .gallery a {
+    display: inline-block;
+    width: 40vw;
+    max-width: 40vw;
+    cursor: pointer;
+    border: 2px solid #444;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+  .gallery a:hover {
+    border-color: #f06;
+  }
+  .gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Fullscreen modal styles */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 9999;
+    text-align: center;
+  }
+  .modal:target {
+    display: block;
+  }
+  .modal img {
+    max-width: 90vw;
+    max-height: 90vh;
+    margin-top: 5vh;
+    box-shadow: 0 0 20px #f06;
+  }
+  /* Navigation arrows */
+  .nav-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3em;
+    color: #f06;
+    text-decoration: none;
+    user-select: none;
+    padding: 0 0.2em;
+    background: rgba(0,0,0,0.5);
+    border-radius: 0.3em;
+  }
+  .nav-prev {
+    left: 1em;
+  }
+  .nav-next {
+    right: 1em;
+  }
+  /* Close button */
+  .close-btn {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    font-size: 2em;
+    color: #f06;
+    text-decoration: none;
+    user-select: none;
+    background: rgba(0,0,0,0.5);
+    border-radius: 0.3em;
+    padding: 0 0.3em;
+  }
+</style>
+</head>
+<body>
+
+<h1>Daily Shots</h1>
+
+<div class="gallery">
+  <a href="#img1"><img src="1daily001.jpg" alt="Daily Shot 1" /></a>
+  <a href="#img2"><img src="1daily006.jpg" alt="Daily Shot 2" /></a>
+  <a href="#img3"><img src="1daily011.jpg" alt="Daily Shot 3" /></a>
+  <a href="#img4"><img src="1daily016.jpg" alt="Daily Shot 4" /></a>
+  <a href="#img5"><img src="1daily021.jpg" alt="Daily Shot 5" /></a>
+  <a href="#img6"><img src="1daily002.jpg" alt="Daily Shot 6" /></a>
+  <a href="#img7"><img src="1daily007.jpg" alt="Daily Shot 7" /></a>
+  <a href="#img8"><img src="1daily012.jpg" alt="Daily Shot 8" /></a>
+  <a href="#img9"><img src="1daily017.jpg" alt="Daily Shot 9" /></a>
+  <a href="#img10"><img src="1daily022.jpg" alt="Daily Shot 10" /></a>
+  <a href="#img11"><img src="1daily003.jpg" alt="Daily Shot 11" /></a>
+  <a href="#img12"><img src="1daily008.jpg" alt="Daily Shot 12" /></a>
+  <a href="#img13"><img src="1daily013.jpg" alt="Daily Shot 13" /></a>
+  <a href="#img14"><img src="1daily018.jpg" alt="Daily Shot 14" /></a>
+  <a href="#img15"><img src="1daily023.jpg" alt="Daily Shot 15" /></a>
+  <a href="#img16"><img src="1daily004.jpg" alt="Daily Shot 16" /></a>
+  <a href="#img17"><img src="1daily009.jpg" alt="Daily Shot 17" /></a>
+  <a href="#img18"><img src="1daily014.jpg" alt="Daily Shot 18" /></a>
+  <a href="#img19"><img src="1daily019.jpg" alt="Daily Shot 19" /></a>
+  <a href="#img20"><img src="1daily024.jpg" alt="Daily Shot 20" /></a>
+  <a href="#img21"><img src="1daily005.jpg" alt="Daily Shot 21" /></a>
+  <a href="#img22"><img src="1daily010.jpg" alt="Daily Shot 22" /></a>
+  <a href="#img23"><img src="1daily015.jpg" alt="Daily Shot 23" /></a>
+  <a href="#img24"><img src="1daily020.jpg" alt="Daily Shot 24" /></a>
+  <a href="#img25"><img src="1daily025.jpg" alt="Daily Shot 25" /></a>
+</div>
+
+<!-- Fullscreen modals for each image -->
+<div id="img1" class="modal">
+  <a href="#img25" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily001.jpg" alt="Daily Shot 1" />
+  <a href="#img2" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img2" class="modal">
+  <a href="#img1" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily006.jpg" alt="Daily Shot 2" />
+  <a href="#img3" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img3" class="modal">
+  <a href="#img2" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily011.jpg" alt="Daily Shot 3" />
+  <a href="#img4" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img4" class="modal">
+  <a href="#img3" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily016.jpg" alt="Daily Shot 4" />
+  <a href="#img5" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img5" class="modal">
+  <a href="#img4" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily021.jpg" alt="Daily Shot 5" />
+  <a href="#img6" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img6" class="modal">
+  <a href="#img5" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily002.jpg" alt="Daily Shot 6" />
+  <a href="#img7" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img7" class="modal">
+  <a href="#img6" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily007.jpg" alt="Daily Shot 7" />
+  <a href="#img8" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img8" class="modal">
+  <a href="#img7" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily012.jpg" alt="Daily Shot 8" />
+  <a href="#img9" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img9" class="modal">
+  <a href="#img8" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily017.jpg" alt="Daily Shot 9" />
+  <a href="#img10" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img10" class="modal">
+  <a href="#img9" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily022.jpg" alt="Daily Shot 10" />
+  <a href="#img11" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img11" class="modal">
+  <a href="#img10" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily003.jpg" alt="Daily Shot 11" />
+  <a href="#img12" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img12" class="modal">
+  <a href="#img11" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily008.jpg" alt="Daily Shot 12" />
+  <a href="#img13" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img13" class="modal">
+  <a href="#img12" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily013.jpg" alt="Daily Shot 13" />
+  <a href="#img14" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img14" class="modal">
+  <a href="#img13" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily018.jpg" alt="Daily Shot 14" />
+  <a href="#img15" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img15" class="modal">
+  <a href="#img14" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily023.jpg" alt="Daily Shot 15" />
+  <a href="#img16" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img16" class="modal">
+  <a href="#img15" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily004.jpg" alt="Daily Shot 16" />
+  <a href="#img17" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img17" class="modal">
+  <a href="#img16" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily009.jpg" alt="Daily Shot 17" />
+  <a href="#img18" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img18" class="modal">
+  <a href="#img17" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily014.jpg" alt="Daily Shot 18" />
+  <a href="#img19" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img19" class="modal">
+  <a href="#img18" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily019.jpg" alt="Daily Shot 19" />
+  <a href="#img20" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img20" class="modal">
+  <a href="#img19" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily024.jpg" alt="Daily Shot 20" />
+  <a href="#img21" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img21" class="modal">
+  <a href="#img20" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily005.jpg" alt="Daily Shot 21" />
+  <a href="#img22" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img22" class="modal">
+  <a href="#img21" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily010.jpg" alt="Daily Shot 22" />
+  <a href="#img23" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img23" class="modal">
+  <a href="#img22" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily015.jpg" alt="Daily Shot 23" />
+  <a href="#img24" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img24" class="modal">
+  <a href="#img23" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily020.jpg" alt="Daily Shot 24" />
+  <a href="#img25" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+<div id="img25" class="modal">
+  <a href="#img24" class="nav-arrow nav-prev">&#10094;</a>
+  <img src="1daily025.jpg" alt="Daily Shot 25" />
+  <a href="#img1" class="nav-arrow nav-next">&#10095;</a>
+  <a href="#" class="close-btn" title="Close">&#10006;</a>
+</div>
+
+</body>
+</html>

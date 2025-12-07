@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unofficial Kirby update - FBI Themed</title>
+  <style>
+    body {
+      background-color: #0b1a2b;
+      color: #dfe6fd;
+      font-family: 'Consolas', monospace, monospace;
+      margin: 0;
+      padding: 0 1rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      background-color: #071125;
+      width: 100%;
+      padding: 1rem 0;
+      border-bottom: 2px solid #1a2f5a;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      color: #8ab4f8;
+      text-shadow: 0 0 5px #5577cc;
+    }
+    .site-info {
+      margin: 1.5rem 0;
+      background-color: #12294a;
+      border: 1px solid #2a4a8d;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      max-width: 600px;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      white-space: pre-line;
+      box-shadow: 0 0 15px #2a4a8d;
+    }
+    .image-container {
+      margin: 1.5rem 0;
+      border: 3px solid #1f3b7a;
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 400px;
+      cursor: zoom-in;
+      box-shadow: 0 0 25px #4477cc;
+      transition: box-shadow 0.3s ease;
+    }
+    .image-container:hover {
+      box-shadow: 0 0 45px #88aaff;
+    }
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      transition: transform 0.3s ease;
+      user-select: none;
+    }
+    .zoomed {
+      cursor: zoom-out;
+      transform: scale(2);
+      transition: transform 0.3s ease;
+      border-radius: 12px;
+      box-shadow: 0 0 80px #aaccee;
+      z-index: 1000;
+      position: relative;
+    }
+    .text-below {
+      max-width: 600px;
+      background-color: #10254d;
+      border: 1px solid #2a4a8d;
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      box-shadow: 0 0 15px #2a4a8d;
+      white-space: pre-line;
+      margin-top: 1rem;
+      color: #cfd9f8;
+    }
+    footer {
+      margin-top: auto;
+      font-size: 0.8rem;
+      color: #5577cc;
+      padding: 1rem 0;
+      text-align: center;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <header>Unofficial Kirby update - FBI Themed</header>
+
+  <section class="site-info" aria-label="Site Information">
+    pronounce: butterbinary no csi non fbi liquid nano synthetic with an extra chromosome; gender: unidentified; sex: maybe;
+  </section>
+
+  <section class="image-container" aria-label="Kirby image with zoom functionality" tabindex="0">
+    <img src="1kirbo166a.jpg" alt="Kirby themed FBI style image" id="kirbyImage" />
+  </section>
+
+  <section class="text-below" aria-label="Explanatory text">
+    Solution. in a struggle to understand either person regrets gender and about to change or person is about to hate self after changing gender i found out a following - it's a girls only party where life form offers you to switch to a desired gender in order to participate in girls only group party. However this is a lot not trusted offer to recive due to unable to check the guarantee
+  </section>
+
+  <footer>
+    &copy; Unofficial Kirby Update - FBI Style
+  </footer>
+
+  <script>
+    const img = document.getElementById('kirbyImage');
+    const container = img.parentElement;
+
+    function toggleZoom() {
+      if (img.classList.contains('zoomed')) {
+        img.classList.remove('zoomed');
+        container.style.overflow = 'hidden';
+        container.style.zIndex = 'auto';
+      } else {
+        img.classList.add('zoomed');
+        container.style.overflow = 'visible';
+        container.style.zIndex = '10';
+      }
+    }
+
+    container.addEventListener('click', toggleZoom);
+    container.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleZoom();
+      }
+    });
+  </script>
+</body>
+</html>

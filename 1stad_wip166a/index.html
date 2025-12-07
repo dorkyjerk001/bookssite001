@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stadium WIP</title>
+<style>
+  /* Body & general styling */
+  body {
+    margin: 0;
+    background: radial-gradient(circle at center, #003300 0%, #001100 80%);
+    color: #cfcfcf;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+  }
+  h1 {
+    margin: 1rem 0 0.5rem 0;
+    font-weight: 900;
+    color: #a0ff70;
+    text-shadow: 0 0 10px #70ff70;
+  }
+
+  /* Stadium container with VFX */
+  #stadium-vfx {
+    position: relative;
+    width: 360px;
+    height: 200px;
+    margin-bottom: 1rem;
+    background:
+      radial-gradient(circle at center, #0a2a0a 40%, transparent 70%),
+      repeating-radial-gradient(circle at center, transparent 0 10px, #0f3 10px 12px),
+      linear-gradient(90deg, #004400 0%, #002200 100%);
+    border-radius: 20px;
+    box-shadow:
+      inset 0 0 40px #0f0,
+      0 0 30px #0f0;
+    overflow: visible;
+  }
+
+  /* Animated glowing football with trail */
+  .football {
+    position: absolute;
+    top: 50%;
+    left: -50px;
+    width: 48px;
+    height: 48px;
+    background: radial-gradient(circle at center, #fff 40%, #222 90%);
+    border-radius: 50%;
+    box-shadow:
+      0 0 12px 4px #aaffaa,
+      inset 0 0 8px 2px #d0ffd0;
+    filter: drop-shadow(0 0 6px #aaffaa);
+    animation: football-run 5s linear infinite;
+    cursor: default;
+  }
+  /* Hex pattern on football */
+  .football::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    background:
+      radial-gradient(circle at center, #222 40%, transparent 41%) 50% 50% / 12px 12px repeat;
+    border-radius: 50%;
+  }
+  /* Glowing trail behind football */
+  .trail {
+    position: absolute;
+    top: 50%;
+    left: -50px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    filter: blur(8px);
+    background: radial-gradient(circle, #aaffaa 40%, transparent 80%);
+    animation: football-run 5s linear infinite;
+    animation-delay: 0.1s;
+    opacity: 0.6;
+  }
+
+  @keyframes football-run {
+    0% {
+      left: -50px;
+      top: 50%;
+      transform: translateY(-50%) rotate(0deg);
+      opacity: 1;
+    }
+    50% {
+      left: calc(100% + 50px);
+      top: 40%;
+      transform: translateY(-50%) rotate(360deg);
+      opacity: 1;
+    }
+    100% {
+      left: -50px;
+      top: 50%;
+      transform: translateY(-50%) rotate(720deg);
+      opacity: 1;
+    }
+  }
+
+  /* Image viewer container */
+  #viewer {
+    position: relative;
+    width: 80vw;
+    max-width: 720px;
+    height: 60vh;
+    background: #111a11;
+    border: 3px solid #33cc33;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px #33cc33aa inset;
+  }
+  #viewer img {
+    max-width: 100%;
+    max-height: 100%;
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+    user-select: none;
+    border-radius: 8px;
+    box-shadow: 0 0 15px #33cc33aa;
+  }
+
+  /* Controls */
+  #controls {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  button {
+    background: #004400;
+    border: 2px solid #33cc33;
+    color: #33cc33;
+    font-weight: 700;
+    padding: 0.5rem 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s ease;
+    font-size: 1rem;
+  }
+  button:hover,
+  button:focus {
+    background: #22ff22;
+    color: #003300;
+    outline: none;
+  }
+
+  /* Image thumbnails */
+  #thumbnails {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  #thumbnails img {
+    width: 110px;
+    height: 70px;
+    object-fit: cover;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  #thumbnails img.selected {
+    border-color: #33cc33;
+    box-shadow: 0 0 12px #33cc33aa;
+  }
+  #thumbnails img:focus {
+    outline: 2px solid #33cc33;
+  }
+</style>
+</head>
+<body>
+
+<h1>Stadium WIP</h1>
+
+<div id="stadium-vfx" aria-label="Animated hockey football stadium with visual effects">
+  <div class="trail" aria-hidden="true"></div>
+  <div class="football" aria-hidden="true"></div>
+</div>
+
+<div id="viewer" aria-live="polite" aria-label="Image viewer with zoom, scroll, and cycle gallery">
+  <img id="main-image" src="1stad166_Image01.jpg" alt="Stadium Image 1" tabindex="0" />
+</div>
+
+<div id="controls" role="group" aria-label="Image navigation controls">
+  <button id="prev-btn" aria-label="Previous image">&lt; Prev</button>
+  <button id="next-btn" aria-label="Next image">Next &gt;</button>
+  <button id="zoom-in-btn" aria-label="Zoom in image">Zoom +</button>
+  <button id="zoom-out-btn" aria-label="Zoom out image">Zoom -</button>
+</div>
+
+<div id="thumbnails" aria-label="Image thumbnails gallery">
+  <img src="1stad166_Image01.jpg" alt="Thumbnail Stadium Image 1" data-index="0" class="selected" tabindex="0" />
+  <img src="1stad166_Image02.jpg" alt="Thumbnail Stadium Image 2" data-index="1" tabindex="0" />
+  <img src="1stad166_Image03.jpg" alt="Thumbnail Stadium Image 3" data-index="2" tabindex="0" />
+</div>
+
+<script>
+  (() => {
+    const images = [
+      { src: "1stad166_Image01.jpg", alt: "Stadium Image 1" },
+      { src: "1stad166_Image02.jpg", alt: "Stadium Image 2" },
+      { src: "1stad166_Image03.jpg", alt: "Stadium Image 3" }
+    ];
+
+    let currentIndex = 0;
+    let zoomLevel = 1;
+    const zoomStep = 0.2;
+    const maxZoom = 3;
+    const minZoom = 1;
+
+    const mainImage = document.getElementById("main-image");
+    const thumbnails = document.querySelectorAll("#thumbnails img");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const zoomInBtn = document.getElementById("zoom-in-btn");
+    const zoomOutBtn = document.getElementById("zoom-out-btn");
+
+    function updateImage(index) {
+      if (index < 0) index = images.length - 1;
+      if (index >= images.length) index = 0;
+      currentIndex = index;
+      mainImage.src = images[index].src;
+      mainImage.alt = images[index].alt;
+      zoomLevel = 1;
+      mainImage.style.transform = `scale(${zoomLevel})`;
+      thumbnails.forEach((thumb, i) => {
+        thumb.classList.toggle("selected", i === index);
+      });
+      mainImage.focus();
+    }
+
+    prevBtn.addEventListener("click", () => {
+      updateImage(currentIndex - 1);
+    });
+    nextBtn.addEventListener("click", () => {
+      updateImage(currentIndex + 1);
+    });
+    zoomInBtn.addEventListener("click", () => {
+      if (zoomLevel < maxZoom) {
+        zoomLevel = Math.min(maxZoom, zoomLevel + zoomStep);
+        mainImage.style.transform = `scale(${zoomLevel})`;
+      }
+    });
+    zoomOutBtn.addEventListener("click", () => {
+      if (zoomLevel > minZoom) {
+        zoomLevel = Math.max(minZoom, zoomLevel - zoomStep);
+        mainImage.style.transform = `scale(${zoomLevel})`;
+      }
+    });
+
+    thumbnails.forEach(thumb => {
+      thumb.addEventListener("click", () => {
+        const idx = parseInt(thumb.dataset.index, 10);
+        updateImage(idx);
+      });
+      thumb.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          const idx = parseInt(thumb.dataset.index, 10);
+          updateImage(idx);
+        }
+      });
+    });
+
+    // Enable scroll wheel zoom on main image
+    mainImage.addEventListener("wheel", e => {
+      e.preventDefault();
+      if (e.deltaY < 0) {
+        // zoom in
+        if (zoomLevel < maxZoom) {
+          zoomLevel = Math.min(maxZoom, zoomLevel + zoomStep);
+          mainImage.style.transform = `scale(${zoomLevel})`;
+        }
+      } else {
+        // zoom out
+        if (zoomLevel > minZoom) {
+          zoomLevel = Math.max(minZoom, zoomLevel - zoomStep);
+          mainImage.style.transform = `scale(${zoomLevel})`;
+        }
+      }
+    }, { passive: false });
+
+    // Keyboard navigation for main image
+    mainImage.addEventListener("keydown", e => {
+      if (e.key === "ArrowRight") {
+        updateImage(currentIndex + 1);
+      } else if (e.key === "ArrowLeft") {
+        updateImage(currentIndex - 1);
+      } else if (e.key === "+" || e.key === "=") {
+        if (zoomLevel < maxZoom) {
+          zoomLevel = Math.min(maxZoom, zoomLevel + zoomStep);
+          mainImage.style.transform = `scale(${zoomLevel})`;
+        }
+      } else if (e.key === "-" || e.key === "_") {
+        if (zoomLevel > minZoom) {
+          zoomLevel = Math.max(minZoom, zoomLevel - zoomStep);
+          mainImage.style.transform = `scale(${zoomLevel})`;
+        }
+      }
+    });
+
+    // Click main image toggles zoom between 1 and 2
+    mainImage.addEventListener("click", () => {
+      if (zoomLevel === 1) {
+        zoomLevel = 2;
+      } else {
+        zoomLevel = 1;
+      }
+      mainImage.style.transform = `scale(${zoomLevel})`;
+    });
+
+    // Initialize
+    updateImage(0);
+  })();
+</script>
+
+</body>
+</html>

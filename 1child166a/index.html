@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Goony Mac Boo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(135deg, #FFD600 0%, #FF3D00 100%);
+      font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .title {
+      font-size: 3em;
+      font-weight: bold;
+      margin-top: 40px;
+      color: #FF3D00;
+      letter-spacing: 4px;
+      animation: bounce 1.5s infinite;
+      text-shadow: 2px 6px 8px #fff00099, 0 2px 0 #fff, 3px 3px 0 #FF3D00;
+      cursor: pointer;
+      user-select: none;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0);}
+      50% { transform: translateY(-20px);}
+    }
+    .ronald-container {
+      margin: 30px 0 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .ronald-face {
+      width: 180px;
+      cursor: pointer;
+      transition: transform 0.18s;
+    }
+    .ronald-face:active {
+      transform: scale(1.08) rotate(-6deg);
+    }
+    .ronald-wave {
+      animation: wave-hand 1s infinite alternate;
+      transform-origin: right bottom;
+    }
+    @keyframes wave-hand {
+      0% { transform: rotate(-20deg);}
+      100% { transform: rotate(30deg);}
+    }
+    .main-text {
+      background: rgba(255,255,255,0.84);
+      color: #D50000;
+      border-radius: 18px;
+      padding: 18px 30px;
+      font-size: 1.25em;
+      max-width: 470px;
+      margin: 26px 0 18px 0;
+      box-shadow: 0 4px 16px #ff3d0050;
+      text-align: center;
+      line-height: 1.5;
+      border: 4px solid #FFD600;
+    }
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      z-index: 99;
+    }
+    @media (max-width: 600px) {
+      .title { font-size: 2em; }
+      .ronald-face { width: 120px;}
+      .main-text { font-size: 1em; padding: 12px 6px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="confetti"></div>
+  <div class="title">Goony Mac Boo</div>
+  <div class="ronald-container">
+    <!-- Ronald McDonald cartoon face (SVG) with waving hand -->
+    <svg class="ronald-face" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="110" rx="65" ry="80" fill="#fff9e6" stroke="#d50000" stroke-width="3"/>
+      <!-- Red hair left -->
+      <ellipse cx="42" cy="70" rx="30" ry="24" fill="#ff3d00" />
+      <!-- Red hair right -->
+      <ellipse cx="158" cy="70" rx="30" ry="24" fill="#ff3d00" />
+      <!-- Red hair top -->
+      <ellipse cx="100" cy="40" rx="48" ry="18" fill="#ff3d00" />
+      <!-- Face features -->
+      <!-- Eyes -->
+      <ellipse cx="76" cy="110" rx="10" ry="13" fill="#fff" stroke="#222" stroke-width="2"/>
+      <ellipse cx="125" cy="110" rx="10" ry="13" fill="#fff" stroke="#222" stroke-width="2"/>
+      <ellipse cx="76" cy="116" rx="3" ry="5" fill="#222"/>
+      <ellipse cx="125" cy="116" rx="3" ry="5" fill="#222"/>
+      <!-- Nose -->
+      <ellipse cx="100" cy="130" rx="12" ry="10" fill="#ff3d00" stroke="#d50000" stroke-width="2"/>
+      <!-- Smile -->
+      <path d="M72 145 Q100 170 128 145" stroke="#d50000" stroke-width="5" fill="none" />
+      <!-- Cheeks -->
+      <ellipse cx="70" cy="135" rx="7" ry="4" fill="#ffbaba"/>
+      <ellipse cx="130" cy="135" rx="7" ry="4" fill="#ffbaba"/>
+      <!-- Collar -->
+      <ellipse cx="100" cy="185" rx="34" ry="10" fill="#FFD600" stroke="#fff" stroke-width="2" />
+      <!-- Waving hand (right) -->
+      <g class="ronald-wave">
+      <ellipse cx="170" cy="60" rx="18" ry="10" fill="#fffbe9" stroke="#FFD600" stroke-width="3"/>
+      <ellipse cx="185" cy="60" rx="6" ry="8" fill="#fffbe9" stroke="#FFD600" stroke-width="2"/>
+      </g>
+    </svg>
+    <div style="font-weight: bold; color: #FFD600; margin-top: 2px;">Click my face!</div>
+  </div>
+  <div class="main-text">
+    Goony Mac Boo<br><br>
+    Goony goonies hurt a pedofile goon goon bee who asks me for a booty.<br>
+    But what do i know? The basics? The math? Am i dumb? No! i'm just a girl who loves siege a house and hate being yelled at.
+  </div>
+  <script>
+    // --- Confetti animation ---
+    const confettiColors = ['#FFD600','#FF3D00','#fff','#c6ff00','#ff4081','#ffecb3','#f44336'];
+    const confettiContainer = document.querySelector('.confetti');
+
+    function randomConfettiPiece() {
+      const div = document.createElement('div');
+      const size = Math.random() * 14 + 8;
+      div.style.width = div.style.height = size + 'px';
+      div.style.position = 'absolute';
+      div.style.zIndex = 999;
+      div.style.borderRadius = Math.random()>.7 ? '50%' : '10%';
+      div.style.background = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+      div.style.left = Math.random()*100+'vw';
+      div.style.top = '-30px';
+      div.style.opacity = 0.8;
+      div.style.transform = `rotate(${Math.random()*360}deg)`;
+      div.style.transition = 'top 2.7s linear, transform 2.1s cubic-bezier(.47,1.64,.41,.8)';
+      setTimeout(() => {
+        div.style.top = '110vh';
+        div.style.transform = `rotate(${Math.random()*360}deg) scale(${0.5+Math.random()*1.2})`;
+      }, 10);
+      setTimeout(()=>div.remove(), 2850);
+      return div;
+    }
+
+    function launchConfettiBurst(count=23) {
+      for(let i=0;i<count;i++) {
+        setTimeout(()=> {
+          confettiContainer.appendChild(randomConfettiPiece());
+        }, i*34);
+      }
+    }
+
+    // --- Interactivity: surprise on face click ---
+    const face = document.querySelector('.ronald-face');
+    face.addEventListener('click', () => {
+      launchConfettiBurst(32);
+      // Silly sound effect (using Web Audio API)
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const o = ctx.createOscillator();
+        o.type = 'triangle';
+        o.frequency.value = 220;
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0.18, ctx.currentTime);
+        o.connect(g).connect(ctx.destination);
+        o.start();
+        o.frequency.linearRampToValueAtTime(900, ctx.currentTime+0.2);
+        g.gain.linearRampToValueAtTime(0, ctx.currentTime+0.33);
+        o.stop(ctx.currentTime+0.34);
+        setTimeout(()=>ctx.close(), 420);
+      } catch(e){}
+    });
+
+    // Also: click title for confetti!
+    document.querySelector('.title').addEventListener('click', ()=>launchConfettiBurst(18));
+  </script>
+</body>
+</html>

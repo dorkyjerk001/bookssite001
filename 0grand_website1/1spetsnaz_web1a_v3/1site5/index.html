@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortal Komrades</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #8B0000; /* Dark red background */
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .logo {
+            width: 80vw; /* Adjust size as needed */
+        }
+        .decorations {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .decorations img {
+            width: 20vw; /* Adjust size as needed */
+            margin: 10vh;
+        }
+        .button {
+            background-color: #B22222; /* Darker red for buttons */
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .button:hover {
+            background-color: #FF4500; /* Lighter red on hover */
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1.5s ease-out 0.5s forwards;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1.5s ease-out 1s forwards;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.2s ease-out;
+        }
+
+        .star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <h1>Pervert Spy Camera</h1>
+    <img src="img1/1lgo22.gif" alt="Header Logo" class="logo">
+
+<button class="button" onclick="location.href='../index.html'">Main</button>
+
+    <div class="decorations">
+        <img src="img1/1kgb_agent1.jpg" alt="KGB Agent">
+        <img src="img1/1r_girl1.jpg" alt="Soviet Girl 1">
+        <img src="img1/1r_girl2.jpg" alt="Soviet Girl 2">
+        <img src="img1/1sad_guy1.jpg" alt="Sad Guy">
+    </div>
+
+    <h2>Our Mortal Komrades</h2>
+    <a href="https://octashitone.wixsite.com/spetsnaz-forever" class="button">Spetsnaz Forever</a>
+    <a href="https://spetsnaz-thornberrys.tumblr.com/" class="button">Spetsnaz Thornberrys</a>
+    <a href="https://www.youtube.com/@1011-z2m/videos" class="button">YouTube Channel</a>
+    <a href="https://app.ardrive.io/#/drives/f4c90f46-6021-4c01-9261-79ce49ebbe6b" class="button">Ardrive Link</a>
+    <a href="https://2vrkkw4onykevqpte6tqcuiukl3jplktgt5fmhwaqxqum3f2k6fq.arweave.net/1WKlW45uFErB8yenAVEUUvaXrVM0-lYewIXhRmy6V4s/" class="button">Arweave Link</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 200;
+            const stars = [];
+            let mouseX = 0;
+            let mouseY = 0;
+
+            // Create stars
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random size between 1 and 3px
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Random opacity
+                star.style.opacity = Math.random() * 0.5 + 0.5;
+                
+                // Random animation delay
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                starsContainer.appendChild(star);
+                stars.push({
+                    element: star,
+                    x: parseFloat(star.style.left),
+                    y: parseFloat(star.style.top),
+                    speed: Math.random() * 0.05 + 0.01,
+                    direction: Math.random() * Math.PI * 2
+                });
+            }
+
+            // Mouse movement tracker
+            document.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            });
+
+            // Animation loop
+            function animate() {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                
+                stars.forEach(star => {
+                    // Update star position based on its direction and speed
+                    star.x += Math.cos(star.direction) * star.speed;
+                    star.y += Math.sin(star.direction) * star.speed;
+                    
+                    // Wrap around the screen
+                    if (star.x < 0) star.x = 100;
+                    if (star.x > 100) star.x = 0;
+                    if (star.y < 0) star.y = 100;
+                    if (star.y > 100) star.y = 0;
+                    
+                    // Calculate distance from mouse
+                    const starX = star.x * window.innerWidth / 100;
+                    const starY = star.y * window.innerHeight / 100;
+                    const dx = starX - (centerX + mouseX * centerX);
+                    const dy = starY - (centerY + mouseY * centerY);
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    // Change direction based on mouse position
+                    if (distance < 200) {
+                        const angle = Math.atan2(dy, dx);
+                        star.direction = angle + Math.PI;
+                    }
+                    
+                    // Apply position
+                    star.element.style.left = `${star.x}%`;
+                    star.element.style.top = `${star.y}%`;
+                    
+                    // Scale effect based on mouse distance
+                    const scale = 1 + (1 - Math.min(distance / 300, 1)) * 0.5;
+                    star.element.style.transform = `scale(${scale})`;
+                });
+                
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        });
+    </script>
+</body>
+</html>

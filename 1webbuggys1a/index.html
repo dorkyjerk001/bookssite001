@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Buggy Couples</title>
+    <style>
+        body {
+            margin: 0;
+            overflow-y: scroll;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+
+        @keyframes backgroundAnimation {
+            from { background-color: #e0f7fa; }
+            to { background-color: #ffeb3b; }
+        }
+
+        .logo {
+            width: 60%;
+            margin: 20px auto;
+            display: block;
+            animation: logoAnimation 2s infinite alternate;
+        }
+
+        @keyframes logoAnimation {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .gallery img {
+            width: 40%;
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+
+        .fullscreen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fullscreen img {
+            width: auto;
+            height: 90%;
+            max-width: 90%;
+            max-height: 90%;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="img1/1lgo123.png" alt="Buggy Couples Logo" class="logo" />
+
+    <div class="gallery">
+        <img src="img1/1buggy166_Image01.jpg" onclick="openFullscreen(this.src)" />
+        <img src="img1/1buggy166_Image02.jpg" onclick="openFullscreen(this.src)" />
+        <img src="img1/1buggy166_Image03.jpg" onclick="openFullscreen(this.src)" />
+        <img src="img1/1buggy166_Image04.jpg" onclick="openFullscreen(this.src)" />
+        <img src="img1/1buggy166_Image05.jpg" onclick="openFullscreen(this.src)" />
+        <img src="img1/1buggy166_Image06.jpg" onclick="openFullscreen(this.src)" />
+        <img src="img1/1buggy166_Image07.jpg" onclick="openFullscreen(this.src)" />
+        <img src="img1/1buggy166_Image08.jpg" onclick="openFullscreen(this.src)" />
+    </div>
+
+    <div class="fullscreen" id="fullscreen" onclick="closeFullscreen()">
+        <img id="fullscreenImage" src="" alt="Fullscreen Image" />
+    </div>
+
+    <script>
+        function openFullscreen(src) {
+            document.getElementById('fullscreen').style.display = 'flex';
+            document.getElementById('fullscreenImage').src = src;
+        }
+
+        function closeFullscreen() {
+            document.getElementById('fullscreen').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

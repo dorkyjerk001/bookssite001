@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Games, Drugs and Rock and Roll</title>
+<style>
+  body {
+    margin: 0;
+    background: #0d0d0d;
+    color: #f2f2f2;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    overflow-x: hidden;
+  }
+
+  header {
+    background: linear-gradient(45deg, #ff0055, #ff7700);
+    color: black;
+    padding: 2rem 0;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-shadow: 2px 2px #000;
+  }
+
+  .gallery {
+    margin: 3rem auto;
+    width: 90%;
+    max-width: 900px;
+    border: 2px dashed #ff0055;
+    padding: 1.5rem;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .gallery h2 {
+    font-size: 2rem;
+    color: #ff0055;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .img-container {
+    position: relative;
+  }
+
+  .img-container img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    border: 3px solid #ff0055;
+    border-radius: 10px;
+  }
+
+  .controls {
+    margin-top: 1rem;
+  }
+
+  button {
+    background: #ff0055;
+    color: black;
+    border: none;
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0 0.5rem;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background 0.2s;
+  }
+
+  button:hover {
+    background: #ff7700;
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #777;
+  }
+</style>
+</head>
+<body>
+
+<header>Games, Drugs and Rock and Roll</header>
+
+<section class="gallery" id="roxGallery">
+  <h2>My O.C. Roxxie Storm</h2>
+  <p class="description">
+    Roxxie Storm — Chaotic-neutral rock riot with a bottle in one hand and rebellion in the other. Lives loud, loves reckless, and treats rules like guitar strings — meant to snap. Once mooned a journalist mid-interview just to prove her “naked ass” wasn’t the story. Buys burgers for runaway fans before dragging them into the mosh pit. Hates hypocrisy, drinks cheap whiskey like oxygen, and fears mediocrity more than death. Flirts like a dare, feels like feedback, and vanishes before sunrise. For Roxxie, life’s one long encore — sweaty, loud, and unapologetically real.
+  </p>
+  <div class="img-container">
+    <img id="roxImg" src="1rxy001.jpg" alt="Roxxie Storm">
+  </div>
+  <div class="controls">
+    <button onclick="prevImage('rox')">⟸ Prev</button>
+    <button onclick="nextImage('rox')">Next ⟹</button>
+  </div>
+</section>
+
+<section class="gallery" id="switchGallery">
+  <h2>Switch Girls</h2>
+  <div class="img-container">
+    <img id="switchImg" src="1lba001.jpg" alt="Switch Girls">
+  </div>
+  <div class="controls">
+    <button onclick="prevImage('switch')">⟸ Prev</button>
+    <button onclick="nextImage('switch')">Next ⟹</button>
+  </div>
+</section>
+
+<footer>© 2025 Games, Drugs and Rock and Roll — Stay loud.</footer>
+
+<script>
+  const roxImages = ["1rxy003.jpg","1rxy001.jpg","1rxy004.jpg","1rxy002.jpg","1rxy005.jpg"];
+  const switchImages = [
+    "1lba003.jpg","1lba006.jpg","1lba009.jpg","1lba012.jpg","1lba015.jpg","1lba001.jpg",
+    "1lba004.jpg","1lba007.jpg","1lba010.jpg","1lba013.jpg","1lba002.jpg","1lba005.jpg",
+    "1lba008.jpg","1lba011.jpg","1lba014.jpg"
+  ];
+
+  let roxIndex = 0;
+  let switchIndex = 0;
+
+  function nextImage(gallery) {
+    if (gallery === 'rox') {
+      roxIndex = (roxIndex + 1) % roxImages.length;
+      document.getElementById('roxImg').src = roxImages[roxIndex];
+    } else {
+      switchIndex = (switchIndex + 1) % switchImages.length;
+      document.getElementById('switchImg').src = switchImages[switchIndex];
+    }
+  }
+
+  function prevImage(gallery) {
+    if (gallery === 'rox') {
+      roxIndex = (roxIndex - 1 + roxImages.length) % roxImages.length;
+      document.getElementById('roxImg').src = roxImages[roxIndex];
+    } else {
+      switchIndex = (switchIndex - 1 + switchImages.length) % switchImages.length;
+      document.getElementById('switchImg').src = switchImages[switchIndex];
+    }
+  }
+</script>
+
+</body>
+</html>

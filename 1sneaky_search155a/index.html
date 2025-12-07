@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sneeky Web Sniffer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 320px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .magic-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .magic-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sneeky Web Sniffer</h1>
+        <button class="magic-button" id="searchButton" onclick="findUsernames()">Find Me</button>
+    </div>
+
+    <script>
+        const baseUsernames = [
+            "Girly Dreamer", "Fancy Sketcher", "Lovely Artista", "Dainty Artist", 
+            "Charming Creator", "Whimsical Dame", "Inked Princess", "Pixie Pioneer", 
+            "Imaginary Goddess", "Sketchy Siren", "Daring Diva", "Dreamy Duchess", 
+            "Inspired Belle", "Chic Explorer", "Digital Dame", "Pixel Princess", 
+            "Artful Angel", "Colorful Fairy", "Sketchy Goddess", "Genius Girl", 
+            "Innovative Dame", "Imaginative Empress", "Dreamy Enchantress", "Fantasy Lady", 
+            "Ninja Girl", "Wizardess", "Goddess Of Art", "Inspiration Muse", 
+            "Maverick Maiden", "Visionary Vixen", "Prodigy Princess", "Master Maiden", 
+            "Scribe Siren", "Sculpting Sweety", "Crafty Queen", "Storytelling Goddess", 
+            "Alchemist Angel", "Sorceress Of Art", "Savant Sister", "Imaginative Goddess", 
+            "Pathfinder Princess", "Artful Explorer", "Voyager Vixen", "Dreamweaver Dame", 
+            "Artisan Angel", "Virtuoso Valkyrie", "Crafty Chick", "Whiz Girl", 
+            "Dynamo Dame", "Inventive Sister", "Crafty Goddess", "Visionary Vixen", 
+            "Maverick Maiden", "Sculpting Sister", "Genius Goddess", "Explorer Chick", 
+            "Pathfinder Princess", "Inventive Goddess", "Dreamy Dame", "Sketchy Sister", 
+            "Inventive Princess", "Sculpting Queen", "Crafty Diva", "Artisan Dame", 
+            "Whiz Goddess", "Innovative Empress", "Genius Diva", "Explorer Sister", 
+            "Visionary Dame", "Prodigy Goddess", "Imaginative Girl", "Pathfinder Dame", 
+            "Dreamy Chick", "Ninja Girl", "Pioneer Princess", "Scribe Sister", 
+            "Innovative Dame", "Maverick Goddess", "Master Maiden", "Sculptor Sister", 
+            "Goddess Of Art", "Artful Dreamer", "Lovely Goddess", "Charming Artist", 
+            "Dainty Dame", "Pixie Artist", "Fairy Dreamer", "Sketchy Queen", 
+            "Lovely Creator", "Fancy Dame", "Chic Artist", "Whimsical Dame", 
+            "Inked Dame", "Girly Explorer", "Artful Muse", "Charming Princess", 
+            "Daring Dame", "Lovely Sketcher", "Fairy Goddess", "Dreamy Girl", 
+            "Charming Sister", "Lovely Diva", "Dainty Princess", "Artful Angel", 
+            "Inked Queen", "Fancy Dreamer", "Chic Dame", "Whimsical Artist", 
+            "Pixie Dreamer", "Girly Dame", "Daring Princess", "Lovely Vixen", 
+            "Dreamy Goddess", "Charming Maiden", "Artful Vixen", "Sculptor Dame", 
+            "Crafty Queen", "Sketchy Vixen", "Goddess Chick", "Artful Goddess", 
+            "Charming Dame", "Dainty Vixen", "Lovely Artist", "Inked Goddess", 
+            "Daring Vixen", "Dreamy Diva", "Girly Princess", "Artful Chick", 
+            "Fancy Goddess", "Chic Queen", "Sculptor Princess", "Crafty Dame", 
+            "Whimsical Vixen", "Girly Maiden", "Lovely Fairy", "Charming Artist", 
+            "Dainty Dreamer", "Sketchy Princess", "Inked Vixen", "Daring Dreamer", 
+            "Girly Goddess", "Lovely Maiden", "Charming Diva", "Dainty Siren", 
+            "Fairy Artist", "Artful Sketcher", "Lovely Imaginer", "Daring Dame", 
+            "Girly Visionary", "Charming Explorer", "Whimsical Goddess", "Sketchy Queen", 
+            "Inked Dame", "Pixie Princess", "Fancy Vixen", "Artful Dreamer", 
+            "Lovely Dame", "Dainty Artist", "Crafty Princess"
+        ];
+
+        function generateVariations(username) {
+            const variations = [];
+            const suffixes = [
+                "art", "draws", "sketch", "designs", "creations", "gallery",
+                "works", "girl", "dame", "princess", "queen", "lady",
+                "bottomless", "pantless", "nudity", "exposed", "bare", "unclothed",
+                "shirt", "jacket", "sweater", "tanktop", "hoodie", "armor"
+            ];
+            const prefixes = [
+                "the", "my", "its", "i_am", "artist", "creative"
+            ];
+
+            for (const suffix of suffixes) {
+                variations.push(username + " " + suffix);
+            }
+            for (const prefix of prefixes) {
+                variations.push(prefix + " " + username);
+            }
+            variations.push(username + " 123");
+            variations.push(username + " 2025");
+            variations.push(username + " xoxo");
+            return variations;
+        }
+
+        function findUsernames() {
+            const allUsernames = [];
+
+            // Randomly select usernames
+            const selectedUsernames = baseUsernames.sort(() => 0.5 - Math.random()).slice(0, 150);
+
+            selectedUsernames.forEach(base => {
+                const variations = generateVariations(base);
+                allUsernames.push(...variations);
+            });
+
+            // Randomly choose a username and redirect to a Google search
+            const randomUsername = allUsernames[Math.floor(Math.random() * allUsernames.length)];
+            const rareTags = [
+                "bottomless shirt", "pantless dress", "nude armor", "bare hoodie",
+                "exposed tanktop", "pantless queen", "bottomless diva", "nude princess"
+            ];
+            const randomTag = rareTags[Math.floor(Math.random() * rareTags.length)];
+
+            // Randomly decide to search for images 70% of the time
+            const isImageSearch = Math.random() < 0.7; // 70% chance for image search
+            const searchType = isImageSearch ? "isch" : ""; // Use "isch" for image search
+
+            const googleSearchUrl = `https://www.google.com/search?tbm=${searchType}&q=${encodeURIComponent(randomUsername + " " + randomTag)}`;
+
+            // Update button text with the current search tag
+            const searchButton = document.getElementById('searchButton');
+            searchButton.innerText = `Search for ${randomTag}`;
+
+            // Redirect to the Google search
+            window.open(googleSearchUrl, '_blank');
+        }
+    </script>
+</body>
+</html>

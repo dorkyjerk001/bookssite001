@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lola Sim</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fce4f3;
+    color: #800080;
+    overflow-y: auto; /* Enable page vertical scroll */
+  }
+
+  /* Particle background using CSS animation */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(circle at 20% 20%, #ff85d7, transparent 20%),
+      radial-gradient(circle at 80% 30%, #d970ff, transparent 15%),
+      radial-gradient(circle at 50% 80%, #ff5bc8, transparent 18%);
+    animation: pulse 10s ease-in-out infinite;
+    z-index: 0;
+  }
+  @keyframes pulse {
+    0%,100% {
+      filter: brightness(1);
+      transform: scale(1);
+    }
+    50% {
+      filter: brightness(1.3);
+      transform: scale(1.05);
+    }
+  }
+
+  /* Main container vertical stack */
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100vw;
+    position: relative;
+    z-index: 1;
+    padding: 2rem 0;
+    align-items: center;
+  }
+
+  /* Top: logo (auto height, max 60vh) */
+  .logo-container {
+    width: 80vw; /* 80% page width */
+    max-height: 60vh;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  .logo-container img.logo {
+    max-width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #d870ffaa;
+    transition: transform 0.3s ease;
+  }
+  .logo-container img.logo:hover {
+    transform: scale(1.05) rotate(-3deg);
+  }
+
+  /* Gallery container */
+  .gallery {
+    width: 80vw; /* 80% page width */
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 3rem;
+  }
+
+  .gallery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #e754e5aa;
+    cursor: zoom-in;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .gallery-item img:hover,
+  .gallery-item img:focus {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #ff6ce7dd;
+    outline: none;
+  }
+
+  .gallery-item span {
+    margin-top: 0.6rem;
+    font-weight: 600;
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+    color: #a020a0;
+    text-shadow: 0 0 6px #ff9de2;
+    user-select: none;
+  }
+
+  /* Slogans container at bottom */
+  .slogans {
+    width: 100%;
+    max-width: 80vw;
+    text-align: center;
+    font-weight: 600;
+    font-size: clamp(1rem, 1.8vw, 1.6rem);
+    line-height: 1.3;
+    color: #800080;
+    text-shadow: 0 0 8px #ff9de2;
+    margin-bottom: 2rem;
+  }
+  .slogans span {
+    display: block;
+    margin: 0.4rem 0;
+  }
+
+  /* Zoom effect using :target and IDs */
+  .zoom-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 192, 203, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  .zoom-overlay:target {
+    display: flex;
+  }
+  .zoom-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 20px;
+    box-shadow: 0 0 40px #ff99e6ff;
+  }
+  .zoom-overlay a.close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 2.5rem;
+    color: #800080;
+    text-decoration: none;
+    font-weight: bold;
+    background: #ffc0cbdd;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    line-height: 2.7rem;
+    text-align: center;
+    box-shadow: 0 0 10px #d870ffcc;
+    transition: background-color 0.3s ease;
+  }
+  .zoom-overlay a.close:hover {
+    background: #ff69b4cc;
+  }
+
+  /* Scrollbar styling for vertical scroll */
+  body::-webkit-scrollbar {
+    width: 10px;
+  }
+  body::-webkit-scrollbar-track {
+    background: #ffe6f7;
+    border-radius: 10px;
+  }
+  body::-webkit-scrollbar-thumb {
+    background: #d870ff;
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="logo-container">
+    <img src="img1/1lolgo1.png" alt="Lola Sim Logo" class="logo" />
+  </div>
+
+  <div class="gallery">
+    <div class="gallery-item">
+      <a href="#img01"><img src="img1/1lola166_Image01.jpg" alt="Lola Image 01" tabindex="0" /></a>
+      <span>Image 01 Preview</span>
+    </div>
+    <div class="gallery-item">
+      <a href="#img02"><img src="img1/1lola166_Image02.jpg" alt="Lola Image 02" tabindex="0" /></a>
+      <span>Image 02 Preview</span>
+    </div>
+    <div class="gallery-item">
+      <a href="#img03"><img src="img1/1lola166_Image03.jpg" alt="Lola Image 03" tabindex="0" /></a>
+      <span>Image 03 Preview</span>
+    </div>
+    <div class="gallery-item">
+      <a href="#img04"><img src="img1/1lola166_Image04.jpg" alt="Lola Image 04" tabindex="0" /></a>
+      <span>Image 04 Preview</span>
+    </div>
+    <div class="gallery-item">
+      <a href="#img05"><img src="img1/1lola166_Image05.jpg" alt="Lola Image 05" tabindex="0" /></a>
+      <span>Image 05 Preview</span>
+    </div>
+    <div class="gallery-item">
+      <a href="#img06"><img src="img1/1lola166_Image06.jpg" alt="Lola Image 06" tabindex="0" /></a>
+      <span>Image 06 Preview</span>
+    </div>
+  </div>
+
+  <div class="slogans">
+    <span>Why Barbie games when you have this?</span>
+    <span>Not only for girls</span>
+    <span>Charming and unforgettable</span>
+    <span>Gamer's choice 2018</span>
+    <span>State of the art AI and silicon graphics</span>
+  </div>
+
+</div>
+
+<!-- Zoom overlays for images -->
+<div id="img01" class="zoom-overlay">
+  <a href="#" class="close" title="Close zoom">&times;</a>
+  <img src="img1/1lola166_Image01.jpg" alt="Lola Image 01 Zoomed" />
+</div>
+<div id="img02" class="zoom-overlay">
+  <a href="#" class="close" title="Close zoom">&times;</a>
+  <img src="img1/1lola166_Image02.jpg" alt="Lola Image 02 Zoomed" />
+</div>
+<div id="img03" class="zoom-overlay">
+  <a href="#" class="close" title="Close zoom">&times;</a>
+  <img src="img1/1lola166_Image03.jpg" alt="Lola Image 03 Zoomed" />
+</div>
+<div id="img04" class="zoom-overlay">
+  <a href="#" class="close" title="Close zoom">&times;</a>
+  <img src="img1/1lola166_Image04.jpg" alt="Lola Image 04 Zoomed" />
+</div>
+<div id="img05" class="zoom-overlay">
+  <a href="#" class="close" title="Close zoom">&times;</a>
+  <img src="img1/1lola166_Image05.jpg" alt="Lola Image 05 Zoomed" />
+</div>
+<div id="img06" class="zoom-overlay">
+  <a href="#" class="close" title="Close zoom">&times;</a>
+  <img src="img1/1lola166_Image06.jpg" alt="Lola Image 06 Zoomed" />
+</div>
+
+</body>
+</html>

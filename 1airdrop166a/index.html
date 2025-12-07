@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Photo Airdrop</title>
+<style>
+  body {
+    margin: 0; font-family: Arial, sans-serif; background: #111; color: #eee;
+    display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+  }
+  h1 {
+    margin: 1rem 0;
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40vw, 1fr));
+    gap: 10px;
+    width: 90vw;
+    max-width: 1200px;
+  }
+  .gallery img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(255,255,255,0.15);
+    transition: transform 0.2s ease;
+  }
+  .gallery img:hover {
+    transform: scale(1.05);
+  }
+  /* Fullscreen overlay */
+  .fullscreen-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .fullscreen-overlay.visible {
+    visibility: visible;
+    opacity: 1;
+  }
+  .fullscreen-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.7);
+  }
+  /* Controls */
+  .controls {
+    position: fixed;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+  .control-btn {
+    pointer-events: auto;
+    color: #eee;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+  }
+  .control-btn:hover {
+    background: rgba(255,255,255,0.3);
+  }
+  .close-btn {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-size: 2.5rem;
+    color: #eee;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    pointer-events: auto;
+  }
+  .close-btn:hover {
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+
+<h1>Photo Airdrop</h1>
+
+<div class="gallery" id="gallery">
+  <!-- Images inserted by JS -->
+</div>
+
+<!-- Fullscreen overlay -->
+<div class="fullscreen-overlay" id="fullscreenOverlay">
+  <button class="close-btn" id="closeBtn" aria-label="Close fullscreen">&times;</button>
+  <button class="control-btn" id="prevBtn" aria-label="Previous image">&#10094;</button>
+  <img src="" alt="Fullscreen Image" id="fullscreenImage" />
+  <button class="control-btn" id="nextBtn" aria-label="Next image">&#10095;</button>
+</div>
+
+<script>
+  const images = [
+    "studodoo001.jpg", "studodoo002.jpg", "studodoo003.jpg", "studodoo004.jpg", "studodoo005.jpg",
+    "studodoo006.jpg", "studodoo007.jpg", "studodoo008.jpg", "studodoo009.jpg", "studodoo010.jpg",
+    "studodoo011.jpg", "studodoo012.jpg", "studodoo013.jpg", "studodoo014.jpg", "studodoo015.jpg",
+    "studodoo016.jpg", "studodoo017.jpg", "studodoo018.jpg", "studodoo019.jpg", "studodoo020.jpg",
+    "studodoo021.jpg", "studodoo022.jpg", "studodoo023.jpg", "studodoo024.jpg", "studodoo025.jpg",
+    "studodoo026.jpg", "studodoo027.jpg", "studodoo028.jpg", "studodoo029.jpg", "studodoo030.jpg",
+    "studodoo031.jpg", "studodoo032.jpg", "studodoo033.jpg", "studodoo034.jpg", "studodoo035.jpg",
+    "studodoo036.jpg", "studodoo037.jpg", "studodoo038.jpg", "studodoo039.jpg", "studodoo040.jpg",
+    "studodoo041.jpg", "studodoo042.jpg", "studodoo043.jpg", "studodoo044.jpg"
+  ];
+
+  const galleryEl = document.getElementById('gallery');
+  const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+  const fullscreenImage = document.getElementById('fullscreenImage');
+  const closeBtn = document.getElementById('closeBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  let currentIndex = 0;
+
+  // Populate gallery
+  images.forEach((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = `Photo ${i + 1}`;
+    img.tabIndex = 0;
+    img.addEventListener('click', () => openFullscreen(i));
+    img.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openFullscreen(i);
+      }
+    });
+    galleryEl.appendChild(img);
+  });
+
+  function openFullscreen(index) {
+    currentIndex = index;
+    fullscreenImage.src = images[currentIndex];
+    fullscreenOverlay.classList.add('visible');
+    document.body.style.overflow = 'hidden'; // prevent background scroll
+    fullscreenImage.focus();
+  }
+
+  function closeFullscreen() {
+    fullscreenOverlay.classList.remove('visible');
+    fullscreenImage.src = '';
+    document.body.style.overflow = '';
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % images.length;
+    fullscreenImage.src = images[currentIndex];
+  }
+
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    fullscreenImage.src = images[currentIndex];
+  }
+
+  closeBtn.addEventListener('click', closeFullscreen);
+  nextBtn.addEventListener('click', showNext);
+  prevBtn.addEventListener('click', showPrev);
+
+  // Keyboard navigation in fullscreen
+  document.addEventListener('keydown', (e) => {
+    if (!fullscreenOverlay.classList.contains('visible')) return;
+    if (e.key === 'ArrowRight') {
+      showNext();
+    } else if (e.key === 'ArrowLeft') {
+      showPrev();
+    } else if (e.key === 'Escape') {
+      closeFullscreen();
+    }
+  });
+
+  // Clicking outside the image closes fullscreen
+  fullscreenOverlay.addEventListener('click', (e) => {
+    if (e.target === fullscreenOverlay) {
+      closeFullscreen();
+    }
+  });
+</script>
+
+</body>
+</html>

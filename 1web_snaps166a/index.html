@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Photographer's Gallery - Blank Preset</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #232526 0%, #414345 100%);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center;
+      padding: 2rem 0 1rem 0;
+      letter-spacing: 0.1em;
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #f7971e, #ffd200, #f7971e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-move 5s infinite linear alternate;
+    }
+    @keyframes gradient-move {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1vw;
+      padding: 2vw;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+    .gallery-item {
+      flex: 1 1 18vw;
+      max-width: 19vw;
+      min-width: 180px;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      border-radius: 1rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 8px rgba(255,255,255,0.05) inset;
+      position: relative;
+      transition: transform 0.3s cubic-bezier(.25,.8,.25,1), box-shadow 0.3s;
+      background: #222;
+      cursor: pointer;
+      animation: fadeIn 1s ease;
+    }
+    .gallery-item:hover {
+      transform: scale(1.04) rotate(-1deg);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.35), 0 2px 12px rgba(255,255,255,0.08) inset;
+      z-index: 2;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(0.2) contrast(1.1) brightness(0.95);
+      transition: filter 0.4s, transform 0.4s;
+      border-radius: 1rem;
+    }
+    .gallery-item:hover img {
+      filter: grayscale(0) contrast(1.2) brightness(1.05) saturate(1.2);
+      transform: scale(1.07) rotate(1deg);
+    }
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 1rem;
+      pointer-events: none;
+      box-shadow: 0 0 0 0 rgba(255,255,255,0.2);
+      transition: box-shadow 0.4s;
+    }
+    .gallery-item:hover::after {
+      box-shadow: 0 0 0 8px rgba(255,255,255,0.08);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96);}
+      to { opacity: 1; transform: scale(1);}
+    }
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .gallery-item, .gallery-item img {
+        max-width: 29vw;
+        min-width: 120px;
+      }
+    }
+    @media (max-width: 800px) {
+      .gallery-item, .gallery-item img {
+        max-width: 44vw;
+        min-width: 90px;
+      }
+      .gallery {
+        gap: 2vw;
+      }
+    }
+    @media (max-width: 500px) {
+      .gallery-item, .gallery-item img {
+        max-width: 95vw;
+        min-width: 0;
+      }
+      .gallery {
+        gap: 3vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span>📸 My Photo Gallery</span>
+  </header>
+  <div class="gallery">
+    <!-- Insert your images here manually like this example:
+    <a class="gallery-item" href="path/to/fullsize.jpg" target="_blank">
+      <img src="path/to/thumbnail.jpg" alt="Description" />
+    </a>
+    -->
+<img src="pho1/1bkp_1art_Image01 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image233.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image01.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image234.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image02 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image235.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image02.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image236.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image03 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image237.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image03.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image238.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image04 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image239.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image04.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image23 (copy 1).jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image05 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image23.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image05.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image240.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image06 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image241.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image06.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image242.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image07 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image243.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image07.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image244.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image08 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image245.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image08.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image246.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image09 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image247.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image09.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image248.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image100.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image249.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image101.jpg" alt="Photo" />          <img src="pho1/1bkp_1art_Image24 (copy 1).jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image102.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image24.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image103.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image250.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image104.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image251.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image105.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image252.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image106.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image253.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image107.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image254.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image108.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image255.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image109.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image256.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image10 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image257.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image10.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image258.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image110.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image259.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image111.jpg" alt="Photo" />          <img src="pho1/1bkp_1art_Image25 (copy 1).jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image112.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image25.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image113.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image260.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image114.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image261.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image115.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image262.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image116.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image263.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image117.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image264.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image118.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image265.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image119.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image266.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image11 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image267.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image11.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image268.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image120.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image269.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image121.jpg" alt="Photo" />          <img src="pho1/1bkp_1art_Image26 (copy 1).jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image122.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image26.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image123.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image270.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image124.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image271.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image125.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image272.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image126.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image273.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image127.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image274.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image128.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image275.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image129.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image276.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image12 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image277.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image12.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image278.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image130.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image279.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image131.jpg" alt="Photo" />          <img src="pho1/1bkp_1art_Image27 (copy 1).jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image132.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image27.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image133.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image280.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image134.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image281.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image135.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image282.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image136.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image283.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image137.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image284.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image138.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image285.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image139.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image286.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image13 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image287.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image13.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image288.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image140.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image289.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image141.jpg" alt="Photo" />          <img src="pho1/1bkp_1art_Image28 (copy 1).jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image142.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image28.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image143.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image290.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image144.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image291.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image145.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image292.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image146.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image293.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image147.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image294.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image148.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image295.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image149.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image296.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image14 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image297.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image14.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image298.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image150.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image299.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image151.jpg" alt="Photo" />          <img src="pho1/1bkp_1art_Image29 (copy 1).jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image152.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image29.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image153.jpg" alt="Photo" />          <img src="pho1/1bkp_1art_Image30 (copy 1).jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image154.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image30.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image155.jpg" alt="Photo" />          <img src="pho1/1bkp_1art_Image31 (copy 1).jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image156.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image31.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image157.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image32.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image158.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image33.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image159.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image34.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image15 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image35.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image15.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image36.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image160.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image37.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image161.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image38.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image162.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image39.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image163.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image40.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image164.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image41.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image165.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image42.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image166.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image43.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image167.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image44.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image168.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image45.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image169.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image46.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image16 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image47.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image16.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image48.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image170.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image49.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image171.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image50.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image172.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image51.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image173.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image52.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image174.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image53.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image175.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image54.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image176.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image55.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image177.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image56.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image178.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image57.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image179.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image58.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image17 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image59.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image17.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image60.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image180.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image61.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image181.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image62.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image182.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image63.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image183.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image64.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image184.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image65.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image185.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image66.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image186.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image67.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image187.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image68.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image188.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image69.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image189.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image70.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image18 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image71.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image18.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image72.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image190.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image73.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image191.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image74.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image192.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image75.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image193.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image76.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image194.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image77.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image195.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image78.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image196.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image79.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image197.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image80.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image198.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image81.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image199.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image82.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image19 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image83.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image19.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image84.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image200.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image85.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image201.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image86.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image202.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image87.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image203.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image88.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image204.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image89.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image205.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image90.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image206.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image91.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image207.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image92.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image208.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image93.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image209.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image94.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image20 (copy 1).jpg" alt="Photo" />  <img src="pho1/1bkp_1art_Image95.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image20.jpg" alt="Photo" />            <img src="pho1/1bkp_1art_Image96.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image210.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image97.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image211.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image98.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image212.jpg" alt="Photo" />           <img src="pho1/1bkp_1art_Image99.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image213.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image01.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image214.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image02.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image215.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image03.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image216.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image04.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image217.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image05.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image218.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image06.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image219.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image07.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image21 (copy 1).jpg" alt="Photo" />   <img src="pho1/1snapnew155_Image08.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image21.jpg" alt="Photo" />             <img src="pho1/1snapnew155_Image09.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image220.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image10.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image221.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image11.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image222.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image12.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image223.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image13.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image224.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image14.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image225.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image15.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image226.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image16.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image227.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image17.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image228.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image18.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image229.jpg" alt="Photo" />            <img src="pho1/1snapnew155_Image19.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image22 (copy 1).jpg" alt="Photo" />   <img src="pho1/1snapnew155_Image20.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image22.jpg" alt="Photo" />             <img src="pho1/1snapnew166_Image01.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image230.jpg" alt="Photo" />            <img src="pho1/1snapnew166_Image02.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image231.jpg" alt="Photo" />            <img src="pho1/1snapnew166_Image03.jpg" alt="Photo" />
+<img src="pho1/1bkp_1art_Image232.jpg" alt="Photo" />
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>So I Ask Chat About a Cat</title>
+  <style>
+    body {
+      background: #1a1a1a;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      background-image: linear-gradient(135deg, #222, #111);
+    }
+    header {
+      background: #e60073;
+      width: 100%;
+      padding: 1rem 0;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 8px rgba(230,0,115,0.7);
+    }
+    main {
+      max-width: 700px;
+      padding: 2rem;
+      background: #2b2b2b;
+      margin: 2rem 1rem 4rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #e60073aa;
+    }
+    h2 {
+      color: #e60073;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    p {
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+    }
+    .input-section {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      border: 2px solid #e60073;
+      border-radius: 6px;
+      background: #1a1a1a;
+      color: #f0f0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1rem;
+      padding: 0.75rem;
+      resize: vertical;
+    }
+    button {
+      margin-top: 1rem;
+      background: #e60073;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #b30058;
+    }
+    .response {
+      margin-top: 2rem;
+      background: #111;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #e60073;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    footer {
+      color: #e60073;
+      margin-bottom: 1rem;
+      font-style: italic;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>So I Ask Chat About a Cat</header>
+  <main>
+    <h2>Punk Rock Fanfiction Request</h2>
+    <p id="prompt-text">
+write me an avril lavigne fanfiction where eliza thornberry met avril at the sea where they were swiming and instantly eliza thornberry confesses avril to be her biggest fan since her punk rock love stories reminds her of her feelings to donnie and darwin once they were walking they came across stray cat where eliza wanted to take him home but avril lavigne took the initiative to adopt him at her place in appritiation of meeting such a great fan. when avril and a cat arrived home the cat imidiately ripped her pants off because the cat was a bad pussy cat but avril smiled and hugged him
+    </p>
+    <p><strong>and the chat made it perfect:</strong></p>
+    <div class="response" id="fanfic-text">
+When Eliza Thornberry Met Avril Lavigne
+
+On a bright sunny afternoon by the sea, the waves gently lapped at the shore as two figures swam nearby — Eliza Thornberry, the adventurous wildlife-loving girl, and Avril Lavigne, the punk-pop singer with a heart as fierce as her music.
+
+Eliza paddled closer, eyes wide with excitement. “Avril, I have to tell you — I’m your biggest fan! Your punk rock love stories remind me so much of how I feel about Donnie and Darwin. They’re wild and unpredictable, but full of heart.”
+
+Avril smiled warmly, touched by the heartfelt confession. “That’s awesome, Eliza! It’s cool to meet someone who gets it.”
+
+As they walked along the shore, a scruffy stray cat appeared, weaving between their feet and meowing softly. Eliza’s eyes lit up. “Oh, he’s adorable! I want to take him home.”
+
+But before she could reach for him, Avril gently scooped up the cat. “I think he’s meant to come home with me. What a perfect way to remember meeting such an amazing fan.”
+
+Back at Avril’s place, the cat wasted no time showing his mischievous side. In one swift move, he jumped up and playfully ripped Avril’s pants right off! The room burst into laughter, but Avril just smiled, scooping the “bad pussy cat” into a big hug.
+
+“Well, I guess he’s as wild as we are,” she chuckled.
+
+From that day on, Avril, Eliza, and their new feline troublemaker shared a bond filled with music, adventure, and plenty of playful chaos — proving that sometimes the best friendships come from the most unexpected encounters.
+    </div>
+
+    <div class="input-section">
+      <label for="userInput" style="display:block; margin-bottom:0.5rem; font-weight: bold; color:#e60073;">
+        Want to add your own punk rock twist? Type below and hit "Rock On!"
+      </label>
+      <textarea id="userInput" placeholder="Write your punk rock addition here..."></textarea>
+      <br />
+      <button id="rockBtn">Rock On!</button>
+    </div>
+
+    <div class="response" id="userResponse" style="display:none; margin-top:1.5rem;"></div>
+  </main>
+
+  <footer>Keep the punk spirit alive! 🎸🐾</footer>
+
+  <script>
+    const rockBtn = document.getElementById('rockBtn');
+    const userInput = document.getElementById('userInput');
+    const userResponse = document.getElementById('userResponse');
+    const fanficText = document.getElementById('fanfic-text');
+
+    rockBtn.addEventListener('click', () => {
+      const userText = userInput.value.trim();
+      if (!userText) {
+        alert('Hey punk, write something first!');
+        return;
+      }
+      userResponse.style.display = 'block';
+      userResponse.textContent = `Your punk rock addition:\n\n${userText}\n\n---\n\n(Imagine this wild twist added to the story!)`;
+      userInput.value = '';
+      userInput.focus();
+
+      // Scroll to user response
+      userResponse.scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

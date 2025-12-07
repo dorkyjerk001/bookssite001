@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hear Me Out - Miraculous Ladybug</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+  /* Reset & base */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body, html {
+    height: 100%;
+    background: radial-gradient(circle at center, #1b1b2f 0%, #0f0f1a 90%);
+    font-family: 'Orbitron', monospace, sans-serif;
+    overflow-x: hidden;
+    user-select: none;
+    color: #ff1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2vh 2vw;
+  }
+
+  /* Container flex horizontal */
+  #container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3vw;
+    width: 90vw;
+    max-width: 1200px;
+    position: relative;
+  }
+
+  /* Left and Right images - each 40% width */
+  .side-img {
+    width: 40vw;
+    max-width: 480px;
+    border-radius: 20px;
+    box-shadow:
+      0 0 20px #ff0000,
+      inset 0 0 40px #ff3333;
+    animation: pulseGlow 4s ease-in-out infinite alternate;
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+  }
+  .side-img:hover {
+    transform: scale(1.05) rotate(-3deg);
+    box-shadow:
+      0 0 40px #ff6600,
+      inset 0 0 60px #ff9933;
+    z-index: 10;
+  }
+
+  /* Center equal sign */
+  #equal-sign {
+    font-size: 15vw;
+    color: #ff1a1a;
+    user-select: none;
+    text-shadow:
+      0 0 10px #ff1a1a,
+      0 0 20px #ff4d4d,
+      0 0 30px #ff6600,
+      0 0 40px #ff3300;
+    animation: rotatePulse 6s linear infinite;
+    align-self: center;
+  }
+
+  @keyframes rotatePulse {
+    0% {
+      text-shadow:
+        0 0 10px #ff1a1a,
+        0 0 20px #ff4d4d,
+        0 0 30px #ff6600,
+        0 0 40px #ff3300;
+      transform: rotate(0deg) scale(1);
+    }
+    50% {
+      text-shadow:
+        0 0 30px #ff6600,
+        0 0 50px #ff9933,
+        0 0 70px #ffcc66,
+        0 0 90px #ffcc66;
+      transform: rotate(10deg) scale(1.1);
+    }
+    100% {
+      text-shadow:
+        0 0 10px #ff1a1a,
+        0 0 20px #ff4d4d,
+        0 0 30px #ff6600,
+        0 0 40px #ff3300;
+      transform: rotate(0deg) scale(1);
+    }
+  }
+
+  /* VFX: subtle floating particles behind */
+  #vfx-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    background: transparent;
+  }
+
+</style>
+</head>
+<body>
+  <canvas id="vfx-canvas"></canvas>
+
+  <div id="container" role="main" aria-label="Hear Me Out Miraculous Ladybug themed presentation">
+    <img src="1red166_Image07.jpg" alt="Miraculous Ladybug themed image left" class="side-img" />
+    <div id="equal-sign" aria-hidden="true">=</div>
+    <img src="1totem001.jpg" alt="Miraculous Ladybug themed image right" class="side-img" />
+  </div>
+
+<script>
+  // Canvas VFX - floating glowing red particles with slow drift, mimicking magical sparks
+
+  const canvas = document.getElementById('vfx-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let W, H;
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  class Spark {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * W;
+      this.y = Math.random() * H;
+      this.radius = 1 + Math.random() * 2;
+      this.alpha = 0.1 + Math.random() * 0.3;
+      this.vx = (Math.random() - 0.5) * 0.2;
+      this.vy = (Math.random() - 0.5) * 0.2;
+      this.life = 100 + Math.random() * 100;
+      this.maxLife = this.life;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.life--;
+      if (this.life <= 0 || this.x < 0 || this.x > W || this.y < 0 || this.y > H) {
+        this.reset();
+      }
+    }
+    draw(ctx) {
+      const glowRadius = this.radius * 6;
+      const gradient = ctx.createRadialGradient(this.x, this.y, this.radius, this.x, this.y, glowRadius);
+      gradient.addColorStop(0, `rgba(255, 50, 50, ${this.alpha})`);
+      gradient.addColorStop(1, `rgba(255, 50, 50, 0)`);
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, glowRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 100, 100, ${this.alpha})`;
+      ctx.shadowColor = `rgba(255, 100, 100, ${this.alpha})`;
+      ctx.shadowBlur = 6;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  const sparks = [];
+  const SPARK_COUNT = 100;
+  for(let i=0; i<SPARK_COUNT; i++) {
+    sparks.push(new Spark());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, W, H);
+    sparks.forEach(spark => {
+      spark.update();
+      spark.draw(ctx);
+    });
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Most Recent Shots - Photographer Portfolio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+  /* Reset & base */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body, html {
+    height: 100%;
+    font-family: 'Montserrat', sans-serif;
+    background: #111;
+    color: #eee;
+    overflow-x: hidden;
+    user-select: none;
+  }
+
+  header {
+    text-align: center;
+    padding: 2rem 1rem 3rem;
+    background: linear-gradient(90deg, #222, #111);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.8);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  header h1 {
+    font-size: 2.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffbb33;
+    text-shadow: 0 0 10px #ffbb33;
+    margin-bottom: 0.3rem;
+  }
+  header p {
+    font-size: 1.25rem;
+    letter-spacing: 0.05em;
+    color: #ccc;
+  }
+
+  main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .gallery-item {
+    flex: 1 1 75%;
+    max-width: 75vw;
+    position: relative;
+    cursor: pointer;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow:
+      0 0 15px rgba(255, 187, 51, 0.7),
+      inset 0 0 30px rgba(255, 187, 51, 0.3);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+  .gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow:
+      0 0 30px rgba(255, 187, 51, 1),
+      inset 0 0 50px rgba(255, 187, 51, 0.6);
+    z-index: 10;
+  }
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Fullscreen overlay */
+  #fullscreen-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    cursor: zoom-out;
+  }
+  #fullscreen-overlay.active {
+    display: flex;
+  }
+  #fullscreen-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow:
+      0 0 40px #ffbb33aa;
+    transition: transform 0.3s ease;
+  }
+
+  /* Controls for cycling */
+  #controls {
+    position: fixed;
+    top: 50%;
+    left: 2rem;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 10000;
+    user-select: none;
+  }
+  #controls button {
+    background: rgba(255,187,51,0.8);
+    border: none;
+    border-radius: 50%;
+    width: 3.5rem;
+    height: 3.5rem;
+    color: #111;
+    font-weight: 700;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ffbb33;
+    transition: background 0.3s ease;
+  }
+  #controls button:hover {
+    background: #ffbb33;
+  }
+
+  /* Zoom animation */
+  #fullscreen-overlay img.zoomed {
+    transform: scale(2);
+    cursor: grab;
+  }
+</style>
+</head>
+<body>
+
+<header role="banner" aria-label="Website Header">
+  <h1>Most Recent Shots</h1>
+  <p>Photography Portfolio</p>
+</header>
+
+<main role="main" aria-label="Gallery of recent photos">
+  <div class="gallery-item" tabindex="0" aria-label="View image 1 fullscreen">
+    <img src="1screen001.jpg" alt="Photograph 1" data-index="0" />
+  </div>
+  <div class="gallery-item" tabindex="0" aria-label="View image 2 fullscreen">
+    <img src="1screen002.jpg" alt="Photograph 2" data-index="1" />
+  </div>
+</main>
+
+<div id="fullscreen-overlay" role="dialog" aria-modal="true" aria-label="Fullscreen image viewer">
+  <img src="" alt="" id="fullscreen-image" />
+</div>
+
+<div id="controls" aria-label="Image navigation controls">
+  <button id="prevBtn" aria-label="Previous image">&#9664;</button>
+  <button id="nextBtn" aria-label="Next image">&#9654;</button>
+  <button id="openNewTabBtn" aria-label="Open image in new tab">&#x1F5D6;</button>
+</div>
+
+<script>
+  const images = [
+    { src: '1screen001.jpg', alt: 'Photograph 1' },
+    { src: '1screen002.jpg', alt: 'Photograph 2' }
+  ];
+
+  const galleryItems = document.querySelectorAll('.gallery-item img');
+  const overlay = document.getElementById('fullscreen-overlay');
+  const fullscreenImage = document.getElementById('fullscreen-image');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const openNewTabBtn = document.getElementById('openNewTabBtn');
+
+  let currentIndex = 0;
+  let zoomed = false;
+  let dragStart = null;
+  let imgPos = { x: 0, y: 0 };
+
+  function openFullscreen(index) {
+    currentIndex = index;
+    const imgData = images[currentIndex];
+    fullscreenImage.src = imgData.src;
+    fullscreenImage.alt = imgData.alt;
+    overlay.classList.add('active');
+    zoomed = false;
+    fullscreenImage.classList.remove('zoomed');
+    fullscreenImage.style.transform = '';
+    imgPos = { x: 0, y: 0 };
+  }
+
+  function closeFullscreen() {
+    overlay.classList.remove('active');
+    zoomed = false;
+    fullscreenImage.classList.remove('zoomed');
+    fullscreenImage.style.transform = '';
+    imgPos = { x: 0, y: 0 };
+  }
+
+  galleryItems.forEach(img => {
+    img.addEventListener('click', () => openFullscreen(parseInt(img.dataset.index)));
+    img.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openFullscreen(parseInt(img.dataset.index));
+      }
+    });
+  });
+
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeFullscreen();
+  });
+
+  // Navigation buttons
+  prevBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    openFullscreen(currentIndex);
+  });
+  nextBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    openFullscreen(currentIndex);
+  });
+  openNewTabBtn.addEventListener('click', () => {
+    window.open(images[currentIndex].src, '_blank');
+  });
+
+  // Zoom toggle on image click
+  fullscreenImage.addEventListener('click', e => {
+    e.stopPropagation();
+    zoomed = !zoomed;
+    if (zoomed) {
+      fullscreenImage.classList.add('zoomed');
+      fullscreenImage.style.cursor = 'grab';
+      imgPos = { x: 0, y: 0 };
+      fullscreenImage.style.transform = `translate(0px, 0px) scale(2)`;
+    } else {
+      fullscreenImage.classList.remove('zoomed');
+      fullscreenImage.style.cursor = 'zoom-in';
+      fullscreenImage.style.transform = '';
+      imgPos = { x: 0, y: 0 };
+    }
+  });
+
+  // Dragging zoomed image
+  fullscreenImage.style.cursor = 'zoom-in';
+  fullscreenImage.addEventListener('mousedown', e => {
+    if (!zoomed) return;
+    dragStart = { x: e.clientX - imgPos.x, y: e.clientY - imgPos.y };
+    fullscreenImage.style.cursor = 'grabbing';
+  });
+  window.addEventListener('mouseup', e => {
+    dragStart = null;
+    if (zoomed) fullscreenImage.style.cursor = 'grab';
+  });
+  window.addEventListener('mousemove', e => {
+    if (!zoomed || !dragStart) return;
+    e.preventDefault();
+    let x = e.clientX - dragStart.x;
+    let y = e.clientY - dragStart.y;
+
+    // Limit dragging to image boundaries approximately
+    const maxX = (fullscreenImage.clientWidth * 1) / 2; // half zoomed width
+    const maxY = (fullscreenImage.clientHeight * 1) / 2;
+
+    x = Math.min(maxX, Math.max(-maxX, x));
+    y = Math.min(maxY, Math.max(-maxY, y));
+
+    imgPos = { x, y };
+    fullscreenImage.style.transform = `translate(${x}px, ${y}px) scale(2)`;
+  });
+
+  // Keyboard navigation while fullscreen open
+  window.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('active')) return;
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevBtn.click();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      nextBtn.click();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      closeFullscreen();
+    }
+  });
+</script>
+</body>
+</html>

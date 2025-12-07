@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Endless RPG Map Generator - Structured Architecture</title>
+<style>
+  body, html {
+    margin: 0; padding: 0; overflow: hidden; background: #000;
+    user-select: none;
+    font-family: Arial, sans-serif;
+  }
+  #gameCanvas {
+    display: block;
+    background: #000;
+    image-rendering: pixelated;
+  }
+  #ui {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+  }
+  button {
+    width: 40px; height: 40px;
+    font-size: 20px;
+    background: #222;
+    border: 2px solid #444;
+    border-radius: 5px;
+    color: #eee;
+    cursor: pointer;
+  }
+  button:active {
+    background: #555;
+  }
+</style>
+</head>
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<!-- Onscreen Pan Controls -->
+<div id="ui">
+  <button id="upBtn">↑</button>
+  <button id="leftBtn">←</button>
+  <button id="downBtn">↓</button>
+  <button id="rightBtn">→</button>
+</div>
+
+<script>
+// Config
+const TILE_SIZE = 32;
+const TILESHEET_COLS = 6;
+const TILESHEET_ROWS = 6;
+
+// Tilesheet tiles index map (0-based col,row)
+const Tiles = {
+  empty: {x:0, y:0},             // 1x1 empty
+  ground: {x:1, y:0},            // 2x1 ground
+  water: {x:2, y:0},             // 3x1 water (background only)
+  greyBricks: {x:3, y:0},        // 4x1 grey bricks
+  sandBricks: {x:4, y:0},        // 5x1 sand bricks
+  lava: {x:5, y:0},              // 6x1 lava
+
+  groundRoadEdgeCorner: {x:0, y:1},  // 1x2
+  groundCrossroad: {x:1, y:1},       // 2x2
+  groundRoadTurnUL: {x:2, y:1},      // 3x2
+  groundRoadTurnUR: {x:3, y:1},      // 4x2
+  smallGrayBrickWallOnGrass: {x:4, y:1}, // 5x2
+  mud: {x:5, y:1},                  // 6x2
+
+  verticalWoodenBridge: {x:0, y:2}, // 1x3
+  smallHouseRoof: {x:1, y:2},       // 2x3
+  smallHouseBase: {x:1, y:3},       // 2x4
+  groundRoadOnGrass: {x:2, y:2},    // 3x3
+  tree: {x:3, y:2},                 // 4x3
+  highGrayBrickWallOnGrass: {x:4, y:2}, // 5x3
+  smallGrayBrickWallOnGrassB: {x:5, y:2}, // 6x3
+
+  groundMidAir: {x:0, y:3},         // 1x4
+  treeB: {x:2, y:3},                // 3x4
+  stone: {x:3, y:3},                // 4x4
+  stoneB: {x:4, y:3},               // 5x4
+  bush: {x:5, y:3},                 // 6x4
+
+  bigHouseRoofLeft: {x:0, y:4},    // 1x5
+  bigHouseRoofRight: {x:1, y:4},   // 2x5
+  bigHouseBaseLeft: {x:0, y:5},    // 1x6
+  bigHouseBaseRight: {x:1, y:5},   // 2x6
+  mushrooms: {x:2, y:4},            // 3x5
+  chest: {x:3, y:4},                // 4x5
+  gump: {x:4, y:4},                 // 5x5
+  grass: {x:5, y:4},                // 6x5
+
+  grassB: {x:2, y:5},               // 3x6
+  mudpileOnGrass: {x:3, y:5},      // 4x6
+  mudpileOnGrassB: {x:4, y:5},     // 5x6
+  mudpileOnGrassC: {x:5, y:5}      // 6x6
+};
+
+const waterTile = Tiles.water;
+
+// Canvas setup
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Load tilesheet image
+const tilesheet = new Image();
+tilesheet.src = 'tiles001.png';
+
+// Viewport state
+let viewport = {
+  x: 0,
+  y: 0,
+  zoom: 1,
+  speed: 10
+};
+
+// Map cache: key "x,y" => tile object
+const mapData = new Map();
+
+// Simple seeded random for consistent generation
+function seededRandom(x, y, seed=12345) {
+  let n = x * 374761393 + y * 668265263 + seed * 1442695040888963407;
+  n = (n ^ (n >> 13)) * 1274126177;
+  n = (n ^ (n >> 16));
+  return (n & 0x7fffffff) / 0x7fffffff;
+}
+
+// Zones with grouped tiles for logic
+const Zones = {
+  ground: [
+    Tiles.ground,
+    Tiles.groundMidAir,
+    Tiles.sandBricks,
+    Tiles.lava,
+    Tiles.mud,
+    Tiles.mudpileOnGrass,
+    Tiles.mudpileOnGrassB,
+    Tiles.mudpileOnGrassC,
+  ],
+  grass: [
+    Tiles.grass,
+    Tiles.grassB,
+    Tiles.bush,
+    Tiles.tree,
+    Tiles.treeB,
+    Tiles.mushrooms,
+    Tiles.highGrayBrickWallOnGrass,
+    Tiles.smallGrayBrickWallOnGrass,
+    Tiles.smallGrayBrickWallOnGrassB,
+  ],
+  stone: [
+    Tiles.stone,
+    Tiles.stoneB,
+    Tiles.greyBricks,
+    Tiles.gump,
+    Tiles.chest
+  ],
+  house: [
+    Tiles.smallHouseRoof,
+    Tiles.smallHouseBase,
+    Tiles.bigHouseRoofLeft,
+    Tiles.bigHouseRoofRight,
+    Tiles.bigHouseBaseLeft,
+    Tiles.bigHouseBaseRight
+  ],
+  road: [
+    Tiles.groundRoadEdgeCorner,
+    Tiles.groundCrossroad,
+    Tiles.groundRoadTurnUL,
+    Tiles.groundRoadTurnUR,
+    Tiles.groundRoadOnGrass,
+    Tiles.verticalWoodenBridge
+  ]
+};
+
+// Background water pattern cache
+let waterPattern = null;
+tilesheet.onload = () => {
+  // Create water pattern canvas
+  const patternCanvas = document.createElement('canvas');
+  patternCanvas.width = TILE_SIZE;
+  patternCanvas.height = TILE_SIZE;
+  const pctx = patternCanvas.getContext('2d');
+  pctx.drawImage(tilesheet, waterTile.x * TILE_SIZE, waterTile.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, 0, TILE_SIZE, TILE_SIZE);
+  waterPattern = ctx.createPattern(patternCanvas, 'repeat');
+  gameLoop();
+};
+
+// More structured village and road placement logic
+
+// Village cluster generator: returns true if tile is inside a village cluster
+function isInVillageCluster(x, y) {
+  // Use a grid of 10x10 tiles for village clusters
+  const clusterSize = 10;
+  const clusterX = Math.floor(x / clusterSize);
+  const clusterY = Math.floor(y / clusterSize);
+
+  // Seeded random to decide if cluster exists here
+  const clusterSeed = seededRandom(clusterX, clusterY, 999);
+  return clusterSeed > 0.7; // ~30% chance of village cluster
+}
+
+// Village tile type by relative position inside cluster
+function villageTileType(relX, relY) {
+  // Define a simple village layout 10x10:
+  // Roads in cross shape at center (4-5)
+  // Houses around roads
+  // Trees and grass filling rest
+
+  // Roads center lines
+  if (relX === 4 || relX === 5 || relY === 4 || relY === 5) {
+    // Road tiles with turns and crossroads
+    if (relX === 4 && relY === 4) return Tiles.groundCrossroad;
+    if (relX === 4 && relY === 5) return Tiles.groundRoadEdgeCorner;
+    if (relX === 5 && relY === 4) return Tiles.groundRoadEdgeCorner;
+    if (relX === 5 && relY === 5) return Tiles.groundRoadOnGrass;
+    if (relX === 4) return Tiles.groundRoadTurnUL;
+    if (relY === 4) return Tiles.groundRoadTurnUR;
+    return Tiles.groundRoadOnGrass;
+  }
+
+  // Houses near roads
+  if ((relX === 3 || relX === 6) && (relY >= 3 && relY <= 6)) {
+    if (relY === 3) return Tiles.bigHouseRoofLeft;
+    if (relY === 6) return Tiles.bigHouseBaseLeft;
+    return Tiles.bigHouseBaseLeft;
+  }
+  if ((relX === 7 || relX === 2) && (relY >= 3 && relY <= 6)) {
+    if (relY === 3) return Tiles.bigHouseRoofRight;
+    if (relY === 6) return Tiles.bigHouseBaseRight;
+    return Tiles.bigHouseBaseRight;
+  }
+
+  // Trees and grass fill rest
+  if ((relX + relY) % 3 === 0) return Tiles.tree;
+  return Tiles.grass;
+}
+
+// Determine zone by coordinates with village logic
+function getZone(x, y) {
+  // Roads near center cross
+  if (Math.abs(x) < 3 || Math.abs(y) < 3) return 'road';
+
+  // Village clusters
+  if (isInVillageCluster(x, y)) return 'house';
+
+  // Stone patches
+  const noise = seededRandom(x, y);
+  if (noise > 0.7 && noise < 0.85) return 'stone';
+
+  // Grass north, ground south
+  if (y < 0) return 'grass';
+
+  return 'ground';
+}
+
+// Pick tile from zone with village structure override
+function pickTileFromZone(zone, x, y) {
+  if (zone === 'house') {
+    // Calculate relative position inside cluster
+    const clusterSize = 10;
+    const clusterX = Math.floor(x / clusterSize);
+    const clusterY = Math.floor(y / clusterSize);
+    const relX = x - clusterX * clusterSize;
+    const relY = y - clusterY * clusterSize;
+    return villageTileType(relX, relY);
+  }
+
+  const tileOptions = Zones[zone];
+  if (!tileOptions) return Tiles.empty;
+  const idx = Math.floor(seededRandom(x, y, 42) * tileOptions.length);
+  return tileOptions[idx];
+}
+
+// Generate tile data for coordinate
+function generateTile(x, y) {
+  const zone = getZone(x, y);
+  let tile = pickTileFromZone(zone, x, y);
+  if (tile === waterTile) tile = Tiles.empty; // no water on map
+  return tile;
+}
+
+// Draw background water with parallax
+function drawBackground() {
+  if (!waterPattern) return;
+  const parallaxX = viewport.x * TILE_SIZE * 0.3;
+  const parallaxY = viewport.y * TILE_SIZE * 0.3;
+  ctx.save();
+  ctx.translate(-parallaxX % TILE_SIZE, -parallaxY % TILE_SIZE);
+  ctx.fillStyle = waterPattern;
+  ctx.fillRect(-TILE_SIZE, -TILE_SIZE, canvas.width + TILE_SIZE * 2, canvas.height + TILE_SIZE * 2);
+  ctx.restore();
+}
+
+// Render loop
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBackground();
+
+  const tileStartX = Math.floor(viewport.x) - 2;
+  const tileEndX = Math.ceil(viewport.x + (canvas.width / (TILE_SIZE * viewport.zoom))) + 2;
+  const tileStartY = Math.floor(viewport.y) - 2;
+  const tileEndY = Math.ceil(viewport.y + (canvas.height / (TILE_SIZE * viewport.zoom))) + 2;
+
+  ctx.imageSmoothingEnabled = false;
+
+  const visibleKeys = new Set();
+
+  for (let ty = tileStartY; ty <= tileEndY; ty++) {
+    for (let tx = tileStartX; tx <= tileEndX; tx++) {
+      const key = `${tx},${ty}`;
+      visibleKeys.add(key);
+
+      let tile = mapData.get(key);
+      if (!tile) {
+        tile = generateTile(tx, ty);
+        mapData.set(key, tile);
+      }
+      if (tile === Tiles.empty) continue;
+
+      const px = Math.floor((tx - viewport.x) * TILE_SIZE * viewport.zoom);
+      const py = Math.floor((ty - viewport.y) * TILE_SIZE * viewport.zoom);
+
+      ctx.drawImage(
+        tilesheet,
+        tile.x * TILE_SIZE, tile.y * TILE_SIZE,
+        TILE_SIZE, TILE_SIZE,
+        px, py,
+        TILE_SIZE * viewport.zoom,
+        TILE_SIZE * viewport.zoom
+      );
+    }
+  }
+
+  // Remove offscreen tiles
+  for (const key of mapData.keys()) {
+    if (!visibleKeys.has(key)) {
+      mapData.delete(key);
+    }
+  }
+}
+
+// Controls state
+const keys = {up:false, down:false, left:false, right:false};
+
+// Keyboard handlers
+window.addEventListener('keydown', e => {
+  switch(e.key) {
+    case 'ArrowUp': case 'w': case 'W': keys.up = true; e.preventDefault(); break;
+    case 'ArrowDown': case 's': case 'S': keys.down = true; e.preventDefault(); break;
+    case 'ArrowLeft': case 'a': case 'A': keys.left = true; e.preventDefault(); break;
+    case 'ArrowRight': case 'd': case 'D': keys.right = true; e.preventDefault(); break;
+  }
+});
+window.addEventListener('keyup', e => {
+  switch(e.key) {
+    case 'ArrowUp': case 'w': case 'W': keys.up = false; break;
+    case 'ArrowDown': case 's': case 'S': keys.down = false; break;
+    case 'ArrowLeft': case 'a': case 'A': keys.left = false; break;
+    case 'ArrowRight': case 'd': case 'D': keys.right = false; break;
+  }
+});
+
+// Onscreen buttons handlers
+document.getElementById('upBtn').addEventListener('mousedown', () => keys.up = true);
+document.getElementById('upBtn').addEventListener('mouseup', () => keys.up = false);
+document.getElementById('downBtn').addEventListener('mousedown', () => keys.down = true);
+document.getElementById('downBtn').addEventListener('mouseup', () => keys.down = false);
+document.getElementById('leftBtn').addEventListener('mousedown', () => keys.left = true);
+document.getElementById('leftBtn').addEventListener('mouseup', () => keys.left = false);
+document.getElementById('rightBtn').addEventListener('mousedown', () => keys.right = true);
+document.getElementById('rightBtn').addEventListener('mouseup', () => keys.right = false);
+
+// Mouse wheel zoom
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const oldZoom = viewport.zoom;
+  if (e.deltaY < 0) viewport.zoom *= 1.1;
+  else viewport.zoom /= 1.1;
+  viewport.zoom = Math.min(Math.max(viewport.zoom, 0.5), 3);
+
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  const worldX = viewport.x + mouseX / (TILE_SIZE * oldZoom);
+  const worldY = viewport.y + mouseY / (TILE_SIZE * oldZoom);
+
+  viewport.x = worldX - mouseX / (TILE_SIZE * viewport.zoom);
+  viewport.y = worldY - mouseY / (TILE_SIZE * viewport.zoom);
+}, { passive: false });
+
+// Mouse drag panning
+let isDragging = false;
+let dragStart = null;
+
+canvas.addEventListener('mousedown', e => {
+  isDragging = true;
+  dragStart = {x: e.clientX, y: e.clientY};
+});
+window.addEventListener('mouseup', e => {
+  isDragging = false;
+  dragStart = null;
+});
+window.addEventListener('mousemove', e => {
+  if (!isDragging || !dragStart) return;
+  const dx = e.clientX - dragStart.x;
+  const dy = e.clientY - dragStart.y;
+  dragStart.x = e.clientX;
+  dragStart.y = e.clientY;
+  viewport.x -= dx / (TILE_SIZE * viewport.zoom);
+  viewport.y -= dy / (TILE_SIZE * viewport.zoom);
+});
+
+// Game loop
+function gameLoop() {
+  if (keys.up) viewport.y -= 0.1 / viewport.zoom;
+  if (keys.down) viewport.y += 0.1 / viewport.zoom;
+  if (keys.left) viewport.x -= 0.1 / viewport.zoom;
+  if (keys.right) viewport.x += 0.1 / viewport.zoom;
+
+  render();
+  requestAnimationFrame(gameLoop);
+}
+</script>
+</body>
+</html>

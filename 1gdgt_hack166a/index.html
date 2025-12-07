@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Some Gadgets for Us All</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        #d2b48c, /* tan wood color */
+        #d2b48c 10px,
+        #a0522d 10px, /* sienna wood stripe */
+        #a0522d 20px
+      );
+    font-family: 'Courier New', Courier, monospace;
+    color: #3e2f1c; /* dark brown */
+    overflow-y: scroll;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Subtle wood grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background:
+      url('wood-pattern.png') repeat; /* local wood texture file, place in same folder */
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  /* Title */
+  h1 {
+    text-align: center;
+    margin: 1rem 0;
+    font-size: 2.5rem;
+    text-shadow:
+      1px 1px 0 #deb887,
+      2px 2px 0 #8b4513;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Gallery container with vertical scroll and perspective */
+  .gallery {
+    max-width: 90vw;
+    max-height: 80vh;
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 20px;
+    padding: 20px;
+    border: 2px solid #3e2f1c;
+    background: rgba(245 222 179 / 0.85); /* wheat background */
+    box-shadow:
+      inset 0 0 10px #3e2f1c;
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    perspective: 1200px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Scrollbar styling */
+  .gallery::-webkit-scrollbar {
+    width: 10px;
+  }
+  .gallery::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .gallery::-webkit-scrollbar-thumb {
+    background: #3e2f1caa;
+    border-radius: 5px;
+  }
+
+  /* Each preview: 12vh height, 40% width */
+  .gallery a {
+    flex: 0 0 12vh;
+    scroll-snap-align: center;
+    display: block;
+    border: 1px solid #3e2f1c;
+    border-radius: 6px;
+    box-shadow: 0 0 8px #3e2f1c88;
+    background: white;
+    cursor: zoom-in;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+    width: 40%;
+    max-width: 40%;
+  }
+  .gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    display: block;
+  }
+  .gallery a:focus,
+  .gallery a:hover {
+    outline: 2px solid #3e2f1c;
+    box-shadow: 0 0 12px #3e2f1ccc;
+    transform: scale(1.05) rotateY(8deg);
+    z-index: 10;
+  }
+
+  /* Fullscreen overlay */
+  .fullscreen {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(245, 222, 179, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    overflow: auto;
+    scroll-behavior: smooth;
+  }
+  .fullscreen:target {
+    display: flex;
+  }
+
+  /* Fullscreen image */
+  .fullscreen img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border: 4px solid #3e2f1c;
+    border-radius: 6px;
+    box-shadow:
+      0 0 20px #3e2f1ccc;
+    cursor: grab;
+    user-select: none;
+  }
+
+  /* Close button */
+  .close-btn {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #3e2f1c;
+    background: #deb887;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 0 8px #3e2f1caa;
+    z-index: 10000;
+  }
+  .close-btn:hover {
+    background: #cdaa7d;
+  }
+
+  /* Navigation arrows */
+  .nav-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    font-weight: bold;
+    color: #3e2f1c;
+    background: #deb887;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 0 8px #3e2f1caa;
+    z-index: 10000;
+    user-select: none;
+  }
+  .nav-arrow:hover {
+    background: #cdaa7d;
+  }
+  .nav-prev {
+    left: 20px;
+  }
+  .nav-next {
+    right: 20px;
+  }
+
+  /* Caption */
+  .caption {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #3e2f1c;
+    font-size: 1rem;
+    font-style: italic;
+    text-shadow: 1px 1px 0 #fff;
+    user-select: none;
+    z-index: 10000;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 700px) {
+    .gallery {
+      max-width: 95vw;
+      max-height: 70vh;
+    }
+    .gallery a {
+      flex: 0 0 16vh;
+    }
+    .nav-arrow {
+      font-size: 2rem;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>Some Gadgets for Us All</h1>
+
+<div class="gallery" aria-label="Gadget Hackwrench themed images gallery">
+  <a href="#img1" aria-label="Open image 1 fullscreen"><img src="1ggt001.jpg" alt="Gadget Image 001" /></a>
+  <a href="#img2" aria-label="Open image 2 fullscreen"><img src="1ggt002.jpg" alt="Gadget Image 002" /></a>
+  <a href="#img3" aria-label="Open image 3 fullscreen"><img src="1ggt003.jpg" alt="Gadget Image 003" /></a>
+  <a href="#img4" aria-label="Open image 4 fullscreen"><img src="1ggt004.jpg" alt="Gadget Image 004" /></a>
+  <a href="#img5" aria-label="Open image 5 fullscreen"><img src="1ggt005.jpg" alt="Gadget Image 005" /></a>
+  <a href="#img6" aria-label="Open image 6 fullscreen"><img src="1ggt006.jpg" alt="Gadget Image 006" /></a>
+  <a href="#img7" aria-label="Open image 7 fullscreen"><img src="1ggt007.jpg" alt="Gadget Image 007" /></a>
+  <a href="#img8" aria-label="Open image 8 fullscreen"><img src="1ggt008.jpg" alt="Gadget Image 008" /></a>
+  <a href="#img9" aria-label="Open image 9 fullscreen"><img src="1ggt009.jpg" alt="Gadget Image 009" /></a>
+  <a href="#img10" aria-label="Open image 10 fullscreen"><img src="1ggt010.jpg" alt="Gadget Image 010" /></a>
+  <a href="#img11" aria-label="Open image 11 fullscreen"><img src="1ggt011.jpg" alt="Gadget Image 011" /></a>
+  <a href="#img12" aria-label="Open image 12 fullscreen"><img src="1ggt012.jpg" alt="Gadget Image 012" /></a>
+  <a href="#img13" aria-label="Open image 13 fullscreen"><img src="1ggt013.jpg" alt="Gadget Image 013" /></a>
+  <a href="#img14" aria-label="Open image 14 fullscreen"><img src="1ggt014.jpg" alt="Gadget Image 014" /></a>
+  <a href="#img15" aria-label="Open image 15 fullscreen"><img src="1ggt015.jpg" alt="Gadget Image 015" /></a>
+  <a href="#img16" aria-label="Open image 16 fullscreen"><img src="1ggt016.jpg" alt="Gadget Image 016" /></a>
+  <a href="#img17" aria-label="Open image 17 fullscreen"><img src="1ggt017.jpg" alt="Gadget Image 017" /></a>
+  <a href="#img18" aria-label="Open image 18 fullscreen"><img src="1ggt018.jpg" alt="Gadget Image 018" /></a>
+  <a href="#img19" aria-label="Open image 19 fullscreen"><img src="1ggt019.jpg" alt="Gadget Image 019" /></a>
+</div>
+
+<!-- Fullscreen overlays with navigation -->
+<div id="img1" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 1">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img19" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt001.jpg" alt="Gadget Image 001 Fullscreen" />
+  <a href="#img2" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img2" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 2">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img1" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt002.jpg" alt="Gadget Image 002 Fullscreen" />
+  <a href="#img3" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img3" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 3">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img2" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt003.jpg" alt="Gadget Image 003 Fullscreen" />
+  <a href="#img4" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img4" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 4">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img3" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt004.jpg" alt="Gadget Image 004 Fullscreen" />
+  <a href="#img5" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img5" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 5">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img4" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt005.jpg" alt="Gadget Image 005 Fullscreen" />
+  <a href="#img6" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img6" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 6">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img5" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt006.jpg" alt="Gadget Image 006 Fullscreen" />
+  <a href="#img7" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img7" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 7">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img6" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt007.jpg" alt="Gadget Image 007 Fullscreen" />
+  <a href="#img8" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img8" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 8">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img7" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt008.jpg" alt="Gadget Image 008 Fullscreen" />
+  <a href="#img9" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img9" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 9">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img8" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt009.jpg" alt="Gadget Image 009 Fullscreen" />
+  <a href="#img10" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img10" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 10">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img9" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt010.jpg" alt="Gadget Image 010 Fullscreen" />
+  <a href="#img11" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img11" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 11">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img10" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt011.jpg" alt="Gadget Image 011 Fullscreen" />
+  <a href="#img12" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img12" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 12">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img11" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt012.jpg" alt="Gadget Image 012 Fullscreen" />
+  <a href="#img13" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img13" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 13">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img12" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt013.jpg" alt="Gadget Image 013 Fullscreen" />
+  <a href="#img14" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img14" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 14">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img13" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt014.jpg" alt="Gadget Image 014 Fullscreen" />
+  <a href="#img15" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img15" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 15">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img14" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt015.jpg" alt="Gadget Image 015 Fullscreen" />
+  <a href="#img16" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img16" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 16">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img15" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt016.jpg" alt="Gadget Image 016 Fullscreen" />
+  <a href="#img17" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img17" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 17">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img16" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt017.jpg" alt="Gadget Image 017 Fullscreen" />
+  <a href="#img18" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img18" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 18">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img17" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt018.jpg" alt="Gadget Image 018 Fullscreen" />
+  <a href="#img19" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img19" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 19">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img18" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="1ggt019.jpg" alt="Gadget Image 019 Fullscreen" />
+  <a href="#img1" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+
+<div class="caption">Click an image to view fullscreen. Use arrows to navigate. Scroll or pinch to zoom and pan.</div>
+
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Inventory</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+  /* Reset & base */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body, html {
+    height: 100%;
+    overflow-x: hidden;
+    font-family: 'Press Start 2P', cursive, monospace;
+    background: url('1bgimg001.jpg') no-repeat center center fixed;
+    background-size: cover;
+    perspective: 1000px;
+    color: #fff;
+    user-select: none;
+  }
+
+  /* Parallax overlay for subtle dark tint */
+  body::before {
+    content: "";
+    position: fixed;
+    top:0; left:0; width:100vw; height:100vh;
+    background: rgba(0,0,0,0.6);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #container {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2vh 2vw 6vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5vh;
+  }
+
+  /* Header image */
+  #header-img {
+    width: 60vw;
+    max-width: 720px;
+    filter:
+      drop-shadow(0 0 10px #ff0000)
+      drop-shadow(0 0 20px #ff3300);
+    animation: headerGlow 3s ease-in-out infinite alternate;
+    transform-style: preserve-3d;
+  }
+  @keyframes headerGlow {
+    0% {
+      filter:
+        drop-shadow(0 0 10px #ff0000)
+        drop-shadow(0 0 20px #ff3300);
+      transform: translateZ(0);
+    }
+    100% {
+      filter:
+        drop-shadow(0 0 20px #ff6600)
+        drop-shadow(0 0 40px #ff9933);
+      transform: translateZ(15px);
+    }
+  }
+
+  /* Inventory grid */
+  #inventory {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 1.5vw;
+    width: 80vw;
+    max-width: 960px;
+    padding: 1.5vw;
+    background: rgba(20, 0, 0, 0.7);
+    border: 3px solid #ff3300;
+    border-radius: 12px;
+    box-shadow:
+      0 0 15px #ff3300,
+      inset 0 0 30px #ff6600;
+    transform-style: preserve-3d;
+    animation: inventoryFloat 6s ease-in-out infinite alternate;
+  }
+  @keyframes inventoryFloat {
+    0% {
+      transform: rotateX(2deg) rotateY(-3deg) translateZ(0);
+      box-shadow:
+        0 0 15px #ff3300,
+        inset 0 0 30px #ff6600;
+    }
+    100% {
+      transform: rotateX(-2deg) rotateY(3deg) translateZ(15px);
+      box-shadow:
+        0 0 30px #ff6600,
+        inset 0 0 50px #ff9933;
+    }
+  }
+
+  /* Inventory item styling */
+  .item {
+    position: relative;
+    background: #220000;
+    border: 2px solid #ff3300;
+    border-radius: 8px;
+    box-shadow:
+      0 0 8px #ff3300,
+      inset 0 0 10px #ff6600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+  .item img {
+    max-width: 100%;
+    max-height: 100%;
+    pointer-events: none;
+    user-select: none;
+    filter:
+      drop-shadow(0 0 3px #ff3300);
+    transition: filter 0.3s ease;
+  }
+  .item:hover {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow:
+      0 0 20px #ff6600,
+      inset 0 0 25px #ff9933;
+    z-index: 20;
+  }
+  .item:hover img {
+    filter:
+      drop-shadow(0 0 8px #ff9933);
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 51, 0, 0.9);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-weight: 700;
+    text-shadow: 0 0 5px #ff3300;
+    user-select: none;
+  }
+  .item:hover .tooltip {
+    opacity: 1;
+  }
+
+  /* Footer button */
+  #open-btn {
+    margin-top: 3vh;
+    font-family: 'Press Start 2P', cursive, monospace;
+    font-weight: 700;
+    font-size: 1.6vw;
+    color: #ff3300;
+    background: linear-gradient(45deg, #330000, #660000);
+    border: 3px solid #ff3300;
+    border-radius: 12px;
+    padding: 1em 3em;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    box-shadow:
+      0 0 15px #ff3300,
+      inset 0 0 30px #ff6600;
+    transition: all 0.3s ease;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+    filter: drop-shadow(0 0 10px #ff3300);
+  }
+  #open-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255, 51, 0, 0.6), transparent 70%);
+    animation: pulseLight 3s linear infinite;
+    pointer-events: none;
+    filter: blur(10px);
+    z-index: 0;
+  }
+  #open-btn:hover {
+    color: #fff;
+    background: linear-gradient(45deg, #ff3300, #ff6600);
+    box-shadow:
+      0 0 30px #ff6600,
+      inset 0 0 50px #ff9933;
+  }
+  #open-btn span {
+    position: relative;
+    z-index: 1;
+  }
+  @keyframes pulseLight {
+    0% {
+      transform: rotate(0deg);
+      opacity: 0.7;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(360deg);
+      opacity: 0.7;
+    }
+  }
+
+  /* VFX: subtle flicker on background */
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+      opacity: 1;
+    }
+    20%, 22%, 24%, 55% {
+      opacity: 0.85;
+    }
+  }
+  body {
+    animation: flicker 3s infinite;
+  }
+</style>
+</head>
+<body>
+  <div id="container">
+    <img id="header-img" src="1header1a.png" alt="Inventory Header" />
+    <div id="inventory" aria-label="Game inventory grid">
+      <!-- Inventory items with tooltips -->
+      <div class="item" tabindex="0" aria-describedby="tip1">
+        <img src="1icons001.jpg" alt="Item 1" />
+        <div class="tooltip" id="tip1">Health Potion</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip2">
+        <img src="1icons002.jpg" alt="Item 2" />
+        <div class="tooltip" id="tip2">Mana Potion</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip3">
+        <img src="1icons003.jpg" alt="Item 3" />
+        <div class="tooltip" id="tip3">Sword</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip4">
+        <img src="1icons004.jpg" alt="Item 4" />
+        <div class="tooltip" id="tip4">Shield</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip5">
+        <img src="1icons005.jpg" alt="Item 5" />
+        <div class="tooltip" id="tip5">Helmet</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip6">
+        <img src="1icons006.jpg" alt="Item 6" />
+        <div class="tooltip" id="tip6">Boots</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip7">
+        <img src="1icons007.jpg" alt="Item 7" />
+        <div class="tooltip" id="tip7">Bow</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip8">
+        <img src="1icons008.jpg" alt="Item 8" />
+        <div class="tooltip" id="tip8">Arrow</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip9">
+        <img src="1icons009.jpg" alt="Item 9" />
+        <div class="tooltip" id="tip9">Magic Scroll</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip10">
+        <img src="1icons010.jpg" alt="Item 10" />
+        <div class="tooltip" id="tip10">Ring</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip11">
+        <img src="1icons011.jpg" alt="Item 11" />
+        <div class="tooltip" id="tip11">Amulet</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip12">
+        <img src="1icons012.jpg" alt="Item 12" />
+        <div class="tooltip" id="tip12">Key</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip13">
+        <img src="1icons013.jpg" alt="Item 13" />
+        <div class="tooltip" id="tip13">Gemstone</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip14">
+        <img src="1icons014.jpg" alt="Item 14" />
+        <div class="tooltip" id="tip14">Potion Bottle</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip15">
+        <img src="1icons015.jpg" alt="Item 15" />
+        <div class="tooltip" id="tip15">Torch</div>
+      </div>
+      <div class="item" tabindex="0" aria-describedby="tip16">
+        <img src="1icons016.jpg" alt="Item 16" />
+        <div class="tooltip" id="tip16">Map</div>
+      </div>
+    </div>
+    <button id="open-btn" aria-label="Open inventory action button" onclick="alert('Inventory action triggered!')">
+      <span>Use Selected Item</span>
+    </button>
+  </div>
+<script>
+  // Keyboard navigation and selection for inventory items
+  const items = document.querySelectorAll('.item');
+  let selectedIndex = -1;
+
+  function selectItem(index) {
+    if (selectedIndex >= 0) {
+      items[selectedIndex].classList.remove('selected');
+      items[selectedIndex].style.boxShadow = '';
+    }
+    selectedIndex = index;
+    if (selectedIndex >= 0) {
+      items[selectedIndex].classList.add('selected');
+      items[selectedIndex].style.boxShadow = '0 0 30px 4px #ff9933, inset 0 0 40px #ffcc66';
+      items[selectedIndex].focus();
+    }
+  }
+
+  // Initial select first item
+  selectItem(0);
+
+  // Keyboard controls: arrows to navigate, Enter to "use"
+  window.addEventListener('keydown', e => {
+    if (e.target.tagName === 'BUTTON') return; // ignore if focus on button
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectItem((selectedIndex + 1) % items.length);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectItem((selectedIndex - 1 + items.length) % items.length);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (selectedIndex >= 0) {
+        alert(`Used item: ${items[selectedIndex].querySelector('img').alt}`);
+      }
+    }
+  });
+
+  // Click to select item
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => selectItem(i));
+  });
+
+  // Button action uses selected item
+  document.getElementById('open-btn').addEventListener('click', () => {
+    if (selectedIndex >= 0) {
+      alert(`Used item: ${items[selectedIndex].querySelector('img').alt}`);
+    } else {
+      alert('No item selected!');
+    }
+  });
+</script>
+</body>
+</html>

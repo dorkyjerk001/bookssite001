@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Eliza Thornberry - Social Media</title>
+    <style>
+        /* Reset and base */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            color: #1c1e21;
+        }
+        a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+        a:hover, a:focus {
+            text-decoration: underline;
+        }
+
+        /* Container */
+        .container {
+            max-width: 600px;
+            width: 100%;
+            margin: 80px 15px 30px;
+            padding-bottom: 30px;
+        }
+
+        /* Top nav bar */
+        header {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-bottom: 1px solid #dddfe2;
+            box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 100;
+        }
+        header img.avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid #4CAF50;
+            flex-shrink: 0;
+        }
+        header h1 {
+            font-size: 1.4rem;
+            margin: 0;
+            color: #2e7d32;
+            font-weight: 700;
+            user-select: none;
+        }
+
+        /* Card style sections */
+        section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+        section:hover {
+            box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+        }
+
+        /* About section */
+        .about {
+            color: #2e7d32;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .about strong {
+            display: inline-block;
+            width: 90px;
+            font-weight: 600;
+        }
+        .about p {
+            margin: 8px 0;
+        }
+        .about a {
+            word-break: break-word;
+        }
+
+        /* Gallery */
+        .gallery {
+            text-align: center;
+        }
+        .gallery img {
+            max-width: 100%;
+            max-height: 350px;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgb(0 0 0 / 0.12);
+            user-select: none;
+            transition: transform 0.3s ease;
+        }
+        .gallery img:hover,
+        .gallery img:focus {
+            outline: none;
+            transform: scale(1.03);
+            box-shadow: 0 8px 16px rgb(0 0 0 / 0.2);
+        }
+        .gallery-controls {
+            margin-top: 12px;
+        }
+        .gallery-controls button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            margin: 0 10px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            user-select: none;
+        }
+        .gallery-controls button:hover,
+        .gallery-controls button:focus {
+            background-color: #388e3c;
+            box-shadow: 0 4px 12px rgb(0 0 0 / 0.25);
+            outline: none;
+        }
+
+        /* Post */
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .post-header img.post-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            border: 2px solid #4CAF50;
+            flex-shrink: 0;
+        }
+        .post-header strong {
+            font-size: 1.1rem;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+        .post-text {
+            font-size: 1.15rem;
+            margin-bottom: 15px;
+            color: #050505;
+            white-space: pre-line;
+        }
+        audio {
+            width: 100%;
+            outline: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Comments */
+        .comments {
+            border-top: 1px solid #e4e6eb;
+            padding-top: 15px;
+        }
+        .comment {
+            margin-bottom: 14px;
+            padding-left: 12px;
+            border-left: 3px solid #4CAF50;
+            color: #4b4f56;
+            font-size: 0.95rem;
+            line-height: 1.3;
+            user-select: text;
+        }
+        .comment strong {
+            color: #2e7d32;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        .lightbox.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.7);
+            user-select: none;
+        }
+        .lightbox-close {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-size: 2.4rem;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 700;
+            background: rgba(0,0,0,0.4);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        .lightbox-close:hover,
+        .lightbox-close:focus {
+            background: rgba(0,0,0,0.7);
+            outline: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                margin: 80px 10px 20px;
+                padding-bottom: 20px;
+            }
+            header {
+                padding: 10px 15px;
+            }
+            .gallery-controls button {
+                padding: 8px 14px;
+                margin: 0 6px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" role="main" aria-label="Eliza Thornberry social media profile">
+        <header>
+            <img src="1red166_Image04.jpg" alt="Eliza Thornberry Avatar" class="avatar" />
+            <h1>Eliza Thornberry</h1>
+        </header>
+
+        <section class="about" aria-label="About Eliza Thornberry">
+            <p><strong>Bio:</strong> Adventurous wildlife enthusiast traveling the world to protect and learn about animals.</p>
+            <p><strong>Gender:</strong> Female</p>
+            <p><strong>Pronouns:</strong> She / Her</p>
+            <p><strong>Hobbies:</strong> Exploring nature, animal communication, sketching wildlife, and environmental activism.</p>
+            <p><strong>Websites:</strong><br />
+                <a href="https://hduty7krhqkffwnxurxhwrh3ixnoyripieypv3b5xqjuj7btxl5a.arweave.net/OOk8fVE8FFLZt6Rue0T7RdrsRQ9BMPrsPbwTRPwzuvo/" target="_blank" rel="noopener noreferrer" tabindex="0">
+                    https://hduty7krhqkffwnxurxhwrh3ixnoyripieypv3b5xqjuj7btxl5a.arweave.net/OOk8fVE8FFLZt6Rue0T7RdrsRQ9BMPrsPbwTRPwzuvo/
+                </a><br />
+                <a href="https://pe7gczey7g5ntnltabvvte5rdrzpyqav5wyv2a6r4bkpusyhuqca.arweave.net/eT5hZJj5utm1cwBrWZOxHHL8QBXtsV0D0eBU-ksHpAQ/" target="_blank" rel="noopener noreferrer" tabindex="0">
+                    https://pe7gczey7g5ntnltabvvte5rdrzpyqav5wyv2a6r4bkpusyhuqca.arweave.net/eT5hZJj5utm1cwBrWZOxHHL8QBXtsV0D0eBU-ksHpAQ/
+                </a>
+            </p>
+        </section>
+
+        <!-- Photo Gallery -->
+        <section class="gallery" aria-label="Eliza's Photo Gallery">
+            <img id="gallery-image" src="1pho1a/1fkrs_matrix5_Image01.jpg" alt="Gallery image 1" tabindex="0" />
+            <div class="gallery-controls">
+                <button id="prev-btn" aria-label="Previous image">Previous</button>
+                <button id="next-btn" aria-label="Next image">Next</button>
+            </div>
+        </section>
+
+        <section class="post" aria-label="Eliza Thornberry's post">
+            <div class="post-header">
+                <img src="1red166_Image04.jpg" alt="Post Icon" class="post-icon" />
+                <strong>Eliza Thornberry</strong>
+            </div>
+            <div class="post-text">i realy do love animals</div>
+            <audio controls>
+                <source src="1eliza_special1a.mp3" type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+
+            <div class="comments" aria-label="Comments">
+                <div class="comment"><strong>JaneD:</strong> So inspiring! Animals are amazing creatures 🐒🐘</div>
+                <div class="comment"><strong>WildlifeFan99:</strong> Eliza, your passion always shines through!</div>
+                <div class="comment"><strong>NatureLover:</strong> Love this post! Keep sharing your adventures.</div>
+                <div class="comment"><strong>ExplorerTom:</strong> Can't wait for your next wildlife story!</div>
+                <div class="comment"><strong>GreenEarthGal:</strong> Protecting animals is so important, thanks for reminding us.</div>
+                <div class="comment"><strong>AnimalFriend:</strong> Hope to see more videos and pics soon!</div>
+                <div class="comment"><strong>ForestDweller:</strong> Your voice is so calming, great audio post!</div>
+                <div class="comment"><strong>EcoWarrior:</strong> We need more people like you, Eliza!</div>
+                <div class="comment"><strong>TravelBugs:</strong> That audio brought back memories of your adventures.</div>
+                <div class="comment"><strong>HappyCamper:</strong> Keep loving and protecting the wild! ❤️</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Lightbox for fullscreen gallery -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Fullscreen image view">
+        <span class="lightbox-close" id="lightbox-close" role="button" tabindex="0" aria-label="Close fullscreen view">&times;</span>
+        <img id="lightbox-img" src="" alt="Fullscreen gallery image" />
+    </div>
+
+    <script>
+        (function() {
+            const images = [
+                "1pho1a/1fkrs_matrix5_Image01.jpg",
+                "1pho1a/1red166_Image07.jpg",
+                "1pho1a/1piehunt_custom5_Image02.jpg",
+                "1pho1a/1thesefckers_Image02.jpg",
+                "1pho1a/1piehunt_custom5_Image03.jpg",
+                "1pho1a/1thesefckers_Image03.jpg",
+                "1pho1a/1piehunt_custom5_Image05.jpg",
+                "1pho1a/1thesefckers_Image05.jpg",
+                "1pho1a/1red166_Image03.jpg",
+                "1pho1a/1thesefckers_Image07.jpg",
+                "1pho1a/1red166_Image04.jpg"
+            ];
+
+            let currentIndex = 0;
+
+            const galleryImage = document.getElementById('gallery-image');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.getElementById('lightbox-close');
+
+            function updateGalleryImage() {
+                galleryImage.src = images[currentIndex];
+                galleryImage.alt = `Gallery image ${currentIndex + 1}`;
+            }
+
+            function showPrevImage() {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                updateGalleryImage();
+            }
+
+            function showNextImage() {
+                currentIndex = (currentIndex + 1) % images.length;
+                updateGalleryImage();
+            }
+
+            function openLightbox() {
+                lightboxImg.src = images[currentIndex];
+                lightboxImg.alt = `Fullscreen gallery image ${currentIndex + 1}`;
+                lightbox.classList.add('visible');
+                lightboxClose.focus();
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('visible');
+                galleryImage.focus();
+            }
+
+            prevBtn.addEventListener('click', showPrevImage);
+            nextBtn.addEventListener('click', showNextImage);
+            galleryImage.addEventListener('click', openLightbox);
+            galleryImage.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openLightbox();
+                }
+            });
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightboxClose.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    closeLightbox();
+                }
+            });
+
+            document.addEventListener('keydown', e => {
+                if (lightbox.classList.contains('visible')) {
+                    if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        currentIndex = (currentIndex + 1) % images.length;
+                        lightboxImg.src = images[currentIndex];
+                        lightboxImg.alt = `Fullscreen gallery image ${currentIndex + 1}`;
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        currentIndex = (currentIndex - 1 + images.length) % images.length;
+                        lightboxImg.src = images[currentIndex];
+                        lightboxImg.alt = `Fullscreen gallery image ${currentIndex + 1}`;
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closeLightbox();
+                    }
+                } else {
+                    if (document.activeElement === galleryImage) {
+                        if (e.key === 'ArrowRight') {
+                            e.preventDefault();
+                            showNextImage();
+                        } else if (e.key === 'ArrowLeft') {
+                            e.preventDefault();
+                            showPrevImage();
+                        }
+                    }
+                }
+            });
+
+            updateGalleryImage();
+        })();
+    </script>
+</body>
+</html>

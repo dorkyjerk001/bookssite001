@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Glamour Show Gallery</title>
+<style>
+  /* Glamour show themed styling */
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat&display=swap');
+
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #2e003e, #8b008b);
+    color: #f8e1f4;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  header {
+    margin: 20px 0;
+  }
+
+  header img {
+    width: 320px;
+    max-width: 90vw;
+    filter: drop-shadow(0 0 8px #ff00ffcc);
+    border-radius: 12px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 3em;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 12px #ff69b4, 0 0 20px #ff1493;
+    margin: 0.3em 0 1em 0;
+  }
+
+  .gallery {
+    width: 40vw;
+    max-width: 400px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .gallery img {
+    width: 100%;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow:
+      0 0 10px #ff69b4aa,
+      0 0 20px #ff1493bb;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .gallery img:hover {
+    transform: scale(1.05);
+    box-shadow:
+      0 0 20px #ff69b4ff,
+      0 0 40px #ff1493ff;
+  }
+
+  /* Fullscreen preview overlay */
+  #previewOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(46, 0, 62, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+  }
+
+  #previewOverlay.visible {
+    display: flex;
+  }
+
+  #previewImage {
+    max-width: 90vw;
+    max-height: 80vh;
+    border-radius: 20px;
+    box-shadow:
+      0 0 30px #ff69b4ff,
+      0 0 60px #ff1493ff;
+    transition: transform 0.3s ease;
+  }
+
+  .controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 30px;
+  }
+
+  .control-btn {
+    background: #ff1493;
+    border: none;
+    color: white;
+    font-size: 1.5em;
+    padding: 10px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ff69b4;
+    transition: background 0.3s ease;
+    user-select: none;
+  }
+
+  .control-btn:hover {
+    background: #ff69b4;
+  }
+
+  #closeBtn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: transparent;
+    border: none;
+    color: #ff69b4;
+    font-size: 2.5em;
+    cursor: pointer;
+    user-select: none;
+    text-shadow: 0 0 6px #ff1493;
+  }
+
+  #closeBtn:hover {
+    color: #ff1493;
+  }
+
+  @media (max-width: 600px) {
+    .gallery {
+      width: 90vw;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 12px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="1lgo22a.png" alt="Gallery Title" />
+</header>
+
+<div class="gallery" aria-label="Glamour Show Gallery">
+  <img src="times001.jpg" alt="Glamour image 1" tabindex="0" />
+  <img src="times002.jpg" alt="Glamour image 2" tabindex="0" />
+  <img src="times003.jpg" alt="Glamour image 3" tabindex="0" />
+  <img src="times004.jpg" alt="Glamour image 4" tabindex="0" />
+  <img src="times005.jpg" alt="Glamour image 5" tabindex="0" />
+  <img src="times006.jpg" alt="Glamour image 6" tabindex="0" />
+  <img src="times007.jpg" alt="Glamour image 7" tabindex="0" />
+  <img src="times008.jpg" alt="Glamour image 8" tabindex="0" />
+</div>
+
+<div id="previewOverlay" role="dialog" aria-modal="true" aria-label="Image preview">
+  <button id="closeBtn" aria-label="Close preview">&times;</button>
+  <img id="previewImage" src="" alt="Preview" />
+  <div class="controls">
+    <button id="prevBtn" class="control-btn" aria-label="Previous image">&#9664;</button>
+    <button id="nextBtn" class="control-btn" aria-label="Next image">&#9654;</button>
+  </div>
+</div>
+
+<script>
+  // Gallery images array
+  const images = [
+    "times001.jpg",
+    "times002.jpg",
+    "times003.jpg",
+    "times004.jpg",
+    "times005.jpg",
+    "times006.jpg",
+    "times007.jpg",
+    "times008.jpg"
+  ];
+
+  const gallery = document.querySelector('.gallery');
+  const previewOverlay = document.getElementById('previewOverlay');
+  const previewImage = document.getElementById('previewImage');
+  const closeBtn = document.getElementById('closeBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  let currentIndex = 0;
+
+  // Show preview function
+  function showPreview(index) {
+    currentIndex = index;
+    previewImage.src = images[currentIndex];
+    previewImage.alt = `Preview Image ${currentIndex + 1}`;
+    previewOverlay.classList.add('visible');
+    document.body.style.overflow = 'hidden'; // Disable background scroll
+  }
+
+  // Hide preview function
+  function hidePreview() {
+    previewOverlay.classList.remove('visible');
+    previewImage.src = '';
+    document.body.style.overflow = ''; // Enable scroll
+  }
+
+  // Show next image with cycle
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % images.length;
+    previewImage.src = images[currentIndex];
+    previewImage.alt = `Preview Image ${currentIndex + 1}`;
+  }
+
+  // Show previous image with cycle
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    previewImage.src = images[currentIndex];
+    previewImage.alt = `Preview Image ${currentIndex + 1}`;
+  }
+
+  // Event listeners to gallery images
+  gallery.querySelectorAll('img').forEach((img, i) => {
+    img.addEventListener('click', () => showPreview(i));
+    img.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        showPreview(i);
+      }
+    });
+  });
+
+  // Control buttons events
+  closeBtn.addEventListener('click', hidePreview);
+  nextBtn.addEventListener('click', nextImage);
+  prevBtn.addEventListener('click', prevImage);
+
+  // Keyboard navigation for preview
+  window.addEventListener('keydown', e => {
+    if (!previewOverlay.classList.contains('visible')) return;
+
+    if (e.key === 'Escape') {
+      hidePreview();
+    } else if (e.key === 'ArrowRight') {
+      nextImage();
+    } else if (e.key === 'ArrowLeft') {
+      prevImage();
+    }
+  });
+
+  // Clicking outside image closes preview
+  previewOverlay.addEventListener('click', e => {
+    if (e.target === previewOverlay) {
+      hidePreview();
+    }
+  });
+</script>
+
+</body>
+</html>

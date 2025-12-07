@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Image Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .search-container {
+            text-align: center;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .magic-button {
+            padding: 15px 30px;
+            font-size: 24px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .magic-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <h1>Magic Image Search</h1>
+        <button class="magic-button" onclick="performSearch()">Here We Go!</button>
+    </div>
+
+    <script>
+        function performSearch() {
+            const queries = [
+                "bottomless girl cosplay", "bottomless girl movie scene", "got caught bottomless", 
+                "bottomless girl spotted", "bottomless female cosplay", "pantless girl cosplay", 
+                "bottomless girl in a costume", "bottomless girl anime cosplay", 
+                "bottomless girl character cosplay", "bottomless girl in a dress cosplay",
+                "bottomless girl at a convention", "bottomless girl cosplay photoshoot", 
+                "bottomless girl cosplay outfit", "bottomless girl cosplay accessories", 
+                "bottomless girl cosplay makeup", "bottomless girl cosplay wig", 
+                "bottomless girl cosplay pose", "bottomless girl cosplay art", 
+                "bottomless girl cosplay photography", "bottomless girl cosplay event",
+                "bottomless girl in a park cosplay", "bottomless girl at the beach cosplay", 
+                "bottomless girl with friends cosplay", "bottomless girl in a city cosplay", 
+                "bottomless girl in a cafe cosplay", "bottomless girl in a party cosplay", 
+                "bottomless girl with a hat cosplay", "bottomless girl in a summer dress cosplay", 
+                "bottomless girl with sunglasses cosplay", "bottomless girl in a winter coat cosplay",
+                "bottomless girl in a garden cosplay", "bottomless girl at a concert cosplay",
+                "bottomless girl in a movie cosplay", "bottomless girl at a festival cosplay",
+                "bottomless girl in a magazine cosplay", "bottomless girl in a photoshoot cosplay",
+                "bottomless girl with a dog cosplay", "bottomless girl in a car cosplay",
+                "bottomless girl at a pool cosplay", "bottomless girl in a hotel cosplay",
+                "bottomless girl in a classroom cosplay", "bottomless girl at a picnic cosplay",
+                "bottomless girl in a store cosplay", "bottomless girl at a wedding cosplay",
+                "bottomless girl in a library cosplay", "bottomless girl at a gym cosplay",
+                "bottomless girl in a concert hall cosplay", "bottomless girl in a theater cosplay",
+                "bottomless girl at a fair cosplay", "bottomless girl in a field cosplay",
+                "bottomless girl at a carnival cosplay", "bottomless girl in a city square cosplay",
+                "bottomless girl at a market cosplay", "bottomless girl in a museum cosplay",
+                "bottomless girl at a zoo cosplay", "bottomless girl in a botanical garden cosplay",
+                "bottomless girl at a spa cosplay", "bottomless girl in a salon cosplay",
+                "bottomless girl at a bar cosplay", "bottomless girl in a nightclub cosplay",
+                "bottomless girl at a beach party cosplay", "bottomless girl in a hot tub cosplay",
+                "bottomless girl at a barbecue cosplay", "bottomless girl in a hammock cosplay",
+                "bottomless girl at a rooftop cosplay", "bottomless girl in a cabin cosplay",
+                "bottomless girl at a retreat cosplay", "bottomless girl in a resort cosplay",
+                "bottomless girl at a vineyard cosplay", "bottomless girl in a brewery cosplay",
+                "bottomless girl at a distillery cosplay", "bottomless girl in a workshop cosplay",
+                "bottomless girl at a conference cosplay", "bottomless girl in a seminar cosplay",
+                "bottomless girl at a lecture cosplay", "bottomless girl in a classroom cosplay",
+                "bottomless girl at a training session cosplay", "bottomless girl in a meeting cosplay",
+                "bottomless girl at a networking event cosplay", "bottomless girl in a gallery cosplay",
+                "bottomless girl at an art show cosplay", "bottomless girl in a fashion show cosplay",
+                "bottomless girl at a runway cosplay", "bottomless girl in a photo booth cosplay",
+                "bottomless girl at a family gathering cosplay", "bottomless girl in a reunion cosplay",
+                "bottomless girl at a holiday party cosplay", "bottomless girl in a celebration cosplay",
+                "bottomless girl at a birthday party cosplay", "bottomless girl in a toast cosplay",
+                "bottomless girl at a graduation cosplay", "bottomless girl in a ceremony cosplay",
+                "bottomless girl at a charity event cosplay", "bottomless girl in a fundraiser cosplay",
+                "bottomless girl at a gala cosplay", "bottomless girl in a ball cosplay",
+                "bottomless girl at a masquerade cosplay", "bottomless girl in a costume cosplay",
+                "bottomless girl at a themed party cosplay", "bottomless girl in a skit cosplay",
+                "bottomless girl at a play cosplay", "bottomless girl in a musical cosplay",
+                "bottomless girl at a dance cosplay", "bottomless girl in a performance cosplay",
+                "bottomless girl at a talent show cosplay", "bottomless girl in a showcase cosplay",
+                "bottomless girl at a competition cosplay", "bottomless girl in a contest cosplay",
+                "bottomless girl at a game cosplay", "bottomless girl in a match cosplay",
+                "bottomless girl at a tournament cosplay", "bottomless girl in a league cosplay",
+                "bottomless girl at a championship cosplay", "bottomless girl in a playoff cosplay",
+                "bottomless girl at a final cosplay", "bottomless girl in a victory cosplay",
+                "bottomless girl at a celebration cosplay", "bottomless girl in a parade cosplay",
+                "bottomless girl in a cosplay outfit", "bottomless girl in a cosplay costume",
+                "bottomless girl in a cosplay wig", "bottomless girl in a cosplay event",
+                "bottomless girl in a cosplay photoshoot", "bottomless girl in a cosplay art",
+                "bottomless girl in a cosplay character", "bottomless girl in a cosplay pose",
+                "bottomless girl in a cosplay makeup", "bottomless girl in a cosplay style",
+                "bottomless girl in a cosplay theme", "bottomless girl in a cosplay design",
+                "bottomless girl in a cosplay inspiration", "bottomless girl in a cosplay community",
+                "bottomless girl in a cosplay showcase", "bottomless girl in a cosplay gallery",
+                "bottomless girl in a cosplay collection", "bottomless girl in a cosplay series",
+                "bottomless girl in a cosplay tribute", "bottomless girl in a cosplay fan art",
+                "bottomless girl in a cosplay fandom", "bottomless girl in a cosplay group",
+                "bottomless girl in a cosplay team", "bottomless girl in a cosplay collaboration",
+                "bottomless girl in a cosplay project", "bottomless girl in a cosplay initiative",
+                "bottomless girl in a cosplay challenge", "bottomless girl in a cosplay event",
+                "bottomless girl in a cosplay festival", "bottomless girl in a cosplay convention",
+                "bottomless girl in a cosplay meetup", "bottomless girl in a cosplay gathering",
+                "bottomless girl in a cosplay reunion", "bottomless girl in a cosplay celebration",
+                "bottomless girl in a cosplay party", "bottomless girl in a cosplay event",
+                "bottomless girl in a cosplay showcase", "bottomless girl in a cosplay exhibition",
+                "bottomless girl in a cosplay performance", "bottomless girl in a cosplay act",
+                "bottomless girl in a cosplay skit", "bottomless girl in a cosplay play",
+                "bottomless girl in a cosplay musical", "bottomless girl in a cosplay dance",
+                "bottomless girl in a cosplay talent show", "bottomless girl in a cosplay showcase",
+                "bottomless girl in a cosplay competition", "bottomless girl in a cosplay contest",
+                "bottomless girl in a cosplay game", "bottomless girl in a cosplay match",
+                "bottomless girl in a cosplay tournament", "bottomless girl in a cosplay league",
+                "bottomless girl in a cosplay championship", "bottomless girl in a cosplay playoff",
+                "bottomless girl in a cosplay final", "bottomless girl in a cosplay victory",
+                "bottomless girl in a cosplay celebration", "bottomless girl in a cosplay parade"
+            ];
+            const randomQuery = queries[Math.floor(Math.random() * queries.length)];
+            const googleImageSearchUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(randomQuery)}`;
+            window.location.href = googleImageSearchUrl;
+        }
+    </script>
+</body>
+</html>

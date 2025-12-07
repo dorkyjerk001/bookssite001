@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Train Ride</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; height: 100%; overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: black;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .fullscreen-image {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: stretch;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  #station {
+    opacity: 1;
+    z-index: 10;
+  }
+  button {
+    position: absolute;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1em 2em;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: rgba(255,255,255,0.85);
+    color: #222;
+    z-index: 20;
+    user-select: none;
+  }
+  button:focus {
+    outline: 3px solid #0078D7;
+  }
+  #destination-button {
+    display: none;
+    position: absolute;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1em 2em;
+    font-size: 1.5rem;
+    background-color: rgba(255,255,255,0.85);
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    z-index: 20;
+  }
+  #destination-button:focus {
+    outline: 3px solid #0078D7;
+  }
+  #ride {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 15;
+  }
+  #train-interior {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: stretch;
+    z-index: 20;
+    animation: train-shake 2s infinite;
+  }
+  #moving-sky {
+    position: absolute;
+    top: 0; left: 0;
+    width: 200vw;
+    height: 100vh;
+    object-fit: cover;
+    animation: sky-move-shake 2s linear forwards;
+    z-index: 10;
+  }
+  @keyframes sky-move-shake {
+    0%   { transform: translateX(0) translateY(0); }
+    10%  { transform: translateX(-10vw) translateY(1px); }
+    20%  { transform: translateX(-20vw) translateY(-1px); }
+    30%  { transform: translateX(-30vw) translateY(1px); }
+    40%  { transform: translateX(-40vw) translateY(-1px); }
+    50%  { transform: translateX(-50vw) translateY(1px); }
+    60%  { transform: translateX(-60vw) translateY(-1px); }
+    70%  { transform: translateX(-70vw) translateY(1px); }
+    80%  { transform: translateX(-80vw) translateY(-1px); }
+    90%  { transform: translateX(-90vw) translateY(1px); }
+    100% { transform: translateX(-100vw) translateY(0); }
+  }
+  @keyframes train-shake {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(1px, 0.5px); }
+    50% { transform: translate(0, 0); }
+    75% { transform: translate(-1px, -0.5px); }
+    100% { transform: translate(0, 0); }
+  }
+  #ride.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  #destination {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: stretch;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 15;
+    transition: opacity 0.5s ease;
+  }
+  #destination.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 20;
+  }
+  #take-train-button.hidden {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="container">
+
+  <img src="1lumber166_Image02.jpg" alt="Train Station" id="station" class="fullscreen-image" />
+
+  <button id="take-train-button" type="button" aria-label="Take the train">Take the train</button>
+
+  <div id="ride" aria-live="polite" aria-atomic="true" aria-relevant="additions removals">
+    <img src="1tr2001.jpg" alt="Moving sky outside train window" id="moving-sky" />
+    <img src="1tr001.png" alt="Train interior" id="train-interior" />
+  </div>
+
+  <img src="1lumber166_Image09.jpg" alt="Destination Station" id="destination" class="fullscreen-image" />
+
+  <a href="https://blaldzkvtoeewgq34gchtndn5z6ebtyiswrmn4o4w4kwixdu4vlq.ardrive.net/CsCx5VWbiEsaG-GEebRt7nxAzwiVosbx3LcVZFx05Vc/" 
+     target="_blank" rel="noopener noreferrer" id="destination-button" role="button" aria-label="Go to destination link">
+    Go to destination
+  </a>
+
+</div>
+
+<script>
+  const takeTrainBtn = document.getElementById('take-train-button');
+  const stationImg = document.getElementById('station');
+  const rideDiv = document.getElementById('ride');
+  const destinationImg = document.getElementById('destination');
+  const destinationBtn = document.getElementById('destination-button');
+
+  takeTrainBtn.addEventListener('click', () => {
+    stationImg.style.opacity = '0';
+    takeTrainBtn.classList.add('hidden');
+    rideDiv.classList.add('active');
+
+    setTimeout(() => {
+      rideDiv.classList.remove('active');
+      destinationImg.classList.add('active');
+      destinationBtn.style.display = 'block';
+    }, 2000);
+  });
+</script>
+
+</body>
+</html>

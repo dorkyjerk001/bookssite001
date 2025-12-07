@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Fighter Animation</title>
+<style>
+  /* Reset and base */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body, html {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: black;
+    font-family: 'Arial Black', Arial, sans-serif;
+    user-select: none;
+  }
+
+  /* Container for everything */
+  #container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Background animation container */
+  #background {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+  }
+  #background img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.03s linear;
+  }
+  #background img.active {
+    opacity: 1;
+  }
+
+  /* Title styling */
+  #title {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    max-width: 60vw;
+    pointer-events: none;
+  }
+
+  /* Players container */
+  .player {
+    position: absolute;
+    bottom: 50%;
+    width: 20vw;
+    height: 40vh;
+    image-rendering: pixelated;
+    z-index: 5;
+  }
+  #player1 {
+    left: 15%;
+  }
+  #player2 {
+    right: 15%;
+    transform: scaleX(-1); /* Flip player 2 horizontally */
+  }
+  .player img {
+    width: 200%;
+    height: 200%;
+    object-fit: contain;
+    user-select: none;
+  }
+
+  /* Glow pulse animation */
+  @keyframes glowPulse {
+    0%, 100% {
+      filter: drop-shadow(0 0 5px #00ffff);
+      transform: scale(1);
+    }
+    50% {
+      filter: drop-shadow(0 0 20px #00ffff);
+      transform: scale(1.05);
+    }
+  }
+
+  /* Hover effect on player images */
+  .player img:hover {
+    animation: glowPulse 1.5s infinite;
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+</style>
+</head>
+<body>
+<div id="container">
+  <div id="background"></div>
+  <img id="title" src="1ttl1a.png" alt="Fighter Title" />
+  <div id="player1" class="player"></div>
+  <div id="player2" class="player"></div>
+</div>
+
+<script>
+  // Helper to flatten your image lists from the multiline strings you gave
+  function parseImageList(str, ext) {
+    return str.trim().split(/\s+/).map(name => name.trim());
+  }
+
+  // Background images (fast animation)
+  const bgImages = parseImageList(`
+    1bg1/0001.jpg 1bg1/0005.jpg 1bg1/0009.jpg 1bg1/0013.jpg 1bg1/0017.jpg 1bg1/0021.jpg 1bg1/0025.jpg 1bg1/0029.jpg
+    1bg1/0002.jpg 1bg1/0006.jpg 1bg1/0010.jpg 1bg1/0014.jpg 1bg1/0018.jpg 1bg1/0022.jpg 1bg1/0026.jpg 1bg1/0030.jpg
+    1bg1/0003.jpg 1bg1/0007.jpg 1bg1/0011.jpg 1bg1/0015.jpg 1bg1/0019.jpg 1bg1/0023.jpg 1bg1/0027.jpg
+    1bg1/0004.jpg 1bg1/0008.jpg 1bg1/0012.jpg 1bg1/0016.jpg 1bg1/0020.jpg 1bg1/0024.jpg 1bg1/0028.jpg
+  `);
+
+  // Player 1 images (slow animation)
+  const player1Images = parseImageList(`
+    1pl1/0001.png 1pl1/0005.png 1pl1/0009.png 1pl1/0013.png 1pl1/0017.png 1pl1/0021.png 1pl1/0025.png 1pl1/0029.png
+    1pl1/0002.png 1pl1/0006.png 1pl1/0010.png 1pl1/0014.png 1pl1/0018.png 1pl1/0022.png 1pl1/0026.png 1pl1/0030.png
+    1pl1/0003.png 1pl1/0007.png 1pl1/0011.png 1pl1/0015.png 1pl1/0019.png 1pl1/0023.png 1pl1/0027.png
+    1pl1/0004.png 1pl1/0008.png 1pl1/0012.png 1pl1/0016.png 1pl1/0020.png 1pl1/0024.png 1pl1/0028.png
+  `);
+
+  // Player 2 images (slow animation)
+  const player2Images = parseImageList(`
+    1pl2/0001.png 1pl2/0005.png 1pl2/0009.png 1pl2/0013.png 1pl2/0017.png 1pl2/0021.png 1pl2/0025.png 1pl2/0029.png
+    1pl2/0002.png 1pl2/0006.png 1pl2/0010.png 1pl2/0014.png 1pl2/0018.png 1pl2/0022.png 1pl2/0026.png 1pl2/0030.png
+    1pl2/0003.png 1pl2/0007.png 1pl2/0011.png 1pl2/0015.png 1pl2/0019.png 1pl2/0023.png 1pl2/0027.png
+    1pl2/0004.png 1pl2/0008.png 1pl2/0012.png 1pl2/0016.png 1pl2/0020.png 1pl2/0024.png 1pl2/0028.png
+  `);
+
+  // Setup background images in DOM
+  const bgContainer = document.getElementById('background');
+  bgImages.forEach((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    if (i === 0) img.classList.add('active');
+    bgContainer.appendChild(img);
+  });
+
+  let bgIndex = 0;
+  const bgImgs = bgContainer.querySelectorAll('img');
+
+  // Animate background fast (~30fps)
+  setInterval(() => {
+    bgImgs[bgIndex].classList.remove('active');
+    bgIndex = (bgIndex + 1) % bgImgs.length;
+    bgImgs[bgIndex].classList.add('active');
+  }, 33); // ~30 frames per second
+
+  // Player animation function
+  function animatePlayer(containerId, images, interval) {
+    const container = document.getElementById(containerId);
+    let index = 0;
+    const img = document.createElement('img');
+    img.src = images[0];
+    container.appendChild(img);
+
+    setInterval(() => {
+      index = (index + 1) % images.length;
+      img.src = images[index];
+    }, interval);
+  }
+
+  // Animate players slowly (~6fps)
+  animatePlayer('player1', player1Images, 266); // ~6fps (1000/6 ≈ 166ms)
+  animatePlayer('player2', player2Images, 266);
+
+</script>
+</body>
+</html>

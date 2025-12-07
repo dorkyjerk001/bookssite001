@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zootopia Matrix Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --zootopia-blue: #2e9ef2;
+      --zootopia-navy: #004687;
+      --zootopia-gold: #e7c600;
+      --zootopia-orange: #e88d0d;
+      --zootopia-teal: #549c9c;
+      --gallery-bg: #0a0a1a;
+    }
+    body {
+      background: var(--gallery-bg);
+      color: #fff;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
+    /* Matrix Rain Overlay */
+    body::before {
+      content: 'Z O O T O P I A 2 0 2 5';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+      pointer-events: none;
+      font-family: "Consolas", monospace;
+      font-size: 7vw;
+      color: var(--zootopia-blue);
+      opacity: 0.12;
+      letter-spacing: 2vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: matrixRain 6s linear infinite;
+      filter: blur(1.5px) drop-shadow(0 0 24px var(--zootopia-gold));
+      user-select: none;
+    }
+    /* Matrix and Glow Keyframes */
+    @keyframes matrixRain {
+      0%   { transform: translateY(-100%); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    @keyframes zootopiaGlow {
+      0%   { filter: drop-shadow(0 0 8px var(--zootopia-blue)) drop-shadow(0 0 16px var(--zootopia-gold)); color: var(--zootopia-blue);}
+      25%  { filter: drop-shadow(0 0 12px var(--zootopia-orange)) drop-shadow(0 0 24px var(--zootopia-teal)); color: var(--zootopia-orange);}
+      50%  { filter: drop-shadow(0 0 16px var(--zootopia-gold)) drop-shadow(0 0 32px var(--zootopia-blue)); color: var(--zootopia-gold);}
+      75%  { filter: drop-shadow(0 0 12px var(--zootopia-teal)) drop-shadow(0 0 24px var(--zootopia-orange)); color: var(--zootopia-teal);}
+      100% { filter: drop-shadow(0 0 8px var(--zootopia-blue)) drop-shadow(0 0 16px var(--zootopia-gold)); color: var(--zootopia-blue);}
+    }
+    /* Header Image */
+    .header-img {
+      display: block;
+      margin: 2vw auto 2vw auto;
+      width: 80vw;
+      max-width: 1200px;
+      border-radius: 1.5vw;
+      box-shadow: 0 0 32px 8px var(--zootopia-blue), 0 0 64px 16px var(--zootopia-gold);
+      animation: zootopiaGlow 3s linear infinite;
+      z-index: 2;
+      position: relative;
+    }
+    /* Gallery Grid */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2vw;
+      padding: 2vw 4vw;
+      max-width: 1400px;
+      margin: 0 auto;
+      z-index: 2;
+      position: relative;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1vw;
+      box-shadow: 0 0 16px 2px var(--zootopia-teal), 0 0 32px 8px var(--zootopia-orange);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .gallery-item:hover {
+      transform: scale(1.04) rotate(-1deg);
+      box-shadow: 0 0 32px 8px var(--zootopia-gold), 0 0 64px 16px var(--zootopia-blue);
+      z-index: 2;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: brightness(1.08) drop-shadow(0 0 8px var(--zootopia-blue));
+      border-radius: 1vw;
+      transition: filter 0.2s;
+    }
+    .gallery-item:hover img {
+      filter: brightness(1.18) drop-shadow(0 0 16px var(--zootopia-gold));
+    }
+    /* Modal CSS using :target */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10,16,32,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 100;
+    }
+    .modal:target {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-content {
+      background: #181c2a;
+      border-radius: 1vw;
+      box-shadow: 0 0 32px 8px var(--zootopia-blue), 0 0 64px 16px var(--zootopia-gold);
+      padding: 2vw;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: zootopiaGlow 2.5s linear infinite;
+      position: relative;
+    }
+    .modal-content img {
+      max-width: 80vw;
+      max-height: 70vh;
+      border-radius: 1vw;
+      box-shadow: 0 0 24px 4px var(--zootopia-orange);
+    }
+    .modal-close {
+      position: absolute;
+      top: 2vw;
+      right: 3vw;
+      font-size: 2.5rem;
+      color: var(--zootopia-gold);
+      text-decoration: none;
+      font-weight: bold;
+      filter: drop-shadow(0 0 8px var(--zootopia-blue));
+      transition: color 0.2s;
+      z-index: 101;
+    }
+    .modal-close:hover {
+      color: var(--zootopia-orange);
+    }
+    @media (max-width: 900px) {
+      .gallery { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .header-img { width: 98vw; }
+      .gallery { grid-template-columns: 1fr; gap: 4vw; padding: 2vw 2vw; }
+      .modal-content img { max-width: 96vw; max-height: 60vh; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Image -->
+  <img src="img1/1triptext5_Image01.jpg" class="header-img" alt="Zootopia Header">
+
+  <!-- Gallery Grid -->
+  <div class="gallery">
+    <!-- Repeat for each image (replace src as needed) -->
+    <div class="gallery-item"><a href="#modal1"><img src="img1/1tripfamily5_Image01.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal2"><img src="img1/1tripfamily5_Image10.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal3"><img src="img1/1tripfamily5_Image19.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal4"><img src="img1/1tripfamily5_Image02.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal5"><img src="img1/1tripfamily5_Image11.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal6"><img src="img1/1tripfamily5_Image20.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal7"><img src="img1/1tripfamily5_Image03.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal8"><img src="img1/1tripfamily5_Image12.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal9"><img src="img1/1tripfamily5_Image21.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal10"><img src="img1/1tripfamily5_Image04.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal11"><img src="img1/1tripfamily5_Image13.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal12"><img src="img1/1tripfamily5_Image22.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal13"><img src="img1/1tripfamily5_Image05.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal14"><img src="img1/1tripfamily5_Image14.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal15"><img src="img1/1tripfamily5_Image23.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal16"><img src="img1/1tripfamily5_Image06.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal17"><img src="img1/1tripfamily5_Image15.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal18"><img src="img1/1tripfamily5_Image24.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal19"><img src="img1/1tripfamily5_Image07.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal20"><img src="img1/1tripfamily5_Image16.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal21"><img src="img1/1tripfamily5_Image25.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal22"><img src="img1/1tripfamily5_Image08.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal23"><img src="img1/1tripfamily5_Image17.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal24"><img src="img1/1tripfamily5_Image09.jpg" alt=""></a></div>
+    <div class="gallery-item"><a href="#modal25"><img src="img1/1tripfamily5_Image18.jpg" alt=""></a></div>
+  </div>
+
+  <!-- Modals for each image -->
+  <div id="modal1" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image01.jpg" alt=""></div></div>
+  <div id="modal2" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image10.jpg" alt=""></div></div>
+  <div id="modal3" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image19.jpg" alt=""></div></div>
+  <div id="modal4" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image02.jpg" alt=""></div></div>
+  <div id="modal5" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image11.jpg" alt=""></div></div>
+  <div id="modal6" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image20.jpg" alt=""></div></div>
+  <div id="modal7" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image03.jpg" alt=""></div></div>
+  <div id="modal8" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image12.jpg" alt=""></div></div>
+  <div id="modal9" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image21.jpg" alt=""></div></div>
+  <div id="modal10" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image04.jpg" alt=""></div></div>
+  <div id="modal11" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image13.jpg" alt=""></div></div>
+  <div id="modal12" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image22.jpg" alt=""></div></div>
+  <div id="modal13" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image05.jpg" alt=""></div></div>
+  <div id="modal14" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image14.jpg" alt=""></div></div>
+  <div id="modal15" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image23.jpg" alt=""></div></div>
+  <div id="modal16" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image06.jpg" alt=""></div></div>
+  <div id="modal17" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image15.jpg" alt=""></div></div>
+  <div id="modal18" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image24.jpg" alt=""></div></div>
+  <div id="modal19" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image07.jpg" alt=""></div></div>
+  <div id="modal20" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image16.jpg" alt=""></div></div>
+  <div id="modal21" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image25.jpg" alt=""></div></div>
+  <div id="modal22" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image08.jpg" alt=""></div></div>
+  <div id="modal23" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image17.jpg" alt=""></div></div>
+  <div id="modal24" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image09.jpg" alt=""></div></div>
+  <div id="modal25" class="modal"><div class="modal-content"><a href="#" class="modal-close">&times;</a><img src="img1/1tripfamily5_Image18.jpg" alt=""></div></div>
+</body>
+</html>

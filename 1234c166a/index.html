@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Candies and poopies</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #ffecf0 0%, #ffe066 100%);
+      font-family: 'Comic Sans MS', cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      color: #9c2146;
+      padding: 40px 20px 60px;
+      user-select: none;
+      overflow-x: hidden;
+    }
+
+    .title-container {
+      position: relative;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      cursor: pointer;
+      user-select: none;
+      width: 280px;
+      height: 280px;
+    }
+
+    .title {
+      font-size: 3.8em;
+      font-weight: 900;
+      text-align: center;
+      color: #d72631;
+      letter-spacing: 4px;
+      text-shadow:
+        2px 2px 5px #ff9aa2,
+        0 0 10px #ff4d6d;
+      padding-top: 100px;
+      position: relative;
+      z-index: 10;
+      animation: bounce 2.2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+
+    /* Candy swirl ring around title */
+    .candy-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 280px;
+      height: 280px;
+      margin-left: -140px;
+      margin-top: -140px;
+      pointer-events: none;
+      animation: spin 20s linear infinite;
+      z-index: 1;
+    }
+
+    .candy-piece {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: repeating-conic-gradient(
+        from 0deg,
+        #ff4d6d 0deg 20deg,
+        #fff 20deg 40deg
+      );
+      border-radius: 50%;
+      box-shadow: 0 0 6px #d7263144 inset;
+      filter: drop-shadow(0 0 4px #ff4d6daa);
+      transform-origin: center center;
+      cursor: default;
+    }
+
+    /* Place 8 candy pieces evenly */
+    .piece1 { transform: rotate(0deg) translateY(-120px) rotate(-10deg); }
+    .piece2 { transform: rotate(45deg) translateY(-120px) rotate(-10deg); }
+    .piece3 { transform: rotate(90deg) translateY(-120px) rotate(-10deg); }
+    .piece4 { transform: rotate(135deg) translateY(-120px) rotate(-10deg); }
+    .piece5 { transform: rotate(180deg) translateY(-120px) rotate(-10deg); }
+    .piece6 { transform: rotate(225deg) translateY(-120px) rotate(-10deg); }
+    .piece7 { transform: rotate(270deg) translateY(-120px) rotate(-10deg); }
+    .piece8 { transform: rotate(315deg) translateY(-120px) rotate(-10deg); }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    /* Candy swirl icon below title */
+    .candy-icon {
+      margin-bottom: 28px;
+      width: 140px;
+      height: 140px;
+      cursor: pointer;
+      animation: swirl 3s linear infinite;
+      user-select: none;
+      filter: drop-shadow(0 0 4px #d72631aa);
+    }
+    @keyframes swirl {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    /* Text block */
+    .main-text {
+      max-width: 520px;
+      font-size: 1.2em;
+      background: #fff0f3;
+      padding: 24px 30px;
+      border-radius: 22px;
+      box-shadow: 0 7px 18px #d7263144;
+      border: 4px solid #ff4d6d;
+      line-height: 1.6;
+      color: #9c2146;
+      user-select: text;
+      white-space: pre-line;
+      text-align: center;
+      font-weight: 700;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    /* Confetti container */
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      z-index: 9999;
+    }
+
+    @media (max-width: 600px) {
+      .title { font-size: 2.6em; padding-top: 75px; }
+      .candy-icon { width: 100px; height: 100px; }
+      .main-text { font-size: 1em; max-width: 90vw; padding: 18px 20px; }
+      .candy-ring { width: 180px; height: 180px; margin-left: -90px; margin-top: -90px; }
+      .candy-piece { width: 36px; height: 36px; }
+      .piece1, .piece2, .piece3, .piece4, .piece5, .piece6, .piece7, .piece8 {
+        transform-origin: center center;
+        transform: none; /* overridden below */
+      }
+      .piece1 { transform: rotate(0deg) translateY(-80px) rotate(-10deg); }
+      .piece2 { transform: rotate(45deg) translateY(-80px) rotate(-10deg); }
+      .piece3 { transform: rotate(90deg) translateY(-80px) rotate(-10deg); }
+      .piece4 { transform: rotate(135deg) translateY(-80px) rotate(-10deg); }
+      .piece5 { transform: rotate(180deg) translateY(-80px) rotate(-10deg); }
+      .piece6 { transform: rotate(225deg) translateY(-80px) rotate(-10deg); }
+      .piece7 { transform: rotate(270deg) translateY(-80px) rotate(-10deg); }
+      .piece8 { transform: rotate(315deg) translateY(-80px) rotate(-10deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="confetti"></div>
+
+  <div class="title-container" title="Click me for candy magic!">
+    <div class="title">Candies and poopies</div>
+    <div class="candy-ring" aria-hidden="true">
+      <div class="candy-piece piece1"></div>
+      <div class="candy-piece piece2"></div>
+      <div class="candy-piece piece3"></div>
+      <div class="candy-piece piece4"></div>
+      <div class="candy-piece piece5"></div>
+      <div class="candy-piece piece6"></div>
+      <div class="candy-piece piece7"></div>
+      <div class="candy-piece piece8"></div>
+    </div>
+  </div>
+
+  <!-- Candy swirl SVG icon -->
+  <svg class="candy-icon" viewBox="0 0 128 128" aria-label="Candy swirl icon" role="img" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="64" cy="64" r="60" fill="#ff4d6d" />
+    <circle cx="64" cy="64" r="48" fill="#fff0f3" />
+    <path fill="none" stroke="#ff4d6d" stroke-width="10" stroke-linecap="round"
+      d="M64 16
+         A48 48 0 0 1 112 64
+         A48 48 0 0 1 64 112
+         A48 48 0 0 1 16 64
+         A48 48 0 0 1 64 16Z
+         M64 64 L112 64 M64 64 L64 16 M64 64 L64 112 M64 64 L16 64" />
+  </svg>
+
+  <div class="main-text" tabindex="0">
+Candies and Poopies.
+
+No 1 candy and a lot of poopies
+and this people want my furniture?
+How about a barn.
+
+Octacrap 1 - a warning for you.
+  </div>
+
+  <script>
+    // Candy-themed confetti colors
+    const confettiColors = ['#ff4d6d', '#ff91a4', '#fff0f3', '#d72631', '#ff6f91', '#ffb6c1', '#ff3366'];
+    const confettiContainer = document.querySelector('.confetti');
+
+    function createConfettiPiece() {
+      const confetti = document.createElement('div');
+      const size = Math.random() * 14 + 7;
+      confetti.style.width = confetti.style.height = size + 'px';
+      confetti.style.position = 'absolute';
+      confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '25%';
+      confetti.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.top = '-30px';
+      confetti.style.opacity = 0.9;
+      confetti.style.filter = 'drop-shadow(0 0 4px #d72631aa)';
+      confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+      confetti.style.transition = 'top 3.2s linear, transform 2.5s ease-in-out';
+      setTimeout(() => {
+        confetti.style.top = '110vh';
+        confetti.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random()})`;
+      }, 10);
+      setTimeout(() => confetti.remove(), 3500);
+      return confetti;
+    }
+
+    function launchConfettiBurst(count = 30) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          confettiContainer.appendChild(createConfettiPiece());
+        }, i * 28);
+      }
+    }
+
+    // Play a light candy pop sound on click
+    function playPopSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(600, ctx.currentTime);
+        const gainNode = ctx.createGain();
+        gainNode.gain.setValueAtTime(0.15, ctx.currentTime);
+        osc.connect(gainNode).connect(ctx.destination);
+        osc.start();
+        osc.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.15);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+        osc.stop(ctx.currentTime + 0.21);
+        setTimeout(() => ctx.close(), 250);
+      } catch (e) {}
+    }
+
+    // Interactivity: click title or candy icon to trigger confetti + sound
+    const titleContainer = document.querySelector('.title-container');
+    const candyIcon = document.querySelector('.candy-icon');
+
+    function onClickHandler() {
+      launchConfettiBurst(28);
+      playPopSound();
+    }
+
+    titleContainer.addEventListener('click', onClickHandler);
+    candyIcon.addEventListener('click', onClickHandler);
+  </script>
+</body>
+</html>

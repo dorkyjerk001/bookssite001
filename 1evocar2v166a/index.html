@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hybrid AI Cars + Player + DNA Avoidance Learning</title>
+<style>
+body { margin:0; overflow:hidden; background:#888; font-family:monospace; }
+.car { position:absolute; width:64px; height:64px;
+       background-image:url('1cars1a.jpeg'); background-size:256px 128px;
+       image-rendering:pixelated; transform-origin:center center; mix-blend-mode:multiply; }
+.player { border:2px solid cyan; box-sizing:border-box; }
+.health-bar { position:absolute; width:64px; height:6px; background:red; border:1px solid black; }
+.health-inner { width:100%; height:100%; background:limegreen; }
+.particle { position:absolute; width:8px; height:8px; background:yellow; border-radius:50%; pointer-events:none; opacity:1; }
+#debugSidebar { position:fixed; left:0; top:0; width:220px; height:100%; overflow-y:auto;
+                background:rgba(0,0,0,0.65); color:#fff; font-size:11px; padding:5px; z-index:1000; }
+</style>
+</head>
+<body>
+<div id="debugSidebar"></div>
+<script>
+/* ---------------- CONSTANTS ---------------- */
+const MAX_AI_CARS = 15, CAR_SIZE = 64, BASE_ACCEL = 0.15, BASE_MAX_SPEED = 5, DAMAGE_PERCENT = 0.15;
+let width = window.innerWidth, height = window.innerHeight;
+const cars = [], keys = {};
+
+/* ---------------- Q-LEARNING ---------------- */
+class QLearner {
+  constructor(data=null){
+    this.Q = data || {};
+    this.alpha = 0.2; this.gamma = 0.8;
+  }
+  bucket(v){ return Math.floor(v*4); }
+  getState(dist, angleDiff){ return `${this.bucket(dist)}_${this.bucket((angleDiff+Math.PI)/(2*Math.PI))}`; }
+  getQ(s){ if(!this.Q[s]) this.Q[s]=[0,0,0]; return this.Q[s]; }
+  choose(s){ let Q=this.getQ(s); let m=Math.max(...Q); return Q.indexOf(m); }
+  update(s,a,r,s2){
+    const Q=this.getQ(s); const Q2=this.getQ(s2);
+    Q[a]+=this.alpha*(r + this.gamma*Math.max(...Q2)-Q[a]);
+    localStorage.setItem('aiQ', JSON.stringify(this.Q));
+  }
+}
+
+/* ---------------- NEURAL NET ---------------- */
+class NeuralNet {
+  constructor(inputs=5, hidden=4, outputs=2, weights=null){
+    this.inputs=inputs; this.hidden=hidden; this.outputs=outputs;
+    if(weights){ this.weightsIH=weights.weightsIH.map(r=>r.slice()); this.weightsHO=weights.weightsHO.map(r=>r.slice()); }
+    else{
+      this.weightsIH=Array.from({length:hidden}, ()=>Array.from({length:inputs}, ()=>Math.random()*2-1));
+      this.weightsHO=Array.from({length:outputs}, ()=>Array.from({length:hidden}, ()=>Math.random()*2-1));
+    }
+  }
+  static tanh(x){ return Math.tanh(x); }
+  static sigmoid(x){ return 1/(1+Math.exp(-x)); }
+  feedforward(inputArr){
+    const hidden=this.weightsIH.map(r=>NeuralNet.tanh(r.reduce((s,w,i)=>s+w*inputArr[i],0)));
+    return this.weightsHO.map(r=>NeuralNet.sigmoid(r.reduce((s,w,i)=>s+w*hidden[i],0)));
+  }
+  mutate(rate=0.1){
+    for(let i=0;i<this.weightsIH.length;i++) for(let j=0;j<this.weightsIH[i].length;j++) if(Math.random()<rate) this.weightsIH[i][j]+=Math.random()*0.2-0.1;
+    for(let i=0;i<this.weightsHO.length;i++) for(let j=0;j<this.weightsHO[i].length;j++) if(Math.random()<rate) this.weightsHO[i][j]+=Math.random()*0.2-0.1;
+  }
+}
+
+/* ---------------- LOAD AI DATA ---------------- */
+const savedData = localStorage.getItem('aiQ');
+const qData = savedData ? JSON.parse(savedData) : null;
+
+/* ---------------- CREATE AI CAR ---------------- */
+function createCar(dna=null) {
+  if(cars.length >= MAX_AI_CARS) return null; 
+  const el=document.createElement("div"); el.className="car";
+  el.x=Math.random()*(width-CAR_SIZE); el.y=Math.random()*(height-CAR_SIZE);
+  el.angle=Math.random()*Math.PI*2; el.vx=Math.cos(el.angle)*2; el.vy=Math.sin(el.angle)*2;
+  el.health=1; el.maxSpeed=BASE_MAX_SPEED*(0.7+Math.random()*0.6); el.accel=BASE_ACCEL*(0.7+Math.random()*0.6);
+  el.bounce=0.4+Math.random()*0.3;
+  el.q = new QLearner(qData);
+  el.nn = dna ? new NeuralNet(dna.nn) : new NeuralNet();
+  el.behaviorBias = dna ? dna.behaviorBias : Math.random()*0.5+0.25;
+  el.qBias = dna ? dna.qBias : Math.random()*0.5+0.25;
+  el.nnBias = dna ? dna.nnBias : Math.random()*0.5+0.25;
+  if(dna) el.nn.mutate(0.15);
+  const tile=Math.floor(Math.random()*8);
+  el.style.backgroundPosition=`-${(tile%4)*64}px -${Math.floor(tile/4)*64}px`;
+  document.body.appendChild(el);
+  const bar=document.createElement("div"); bar.className="health-bar";
+  const inner=document.createElement("div"); inner.className="health-inner"; bar.appendChild(inner);
+  document.body.appendChild(bar);
+  el.healthBarEl=bar; el.healthBar=inner;
+  cars.push(el);
+  return el;
+}
+
+/* ---------------- PLAYER CAR ---------------- */
+const player=document.createElement("div");
+player.className="car player"; player.x=width/2; player.y=height/2; player.angle=0; player.vx=0; player.vy=0;
+player.health=1; player.maxSpeed=7; player.accel=0.2;
+document.body.appendChild(player);
+const pBar=document.createElement("div"); pBar.className="health-bar";
+const pInner=document.createElement("div"); pInner.className="health-inner"; pBar.appendChild(pInner);
+document.body.appendChild(pBar); player.healthBarEl=pBar; player.healthBar=pInner;
+
+/* ---------------- EVENT LISTENERS ---------------- */
+window.addEventListener("keydown", e=>keys[e.code]=true);
+window.addEventListener("keyup", e=>keys[e.code]=false);
+
+/* ---------------- UTILS ---------------- */
+function dist(a,b){ return Math.hypot(a.x-b.x,a.y-b.y); }
+function speed(c){ return Math.hypot(c.vx,c.vy); }
+function explode(car){ for(let i=0;i<3+Math.random()*5;i++){ const p=document.createElement("div"); p.className="particle"; let px=car.x+32, py=car.y+32; p.style.left=px+"px"; p.style.top=py+"px"; document.body.appendChild(p);
+  const a=Math.random()*Math.PI*2, spd=2+Math.random()*3; (function anim(){ px+=Math.cos(a)*spd; py+=Math.sin(a)*spd; p.style.left=px+"px"; p.style.top=py+"px"; p.style.opacity-=0.02;
+  if(p.style.opacity<=0) p.remove(); else requestAnimationFrame(anim);})(); }}
+
+function destroyCar(c){
+  if(c===player) return;
+  explode(c); const i=cars.indexOf(c); if(i!==-1) cars.splice(i,1); c.remove(); c.healthBarEl.remove();
+  if(cars.length>0) {
+    const survivor = cars[Math.floor(Math.random()*cars.length)];
+    createCar({nn: survivor.nn, behaviorBias: survivor.behaviorBias, qBias: survivor.qBias, nnBias: survivor.nnBias});
+  }
+}
+
+/* ---------------- AI BEHAVIOR ---------------- */
+function aiAct(car,target){
+  if(!target) return {steer:0, throttle:1};
+  const dx=(target.x+32)-(car.x+32), dy=(target.y+32)-(car.y+32);
+  const angleToTarget=Math.atan2(dy,dx); const d=dist(car,target);
+
+  let steer_script = Math.abs(angleToTarget-car.angle)<0.1?0:(angleToTarget>car.angle?0.3:-0.3);
+
+  const state=car.q.getState(d/width, angleToTarget-car.angle); 
+  const qAction=car.q.choose(state); 
+  let steer_q = (qAction===0?-0.2:qAction===1?0.2:0);
+
+  const nnOut=car.nn.feedforward([d/width, dx/width, dy/height, speed(car)/car.maxSpeed, car.health]);
+  let steer_nn = nnOut[0]*0.4-0.2;
+
+  let steer = steer_script*car.behaviorBias + steer_q*car.qBias + steer_nn*car.nnBias;
+  let throttle = nnOut[1]*0.8 + 0.2;
+
+  return {steer, throttle, state, angleToTarget, d};
+}
+
+/* ---------------- UPDATE LOOP ---------------- */
+function updateCars(){
+  const debug=document.getElementById("debugSidebar"); debug.innerHTML="";
+  const allCars=[...cars, player];
+
+  for(const car of allCars){
+    let desiredAngle=car.angle, throttle=1;
+    if(car===player){
+      if(keys["ArrowUp"]){ car.vx += Math.cos(car.angle)*car.accel; car.vy += Math.sin(car.angle)*car.accel; }
+      if(keys["ArrowDown"]){ car.vx -= Math.cos(car.angle)*car.accel; car.vy -= Math.sin(car.angle)*car.accel; }
+      if(keys["ArrowLeft"]){ car.angle -= 0.07; }
+      if(keys["ArrowRight"]){ car.angle += 0.07; }
+      if(keys["Space"]){ car.vx*=0.9; car.vy*=0.9; }
+      car.health=1;
+    } else {
+      const aiRes=aiAct(car,player);
+      desiredAngle+=aiRes.steer; throttle=aiRes.throttle;
+      if(speed(car)<car.maxSpeed*throttle){ car.vx+=Math.cos(car.angle)*car.accel*throttle; car.vy+=Math.sin(car.angle)*car.accel*throttle; }
+    }
+
+    if(car!==player){ let delta=((desiredAngle-car.angle+Math.PI)%(2*Math.PI))-Math.PI; car.angle+=delta*0.05; }
+    car.x+=car.vx; car.y+=car.vy;
+
+    if(car.x<0){car.x=0; car.vx*=-0.4;} if(car.x>width-CAR_SIZE){car.x=width-CAR_SIZE; car.vx*=-0.4;}
+    if(car.y<0){car.y=0; car.vy*=-0.4;} if(car.y>height-CAR_SIZE){car.y=height-CAR_SIZE; car.vy*=-0.4;}
+
+    for(const other of allCars){ if(other===car) continue;
+      const overlapX=Math.abs(car.x-other.x)<CAR_SIZE;
+      const overlapY=Math.abs(car.y-other.y)<CAR_SIZE;
+      if(overlapX && overlapY){
+        const tmpX=car.vx, tmpY=car.vy; car.vx=other.vx*0.8; car.vy=other.vy*0.8; other.vx=tmpX*0.8; other.vy=tmpY*0.8;
+
+        // Penalize collisions
+        if(car!==player){
+          const reward = (other===player)?-0.5:-0.3; // Negative reward for collision
+          const nextState = car.q.getState(dist(car,other)/width, Math.atan2(other.y-car.y,other.x-car.x)-car.angle);
+          car.q.update(car.q.getState(dist(car,other)/width, Math.atan2(other.y-car.y,other.x-car.x)-car.angle), 
+                       car.q.choose(car.q.getState(dist(car,other)/width, Math.atan2(other.y-car.y,other.x-car.x)-car.angle)), reward, nextState);
+        }
+
+        if(car!==player){ car.health-=DAMAGE_PERCENT*(speed(car)/BASE_MAX_SPEED); if(car.health<=0) destroyCar(car); }
+      }
+    }
+
+    // Reward for surviving
+    if(car!==player) {
+      const s = car.q.getState(dist(car,player)/width, Math.atan2(player.y-car.y,player.x-car.x)-car.angle);
+      const q = car.q.getQ(s); q[1]+=0.01; // small survival reward
+    }
+
+    car.style.left=car.x+"px"; car.style.top=car.y+"px";
+    car.style.transform=`rotate(${car.angle-Math.PI/2}rad)`;
+    car.healthBarEl.style.left=car.x+"px"; car.healthBarEl.style.top=(car.y-8)+"px";
+    car.healthBar.style.width=(car.health*100)+"%";
+    debug.innerHTML+=`Car ${allCars.indexOf(car)+1} | Health: ${car.health.toFixed(2)} | Speed: ${speed(car).toFixed(2)} | ${car===player?"Player":"AI"}<br>`;
+  }
+
+  requestAnimationFrame(updateCars);
+}
+
+/* ---------------- INITIAL AI CAR CREATION ---------------- */
+for(let i=0;i<MAX_AI_CARS;i++) createCar();
+updateCars();
+</script>
+</body>
+</html>

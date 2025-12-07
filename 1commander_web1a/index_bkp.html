@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Red Commander & The Friends of Steel</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+  /* Root & background */
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at center, #1a0000 0%, #000000 80%);
+    color: #e63946;
+    font-family: 'Russo One', sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    user-select: none;
+  }
+
+  /* Container for images and text */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  /* Image Container */
+  .images {
+    flex: 1 1 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    filter: drop-shadow(0 0 5px #e63946);
+  }
+  .images img {
+    width: 70%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 3px solid #e63946;
+    image-rendering: pixelated;
+    animation: flicker 1.5s infinite alternate;
+    background: #330000;
+  }
+
+  @keyframes flicker {
+    0%, 100% { filter: drop-shadow(0 0 6px #e63946) blur(0.5px); }
+    50% { filter: drop-shadow(0 0 12px #ff0000) blur(1.5px); }
+  }
+
+  /* Text container */
+  .story {
+    flex: 1 1 50%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 20px;
+    background: rgba(22, 0, 0, 0.75);
+    border: 2px solid #e63946;
+    box-shadow: 0 0 20px #e63946;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    position: relative;
+  }
+
+  /* Pixel glitch effect on text */
+  .story::before, .story::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 2px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    color: #ff3b3b;
+    clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
+    animation: glitch 2s infinite linear alternate-reverse;
+  }
+  .story::after {
+    left: -2px;
+    color: #e63946;
+    clip-path: polygon(0 50%, 100% 50%, 100% 53%, 0 53%);
+    animation-delay: 1s;
+  }
+
+  @keyframes glitch {
+    0% {
+      transform: translate(0);
+      opacity: 1;
+    }
+    20% {
+      transform: translate(-3px, 2px);
+      opacity: 0.8;
+    }
+    40% {
+      transform: translate(3px, -2px);
+      opacity: 1;
+    }
+    60% {
+      transform: translate(-3px, 2px);
+      opacity: 0.8;
+    }
+    80% {
+      transform: translate(3px, -2px);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(0);
+      opacity: 1;
+    }
+  }
+
+  /* Scrollbar styling */
+  .story::-webkit-scrollbar {
+    width: 8px;
+  }
+  .story::-webkit-scrollbar-track {
+    background: #330000;
+  }
+  .story::-webkit-scrollbar-thumb {
+    background: #e63946;
+    border-radius: 4px;
+  }
+
+  /* Pixel rain effect - small red blocks falling */
+  .pixel-rain {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: visible;
+    z-index: 1;
+  }
+  .pixel {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #ff0033;
+    opacity: 0.7;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  @keyframes fall {
+    0% {
+      transform: translateY(-10px);
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateY(110vh);
+      opacity: 0;
+    }
+  }
+
+  /* Pixel distortion on images on hover */
+  .images img:hover {
+    filter: drop-shadow(0 0 15px #ff0000) contrast(1.3) saturate(1.5);
+    animation: glitch-img 0.3s infinite alternate;
+  }
+  @keyframes glitch-img {
+    0% { clip-path: inset(0 0 0 0); transform: translate(0,0); }
+    25% { clip-path: inset(5% 0 10% 0); transform: translate(-2px, 1px); }
+    50% { clip-path: inset(10% 0 5% 0); transform: translate(2px, -1px); }
+    75% { clip-path: inset(5% 0 10% 0); transform: translate(-2px, 1px); }
+    100% { clip-path: inset(0 0 0 0); transform: translate(0,0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .container {
+      flex-direction: column;
+      gap: 30px;
+    }
+    .images, .story {
+      flex: 1 1 100%;
+      max-height: none;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container" role="main">
+    <section class="images" aria-label="Red Commander images">
+      <img src="img1/1red166_Image01.jpg" alt="Red Commander in Soviet Siege Officer Uniform, skull face, two handguns" />
+      <img src="img1/1red166_Image02.jpg" alt="Red Commander performing Kozak Hopak dance in cyberpunk Soviet Russia" />
+    </section>
+    <article class="story" data-text="Short Fiction: Red Commander and the Friends of Steel
+In the neon-lit ruins of a cyberpunk Soviet Russia, where World War II stretched beyond history into a relentless dystopian nightmare, a legend was born—Red Commander. Once a siege officer, he was no ordinary soldier. His face was a skull, a haunting symbol of death and resilience, glowing faintly beneath the visor of his worn Soviet uniform. Two handguns were his signature, but his true power came from a secret buried deep within the factories of the Ural wastelands.It all began in the shadow of a massive, rusting industrial complex known as the Iron Crucible. There, the greatest craftsmen worked tirelessly, forging not just weapons, but experimental cybernetic enhancements. Red Commander, then just a soldier named Alexei, was gravely wounded during a siege. Left for dead, he was taken in by these craftsmen who melded ancient Soviet engineering with cutting-edge cybernetics.Through their arcane tech, Alexei’s body was reborn. His skull-like visage was a fusion of bone and steel, powered by a reactor embedded in his chest. His reflexes sharpened beyond human limits, and his guns hummed with energy. But he was not alone.The craftsmen themselves were transformed, becoming his allies—The Friends of Steel. Each bore unique powers: Ivan, the blacksmith with arms of molten iron; Nadia, the engineer who could manipulate machines with a thought; and Yuri, the demolitions expert whose punches shattered concrete like glass. Together, they fought not just for survival, but to reclaim their homeland from the corporate warlords and cybernetic monstrosities that ravaged it.Known across the neon wasteland, Red Commander and the Friends of Steel danced through battlefields with the grace of Kozak hopak, their movements a blur of deadly precision and unbreakable camaraderie. They were more than soldiers—they were the last spark of Soviet resistance, a fusion of past and future, flesh and steel.In a world where hope was scarce, their legend burned bright—a promise that even in the darkest cyberpunk nights, heroes could rise from the ashes.">
+      <h1>Short Fiction: Red Commander and the Friends of Steel</h1>
+      <p>In the neon-lit ruins of a cyberpunk Soviet Russia, where World War II stretched beyond history into a relentless dystopian nightmare, a legend was born—Red Commander. Once a siege officer, he was no ordinary soldier. His face was a skull, a haunting symbol of death and resilience, glowing faintly beneath the visor of his worn Soviet uniform. Two handguns were his signature, but his true power came from a secret buried deep within the factories of the Ural wastelands.</p>
+      <p>It all began in the shadow of a massive, rusting industrial complex known as the Iron Crucible. There, the greatest craftsmen worked tirelessly, forging not just weapons, but experimental cybernetic enhancements. Red Commander, then just a soldier named Alexei, was gravely wounded during a siege. Left for dead, he was taken in by these craftsmen who melded ancient Soviet engineering with cutting-edge cybernetics.</p>
+      <p>Through their arcane tech, Alexei’s body was reborn. His skull-like visage was a fusion of bone and steel, powered by a reactor embedded in his chest. His reflexes sharpened beyond human limits, and his guns hummed with energy. But he was not alone.</p>
+      <p>The craftsmen themselves were transformed, becoming his allies—The Friends of Steel. Each bore unique powers: Ivan, the blacksmith with arms of molten iron; Nadia, the engineer who could manipulate machines with a thought; and Yuri, the demolitions expert whose punches shattered concrete like glass. Together, they fought not just for survival, but to reclaim their homeland from the corporate warlords and cybernetic monstrosities that ravaged it.</p>
+      <p>Known across the neon wasteland, Red Commander and the Friends of Steel danced through battlefields with the grace of Kozak hopak, their movements a blur of deadly precision and unbreakable camaraderie. They were more than soldiers—they were the last spark of Soviet resistance, a fusion of past and future, flesh and steel.</p>
+      <p>In a world where hope was scarce, their legend burned bright—a promise that even in the darkest cyberpunk nights, heroes could rise from the ashes.</p>
+    </article>
+  </div>
+
+  <div class="pixel-rain" aria-hidden="true"></div>
+
+<script>
+  // Create pixel rain effect: small red squares falling randomly
+  const pixelRain = document.querySelector('.pixel-rain');
+  const pixelCount = 80;
+
+  function createPixel() {
+    const pixel = document.createElement('div');
+    pixel.classList.add('pixel');
+    pixel.style.left = Math.random() * 100 + 'vw';
+    pixel.style.top = '-5px';
+    pixel.style.animationDuration = (3 + Math.random() * 3) + 's';
+    pixel.style.opacity = 0.7 + Math.random() * 0.3;
+    pixel.style.width = pixel.style.height = (2 + Math.random() * 3) + 'px';
+    pixelRain.appendChild(pixel);
+
+    setTimeout(() => {
+      pixel.remove();
+    }, 6000);
+  }
+
+  // Generate pixels continuously
+  setInterval(createPixel, 70);
+</script>
+</body>
+</html>

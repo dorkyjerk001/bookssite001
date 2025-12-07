@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows-like PC Experience</title>
+    <link rel="stylesheet" href="style1.css"> <!-- Link to the external CSS file -->
+</head>
+<body>
+
+    <div class="desktop">
+        <div class="icon folder" onclick="openPopup('myComputerPopup')"><div class="folder">My Computer</div></div>
+        <div class="icon folder" onclick="openPopup('myPicsPopup')"><div class="folder">My Beloved Pics</div></div>
+        <a href="#" class="start-button" onclick="openStartMenu()">Start</a>
+    </div>
+
+    <div id="startMenu" class="start-menu">
+        <h2>Applications</h2>
+        <div class="file" onclick="openPopup('gamesPopup')">Games</div>
+        <div class="file" onclick="openPopup('appsPopup')">Applications</div>
+        <div class="file" onclick="openPopup('docsPopup')">Documents</div>
+        <div class="file" onclick="openPopup('settingsPopup')">Settings</div>
+        <div class="file" onclick="openPopup('musicPopup')">Music</div>
+        <div class="file" onclick="openPopup('videosPopup')">Videos</div>
+        <div class="file" onclick="openPopup('browserPopup')">Browser</div>
+        <div class="file" onclick="openPopup('emailPopup')">Email</div>
+        <div class="file" onclick="closeStartMenu()">Close</div>
+    </div>
+
+    <div id="myComputerPopup" class="popup">
+        <h2>My Computer</h2>
+        <div class="file">Local Disk (C:)</div>
+        <div class="file">Removable Disk (D:)</div>
+        <div class="file">Network Drive (Z:)</div>
+        <div class="close-popup" onclick="closePopup('myComputerPopup')">Close</div>
+    </div>
+
+    <div id="gamesPopup" class="popup">
+        <h2>Games</h2>
+        <div class="file" onclick="alert('Launching Super Fun Game...')">Super Fun Game.exe</div>
+        <div class="file" onclick="alert('Launching Adventure Quest...')">Adventure Quest.exe</div>
+        <div class="file" onclick="alert('Launching Puzzle Master...')">Puzzle Master.exe</div>
+        <div class="file" onclick="alert('Launching Racing Challenge...')">Racing Challenge.exe</div>
+        <div class="close-popup" onclick="closePopup('gamesPopup')">Close</div>
+    </div>
+
+    <div id="appsPopup" class="popup">
+        <h2>Applications</h2>
+        <div class="file" onclick="alert('Opening Photo Editor...')">Photo Editor.exe</div>
+        <div class="file" onclick="alert('Opening Music Player...')">Music Player.exe</div>
+        <div class="file" onclick="alert('Opening Video Editor...')">Video Editor.exe</div>
+        <div class="file" onclick="alert('Opening Web Browser...')">Web Browser.exe</div>
+        <div class="close-popup" onclick="closePopup('appsPopup')">Close</div>
+    </div>
+
+    <div id="docsPopup" class="popup">
+        <h2>Documents</h2>
+        <div class="file">Resume.docx</div>
+        <div class="file">Project Proposal.docx</div>
+        <div class="file">Meeting Notes.docx</div>
+        <div class="file">Budget.xlsx</div>
+        <div class="close-popup" onclick="closePopup('docsPopup')">Close</div>
+    </div>
+
+    <div id="settingsPopup" class="popup">
+        <h2>Settings</h2>
+        <div class="file">Display Settings</div>
+        <div class="file">Sound Settings</div>
+        <div class="file">Network Settings</div>
+        <div class="file">Privacy Settings</div>
+        <div class="close-popup" onclick="closePopup('settingsPopup')">Close</div>
+    </div>
+
+    <div id="myPicsPopup" class="popup">
+        <h2>My Beloved Pics</h2>
+        <div class="file" onclick="openImage('img1/1piehunt5_Image04.jpg')">1piehunt5_Image04.jpg</div>
+        <div class="file" onclick="openImage('img1/1preview_Image03.png')">1preview_Image03.png</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image06.jpg')">1thorntrip5_Image06.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image20.jpg')">1thorntrip5_Image20.jpg</div>
+        <div class="file" onclick="openImage('img1/1piehunt5_Image05.jpg')">1piehunt5_Image05.jpg</div>
+        <div class="file" onclick="openImage('img1/1preview_Image04.png')">1preview_Image04.png</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image07.jpg')">1thorntrip5_Image07.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image21.jpg')">1thorntrip5_Image21.jpg</div>
+        <div class="file" onclick="openImage('img1/1piehunt_custom5_Image01.jpg')">1piehunt_custom5_Image01.jpg</div>
+        <div class="file" onclick="openImage('img1/1thesefckers_Image01.jpg')">1thesefckers_Image01.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image08.jpg')">1thorntrip5_Image08.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image22.jpg')">1thorntrip5_Image22.jpg</div>
+        <div class="file" onclick="openImage('img1/1piehunt_custom5_Image02.jpg')">1piehunt_custom5_Image02.jpg</div>
+        <div class="file" onclick="openImage('img1/1thesefckers_Image02.jpg')">1thesefckers_Image02.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image09.jpg')">1thorntrip5_Image09.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image23.jpg')">1thorntrip5_Image23.jpg</div>
+        <div class="file" onclick="openImage('img1/1piehunt_custom5_Image03.jpg')">1piehunt_custom5_Image03.jpg</div>
+        <div class="file" onclick="openImage('img1/1thesefckers_Image03.jpg')">1thesefckers_Image03.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image10.jpg')">1thorntrip5_Image10.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image24.jpg')">1thorntrip5_Image24.jpg</div>
+        <div class="file" onclick="openImage('img1/1piehunt_custom5_Image04.jpg')">1piehunt_custom5_Image04.jpg</div>
+        <div class="file" onclick="openImage('img1/1thesefckers_Image04.jpg')">1thesefckers_Image04.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image11.jpg')">1thorntrip5_Image11.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image25.jpg')">1thorntrip5_Image25.jpg</div>
+        <div class="file" onclick="openImage('img1/1piehunt_custom5_Image05.jpg')">1piehunt_custom5_Image05.jpg</div>
+        <div class="file" onclick="openImage('img1/1thesefckers_Image05.jpg')">1thesefckers_Image05.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image12.jpg')">1thorntrip5_Image12.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image26.jpg')">1thorntrip5_Image26.jpg</div>
+        <div class="file" onclick="openImage('img1/1piehunt_lgo_custom5_Image01.png')">1piehunt_lgo_custom5_Image01.png</div>
+        <div class="file" onclick="openImage('img1/1thesefckers_Image06.jpg')">1thesefckers_Image06.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image13.jpg')">1thorntrip5_Image13.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image27.jpg')">1thorntrip5_Image27.jpg</div>
+        <div class="file" onclick="openImage('img1/1piehunt_lgo_custom5_Image02.png')">1piehunt_lgo_custom5_Image02.png</div>
+        <div class="file" onclick="openImage('img1/1thesefckers_Image07.jpg')">1thesefckers_Image07.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image14.jpg')">1thorntrip5_Image14.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image28.jpg')">1thorntrip5_Image28.jpg</div>
+        <div class="file" onclick="openImage('img1/1preview_Image01.jpg')">1preview_Image01.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image01.jpg')">1thorntrip5_Image01.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image15.jpg')">1thorntrip5_Image15.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image29.jpg')">1thorntrip5_Image29.jpg</div>
+        <div class="file" onclick="openImage('img1/1preview_Image01.png')">1preview_Image01.png</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image02.jpg')">1thorntrip5_Image02.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image16.jpg')">1thorntrip5_Image16.jpg</div>
+        <div class="file" onclick="openImage('img1/1preview_Image02.jpg')">1preview_Image02.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image03.jpg')">1thorntrip5_Image03.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image17.jpg')">1thorntrip5_Image17.jpg</div>
+        <div class="file" onclick="openImage('img1/1preview_Image02.png')">1preview_Image02.png</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image04.jpg')">1thorntrip5_Image04.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image18.jpg')">1thorntrip5_Image18.jpg</div>
+        <div class="file" onclick="openImage('img1/1preview_Image03.jpg')">1preview_Image03.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image05.jpg')">1thorntrip5_Image05.jpg</div>
+        <div class="file" onclick="openImage('img1/1thorntrip5_Image19.jpg')">1thorntrip5_Image19.jpg</div>
+        <div class="close-popup" onclick="closePopup('myPicsPopup')">Close</div>
+    </div>
+
+    <div id="musicPopup" class="popup">
+        <h2>Music</h2>
+        <div class="file">Chill Vibes.mp3</div>
+        <div class="file">Top Hits.mp3</div>
+        <div class="file">Classical Mix.mp3</div>
+        <div class="file">Workout Playlist.mp3</div>
+        <div class="close-popup" onclick="closePopup('musicPopup')">Close</div>
+    </div>
+
+    <div id="videosPopup" class="popup">
+        <h2>Videos</h2>
+        <div class="file">Travel Vlog.mp4</div>
+        <div class="file">Cooking Show.mp4</div>
+        <div class="file">Documentary.mp4</div>
+        <div class="file">Funny Clips.mp4</div>
+        <div class="close-popup" onclick="closePopup('videosPopup')">Close</div>
+    </div>
+
+    <div id="browserPopup" class="popup">
+        <h2>Browser</h2>
+        <div class="file" onclick="window.open('https://www.google.com/search?q=wild+thornberrys', '_blank')">Open Google Search</div>
+        <div class="close-popup" onclick="closePopup('browserPopup')">Close</div>
+    </div>
+
+    <div id="emailPopup" class="popup">
+        <h2>Email</h2>
+        <div class="file">Outlook.exe</div>
+        <div class="file">Thunderbird.exe</div>
+        <div class="close-popup" onclick="closePopup('emailPopup')">Close</div>
+    </div>
+
+    <script src="glitch1.js"></script> <!-- Link to the external JavaScript file -->
+    <script>
+        function openPopup(popupId) {
+            document.getElementById(popupId).style.display = 'block';
+        }
+
+        function closePopup(popupId) {
+            document.getElementById(popupId).style.display = 'none';
+        }
+
+        function openStartMenu() {
+            document.getElementById('startMenu').style.display = 'block';
+        }
+
+        function closeStartMenu() {
+            document.getElementById('startMenu').style.display = 'none';
+        }
+
+        function openImage(src) {
+            window.open(src, '_blank'); // Open image in a new tab
+        }
+    </script>
+
+</body>
+</html>

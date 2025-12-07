@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cinema Zone</title>
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    background: #111;
+    color: #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  /* Logo covering 60% of viewport height */
+  header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+  }
+  header img {
+    height: 60vh;
+    max-width: 95vw;
+    object-fit: contain;
+    user-select: none;
+  }
+
+  main {
+    width: 90vw;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    margin-bottom: 50px;
+  }
+
+  section.movie {
+    background: #222;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+  }
+
+  /* Movie Logo */
+  .movie-logo {
+    max-width: 300px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px auto;
+    user-select: none;
+  }
+
+  /* Screenshots container with horizontal scroll */
+  .screenshots {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+  }
+  .screenshots::-webkit-scrollbar {
+    height: 8px;
+  }
+  .screenshots::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 4px;
+  }
+  .screenshots::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Each screenshot */
+  .screenshots img {
+    height: 140px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.7);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+  .screenshots img:hover,
+  .screenshots img:focus {
+    transform: scale(1.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+    outline: none;
+  }
+
+  /* Movie title styling */
+  .movie-title {
+    text-align: center;
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: 1.5px;
+    user-select: none;
+  }
+
+  /* Fake 3D effect on movie section on hover */
+  section.movie:hover {
+    animation: subtleTilt 2s infinite alternate ease-in-out;
+  }
+
+  @keyframes subtleTilt {
+    0% { transform: perspective(800px) rotateX(3deg) rotateY(-3deg) scale(1.03); }
+    100% { transform: perspective(800px) rotateX(-3deg) rotateY(3deg) scale(1.03); }
+  }
+
+  /* Fullscreen overlay with zoom and pan */
+  .fullscreen-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    cursor: zoom-out;
+  }
+  .fullscreen-overlay.active {
+    display: flex;
+  }
+  .fullscreen-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 10px;
+    cursor: grab;
+    transition: transform 0.3s ease;
+    user-select: none;
+  }
+  .fullscreen-overlay img:active {
+    cursor: grabbing;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="Cool Text - Cinema Zone 487699337413716.png" alt="Cinema Zone Logo" />
+</header>
+
+<main>
+  <!-- Movie 1 -->
+  <section class="movie" aria-label="Movie Forrest Bump">
+    <img class="movie-logo" src="img1/cooltext487699140763826.png" alt="Forrest Bump Logo" />
+    <h2 class="movie-title">Forrest bump</h2>
+    <div class="screenshots" tabindex="0" aria-label="Screenshots of Forrest bump movie">
+      <img src="img1/1red166_Image01.jpg" alt="Forrest bump screenshot 1" tabindex="0" />
+      <img src="img1/1red166_Image02.jpg" alt="Forrest bump screenshot 2" tabindex="0" />
+      <img src="img1/1red166_Image03.jpg" alt="Forrest bump screenshot 3" tabindex="0" />
+      <img src="img1/1red166_Image04.jpg" alt="Forrest bump screenshot 4" tabindex="0" />
+      <img src="img1/1red166_Image05.jpg" alt="Forrest bump screenshot 5" tabindex="0" />
+      <img src="img1/1red166_Image06.jpg" alt="Forrest bump screenshot 6" tabindex="0" />
+      <img src="img1/1red166_Image07.jpg" alt="Forrest bump screenshot 7" tabindex="0" />
+      <img src="img1/1red166_Image08.jpg" alt="Forrest bump screenshot 8" tabindex="0" />
+    </div>
+  </section>
+
+  <!-- Movie 2 -->
+  <section class="movie" aria-label="Movie Tiny Toons: Project Overkill">
+    <img class="movie-logo" src="img2/cooltext487699283810522.png" alt="Tiny Toons: Project Overkill Logo" />
+    <h2 class="movie-title">Tiny Toons: Project Overkill</h2>
+    <div class="screenshots" tabindex="0" aria-label="Screenshots of Tiny Toons: Project Overkill movie">
+      <img src="img2/1red166_Image01.jpg" alt="Tiny Toons: Project Overkill screenshot 1" tabindex="0" />
+      <img src="img2/1red166_Image02.jpg" alt="Tiny Toons: Project Overkill screenshot 2" tabindex="0" />
+      <img src="img2/1red166_Image03.jpg" alt="Tiny Toons: Project Overkill screenshot 3" tabindex="0" />
+      <img src="img2/1red166_Image04.jpg" alt="Tiny Toons: Project Overkill screenshot 4" tabindex="0" />
+      <img src="img2/1red166_Image05.jpg" alt="Tiny Toons: Project Overkill screenshot 5" tabindex="0" />
+      <img src="img2/1red166_Image06.jpg" alt="Tiny Toons: Project Overkill screenshot 6" tabindex="0" />
+      <img src="img2/1red166_Image07.jpg" alt="Tiny Toons: Project Overkill screenshot 7" tabindex="0" />
+    </div>
+  </section>
+</main>
+
+<!-- Fullscreen overlay container -->
+<div class="fullscreen-overlay" id="fullscreenOverlay" tabindex="0" aria-label="Fullscreen image view, press Escape to close">
+  <img src="" alt="" id="fullscreenImage" />
+</div>
+
+<script>
+  const overlay = document.getElementById('fullscreenOverlay');
+  const fullscreenImage = document.getElementById('fullscreenImage');
+
+  // Variables for pan
+  let isDragging = false;
+  let startX, startY;
+  let currentX = 0, currentY = 0;
+
+  // Zoom scale
+  let scale = 1;
+  const scaleStep = 0.1;
+  const maxScale = 5;
+  const minScale = 1;
+
+  // Open fullscreen on image click
+  document.querySelectorAll('.screenshots img').forEach(img => {
+    img.addEventListener('click', () => {
+      fullscreenImage.src = img.src;
+      fullscreenImage.alt = img.alt;
+      scale = 1;
+      currentX = 0;
+      currentY = 0;
+      fullscreenImage.style.transform = `translate(0px, 0px) scale(${scale})`;
+      overlay.classList.add('active');
+      overlay.focus();
+    });
+  });
+
+  // Close fullscreen on overlay click (outside image)
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) {
+      overlay.classList.remove('active');
+      fullscreenImage.src = '';
+      fullscreenImage.alt = '';
+    }
+  });
+
+  // Close fullscreen on Escape key
+  overlay.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      overlay.classList.remove('active');
+      fullscreenImage.src = '';
+      fullscreenImage.alt = '';
+    }
+  });
+
+  // Zoom with mouse wheel
+  overlay.addEventListener('wheel', e => {
+    e.preventDefault();
+    if (!overlay.classList.contains('active')) return;
+
+    if (e.deltaY < 0) {
+      // Zoom in
+      scale = Math.min(scale + scaleStep, maxScale);
+    } else {
+      // Zoom out
+      scale = Math.max(scale - scaleStep, minScale);
+      // Reset position if zoomed out fully
+      if (scale === minScale) {
+        currentX = 0;
+        currentY = 0;
+      }
+    }
+    fullscreenImage.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale})`;
+  }, { passive: false });
+
+  // Pan image on drag
+  fullscreenImage.addEventListener('mousedown', e => {
+    e.preventDefault();
+    if (scale <= 1) return; // No pan if not zoomed in
+    isDragging = true;
+    startX = e.clientX - currentX;
+    startY = e.clientY - currentY;
+    fullscreenImage.style.cursor = 'grabbing';
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    fullscreenImage.style.cursor = 'grab';
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    currentX = e.clientX - startX;
+    currentY = e.clientY - startY;
+    fullscreenImage.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale})`;
+  });
+
+  // Touch support for pan
+  fullscreenImage.addEventListener('touchstart', e => {
+    if (scale <= 1) return;
+    if (e.touches.length === 1) {
+      isDragging = true;
+      startX = e.touches[0].clientX - currentX;
+      startY = e.touches[0].clientY - currentY;
+    }
+  });
+
+  window.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+
+  window.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    if (e.touches.length !== 1) return;
+    currentX = e.touches[0].clientX - startX;
+    currentY = e.touches[0].clientY - startY;
+    fullscreenImage.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale})`;
+  });
+</script>
+
+</body>
+</html>

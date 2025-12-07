@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wild Thornberrys</title>
+    <style>
+        :root {
+            --jungle-green: #2a5c45;
+            --earth-brown: #6b4e3d;
+            --sunrise-orange: #e67e22;
+            --sky-blue: #3498db;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f0f0e6;
+            background-image: url('img1/1thorntrip5_Image01.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #333;
+        }
+
+        header {
+            background-color: var(--jungle-green);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            max-width: 300px;
+            margin-bottom: 10px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px;
+            background-color: var(--earth-brown);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background-color: var(--sunrise-orange);
+            transform: scale(1.05);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255,255,255,0.85);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .hero-image {
+            width: 100%;
+            border-radius: 10px;
+            border: 5px solid var(--earth-brown);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+
+        .hero-image:hover {
+            transform: scale(1.02);
+        }
+
+        .character-section {
+            margin: 40px 0;
+        }
+
+        .section-title {
+            color: var(--jungle-green);
+            border-bottom: 3px dashed var(--earth-brown);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .character-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 20px rgba(0,0,0,0.3);
+        }
+
+        .character-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--jungle-green);
+        }
+
+        .character-name {
+            padding: 15px;
+            background-color: var(--sunrise-orange);
+            color: white;
+            font-weight: bold;
+        }
+
+        .episode-gallery {
+            margin: 40px 0;
+        }
+
+        .gallery-container {
+            position: relative;
+            overflow: hidden;
+            height: 400px;
+            border-radius: 10px;
+            border: 5px solid var(--earth-brown);
+        }
+
+        .gallery-track {
+            display: grid;
+            grid-auto-flow: column;
+            gap: 15px;
+            padding: 20px;
+            position: absolute;
+            left: 0;
+            transition: left 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .gallery-item {
+            width: 300px;
+            height: 100%;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .gallery-nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .gallery-btn {
+            background-color: var(--jungle-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .gallery-btn:hover {
+            background-color: var(--sunrise-orange);
+            transform: scale(1.05);
+        }
+
+        .interactive-map {
+            margin: 40px 0;
+            height: 400px;
+            background-color: #eee;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid var(--earth-brown);
+        }
+
+        .map-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .map-hotspot {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            border: 3px solid var(--sunrise-orange);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .map-hotspot:hover {
+            transform: scale(1.2);
+            background-color: rgba(255,165,0,0.7);
+        }
+
+        footer {
+            background-color: var(--jungle-green);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .character-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .gallery-item {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .character-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .gallery-item {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="img1/1thorntrip5_Image10.jpg" alt="Wild Thornberrys logo with jungle foliage border" class="logo">
+        <h1>Explore the Wild World of The Thornberrys!</h1>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#characters">Characters</a>
+        <a href="#episodes">Episodes</a>
+        <a href="#adventures">Adventures</a>
+        <a href="#games">Games</a>
+    </nav>
+
+    <div class="main-container">
+        <section class="hero">
+            <img src="img2/1piehunt_custom5_Image05.jpg" alt="Thornberry family standing together in lush jungle with wildlife all around them" class="hero-image">
+        </section>
+
+        <section id="characters" class="character-section">
+            <h2 class="section-title">Meet the Thornberry Family</h2>
+            <div class="character-grid">
+                <div class="character-card" onclick="showCharacterInfo('Eliza')">
+                    <img src="img2/1piehunt_custom5_Image03.jpg" alt="Eliza Thornberry with red hair in safari outfit holding microphone" class="character-image">
+                    <div class="character-name">Eliza Thornberry</div>
+                </div>
+                <div class="character-card" onclick="showCharacterInfo('Nigel')">
+                    <img src="img3/1thesefckers_Image03.jpg" alt="Nigel Thornberry with exaggerated facial features in safari gear" class="character-image">
+                    <div class="character-name">Nigel Thornberry</div>
+                </div>
+                <div class="character-card" onclick="showCharacterInfo('Marianne')">
+                    <img src="img1/1thorntrip5_Image06.jpg" alt="Marianne Thornberry with documentary camera and hat" class="character-image">
+                    <div class="character-name">Marianne Thornberry</div>
+                </div>
+                <div class="character-card" onclick="showCharacterInfo('Debbie')">
+                    <img src="img1/1thorntrip5_Image07.jpg" alt="Debbie Thornberry rolling eyes while on phone" class="character-image">
+                    <div class="character-name">Debbie Thornberry</div>
+                </div>
+                <div class="character-card" onclick="showCharacterInfo('Donnie')">
+                    <img src="img3/1thesefckers_Image05.jpg" alt="Donnie Thornberry grinning wildly with grass skirt" class="character-image">
+                    <div class="character-name">Donnie Thornberry</div>
+                </div>
+                <div class="character-card" onclick="showCharacterInfo('Darwin')">
+                    <img src="img1/1thorntrip5_Image01.jpg" alt="Darwin the chimpanzee in safari vest posing" class="character-image">
+                    <div class="character-name">Darwin</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="episodes" class="episode-gallery">
+            <h2 class="section-title">Episodes Gallery</h2>
+            <div class="gallery-container">
+                <div class="gallery-track" id="galleryTrack">
+                    <div class="gallery-item">
+                        <img src="img3/1thesefckers_Image04.jpg" alt="Thornberry family rides through jungle in their Commvee vehicle" class="gallery-image">
+                        <div class="gallery-caption">The Jungle Movie</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img1/1thorntrip5_Image08.jpg" alt="Eliza and Darwin searching trees for Donnie" class="gallery-image">
+                        <div class="gallery-caption">The Search for Donnie</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img1/1thorntrip5_Image02.jpg" alt="Shelby the Elephant spraying water on Thornberry family" class="gallery-image">
+                        <div class="gallery-caption">The Shelbys Strike Back</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img1/1thorntrip5_Image11.jpg" alt="Donnie sitting atop elephant throne wearing leafy crown" class="gallery-image">
+                        <div class="gallery-caption">King Donnie</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img1/1thorntrip5_Image12.jpg" alt="Darwin wearing Eliza's clothes pretending to be human" class="gallery-image">
+                        <div class="gallery-caption">Monkey See Monkey Don't</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img1/1thorntrip5_Image03.jpg" alt="Eliza befriending tribal chief in jungle clearing" class="gallery-image">
+                        <div class="gallery-caption">The Great Pooba</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img1/1thorntrip5_Image09.jpg" alt="Nigel wearing cowboy hat riding an armadillo" class="gallery-image">
+                        <div class="gallery-caption">Deep in the Heart of Texsas</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="img1/1thorntrip5_Image13.jpg" alt="Thornberrys stranded on tropical island with coconuts" class="gallery-image">
+                        <div class="gallery-caption">Bare Islands</div>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-nav">
+                <button class="gallery-btn" onclick="moveGallery(-1)">Previous</button>
+                <button class="gallery-btn" onclick="moveGallery(1)">Next</button>
+            </div>
+        </section>
+
+        <section id="adventures" class="interactive-map">
+            <h2 class="section-title">Interactive Adventure Map</h2>
+            <img src="img1/1thorntrip5_Image05.jpg" alt="World map showing highlights of Thornberry family adventures" class="map-image">
+            <div class="map-hotspot" style="top: 30%; left: 70%;" title="Amazon Rainforest" href="https://2rywdr4lzhkaivly7iwipdvhyic6czu2235mjxpg6scfm52o3mpq.arweave.net/1HFhx4vJ1ARVePosh46nwgXhZprW-sTd5vSEVndO2x8/"></div>
+            <div class="map-hotspot" style="top: 50%; left: 20%;" title="African Savannah" href="https://2vrkkw4onykevqpte6tqcuiukl3jplktgt5fmhwaqxqum3f2k6fq.arweave.net/1WKlW45uFErB8yenAVEUUvaXrVM0-lYewIXhRmy6V4s/"></div>
+            <div class="map-hotspot" style="top: 70%; left: 40%;" title="Australian Outback" href="https://ub7ypmibzgni5i6cwvb3b3ctvfmfk6ni5i3srzbi2svzsoghkrsa.arweave.net/oH-HsQHJmo6jwrVDsOxTqVhVeajqNyjkKNSrmTjHVGQ/"></div>
+            <div class="map-hotspot" style="top: 25%; left: 50%;" title="Himalayan Mountains" href="https://6y5q3ct7i5bbs7u6yzztnwawtrnag7tlmnrrwxake2bbyqeih4kq.arweave.net/9jsNin9HQhl-nsZzNtgWnFoDfmtjYxtcCiaCHECIPxU/"></div>
+            <div class="map-hotspot" style="top: 60%; left: 85%;" title="Southeast Asian Jungle" href="https://vpyiwl3qrmxzel2cguerz2tv5fb526wyv5l4qzh6zuxzfcgsn62a.arweave.net/q_CLL3CLL5IvQjUJHOp16UPdetivV8hk_s0vkojSb7Q/"></div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2023 The Wild Thornberrys. All rights reserved.</p>
+        <p>Created for true explorers and wildlife lovers!</p>
+    </footer>
+
+    <script>
+        // Character info popup function
+        function showCharacterInfo(character) {
+            let message;
+            switch(character) {
+                case 'Eliza':
+                    message = "Eliza is a 12-year-old girl who can communicate with animals. She keeps this ability secret from everyone except Darwin.";
+                    break;
+                case 'Nigel':
+                    message = "Dr. Nigel Thornberry is Eliza's father and a renowned wildlife documentary filmmaker known for his catchphrase 'Smashing!'";
+                    break;
+                case 'Marianne':
+                    message = "Marianne Thornberry is Eliza's mother and Nigel's wife. She serves as the practical, level-headed counterpart to Nigel's eccentricity.";
+                    break;
+                case 'Debbie':
+                    message = "Debbie is Eliza's 16-year-old sister. She's often annoyed by her family's antics but secretly cares deeply for them.";
+                    break;
+                case 'Donnie':
+                    message = "Donnie is the wild 4-year-old adopted brother of Eliza and Debbie. He was raised by orangutans in Indonesia.";
+                    break;
+                case 'Darwin':
+                    message = "Darwin is Eliza's pet chimpanzee and best friend. Despite not being able to speak, he understands everything Eliza says.";
+                    break;
+                default:
+                    message = "Learn more about the Thornberry family members!";
+            }
+            alert(message);
+        }
+
+        // Gallery functionality
+        let currentPosition = 0;
+        const track = document.getElementById('galleryTrack');
+        const items = document.querySelectorAll('.gallery-item');
+        const itemWidth = items[0].offsetWidth + 15; // Width + gap
+
+        function moveGallery(direction) {
+            const containerWidth = document.querySelector('.gallery-container').offsetWidth;
+            const trackWidth = items.length * itemWidth;
+            const maxVisible = Math.floor(containerWidth / itemWidth);
+            const maxPosition = items.length - maxVisible;
+
+            currentPosition += direction;
+            
+            if (currentPosition < 0) currentPosition = 0;
+            if (currentPosition > maxPosition) currentPosition = maxPosition;
+            
+            track.style.left = `-${currentPosition * itemWidth}px`;
+        }
+
+        // Hotspot interaction
+        const hotspots = document.querySelectorAll('.map-hotspot');
+        hotspots.forEach(hotspot => {
+            hotspot.addEventListener('click', function() {
+                const location = this.getAttribute('href');
+                // alert(`Explore the Thornberrys' adventures in the ${location}! Click OK to see more.`);
+                window.open(`${location}`);
+            });
+        });
+    </script>
+</body>
+</html>
+

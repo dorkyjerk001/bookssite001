@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Riley</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #ff007f, #000);
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: center;
+      padding: 3rem 1rem;
+      user-select: none;
+      cursor: default;
+    }
+    h1 {
+      font-size: 4rem;
+      text-shadow: 2px 2px #000000cc;
+      border-bottom: 4px solid #ff69b4;
+      display: inline-block;
+      margin-bottom: 2rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: 'Impact', sans-serif;
+    }
+    img {
+      width: 40vw;
+      max-width: 40%;
+      border: 5px solid #ff1493;
+      box-shadow: 0 0 20px #ff1493cc;
+      border-radius: 12px;
+      background: #000;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      user-select: none;
+    }
+    img:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <h1>Riley</h1>
+  <br />
+  <img id="punkImg" src="girly001.jpg" alt="Punk Rock Princess Image" title="Click to toggle fullscreen" />
+  
+  <script>
+    const img = document.getElementById('punkImg');
+
+    img.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+  </script>
+</body>
+</html>

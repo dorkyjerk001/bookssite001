@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wanted Dead or Alive</title>
+  <style>
+    /* Old paper tile background pattern */
+    body {
+      margin: 0; padding: 0;
+      height: 100%;
+      background-color: #f3e2b3; /* base parchment color */
+      background-image:
+        /* subtle paper grain */
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15) 2px, transparent 3px),
+        radial-gradient(circle at 80% 80%, rgba(0,0,0,0.05) 1px, transparent 2px),
+        /* faint grid lines for tile effect */
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px, 80px 80px, 80px 80px;
+      background-repeat: repeat;
+      color: #5b3e07;
+      font-family: 'Courier New', Courier, monospace;
+      user-select: none;
+      overflow-x: hidden;
+      text-align: center;
+      padding-top: 20px; /* spacing from top */
+    }
+
+    /* Gallery container */
+    .gallery-container {
+      position: relative;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80vw;
+      max-width: 90vw;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      z-index: 10;
+      background: linear-gradient(135deg, #d9b382cc, #f6e3b4cc);
+      border: 6px solid #8b4513;
+      box-shadow: 0 0 15px #6b3e07 inset;
+      padding: 10px 15px;
+      border-radius: 12px;
+    }
+    .gallery-container img {
+      width: 50%;
+      height: auto;
+      cursor: pointer;
+      border: 4px solid #8b4513;
+      box-shadow: 0 0 10px #6b3e07;
+      transition: transform 0.3s ease;
+      border-radius: 8px;
+      background: #f3e2b3;
+    }
+    .gallery-container img:hover {
+      transform: scale(1.05);
+      border-color: #d9b382;
+      box-shadow: 0 0 20px #d9b382;
+    }
+
+    /* Poster pushed down below gallery */
+    .poster {
+      border: 10px solid #8b4513;
+      margin: 140px auto 40px; /* push down to avoid gallery overlap */
+      width: 600px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f6e3b4, #d9b382);
+      box-shadow: 0 0 15px #6b3e07 inset;
+      position: relative;
+      z-index: 1;
+      /* subtle paper texture overlay */
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15) 2px, transparent 3px),
+        radial-gradient(circle at 80% 80%, rgba(0,0,0,0.05) 1px, transparent 2px);
+      background-size: 40px 40px, 40px 40px;
+      background-repeat: repeat;
+    }
+    h1 {
+      font-size: 48px;
+      margin-bottom: 0;
+      letter-spacing: 10px;
+      text-shadow: 2px 2px 0 #6b3e07;
+      color: #5b3e07;
+    }
+    h2 {
+      margin-top: 5px;
+      font-style: italic;
+      font-size: 20px;
+      letter-spacing: 5px;
+      text-shadow: 1px 1px 0 #6b3e07;
+      color: #5b3e07;
+    }
+    .names {
+      font-size: 24px;
+      margin-top: 30px;
+      line-height: 1.8;
+      letter-spacing: 1.5px;
+      text-shadow: 1px 1px 0 #6b3e07;
+      white-space: pre-wrap;
+      font-weight: bold;
+      color: #5b3e07;
+    }
+    .decoration {
+      font-size: 60px;
+      margin: 15px 0;
+      color: #6b3e07;
+      user-select: none;
+    }
+
+    /* Overlay for zoom/pan */
+    #overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(46, 26, 15, 0.95);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      overflow: hidden;
+      user-select: none;
+    }
+    #overlay.active {
+      display: flex;
+    }
+    #overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      cursor: grab;
+      transition: transform 0.1s ease-out;
+      will-change: transform;
+      user-select: none;
+      border-radius: 8px;
+      box-shadow: 0 0 30px #d9b382;
+      background: #f3e2b3;
+    }
+    #overlay img:active {
+      cursor: grabbing;
+    }
+    /* Controls */
+    .controls {
+      position: fixed;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1100;
+    }
+    .control-btn {
+      background: rgba(139, 69, 19, 0.7);
+      border: 2px solid #d9b382;
+      color: #f3d19c;
+      font-size: 40px;
+      padding: 10px 20px;
+      cursor: pointer;
+      pointer-events: auto;
+      user-select: none;
+      transition: background 0.3s ease;
+      font-family: 'Courier New', monospace;
+      text-shadow: 1px 1px 0 #6b3e07;
+      border-radius: 8px;
+      user-select: none;
+    }
+    .control-btn:hover {
+      background: rgba(217, 179, 130, 0.9);
+      color: #2e1a0f;
+    }
+    /* Close button */
+    #closeBtn {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 36px;
+      background: rgba(139, 69, 19, 0.7);
+      border: 2px solid #d9b382;
+      color: #f3d19c;
+      padding: 5px 15px;
+      cursor: pointer;
+      pointer-events: auto;
+      font-family: 'Courier New', monospace;
+      text-shadow: 1px 1px 0 #6b3e07;
+      transition: background 0.3s ease;
+      z-index: 1101;
+      border-radius: 8px;
+    }
+    #closeBtn:hover {
+      background: rgba(217, 179, 130, 0.9);
+      color: #2e1a0f;
+    }
+
+    @media (max-width: 700px) {
+      .gallery-container {
+        width: 90vw;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .gallery-container img {
+        width: 100%;
+      }
+      .poster {
+        width: 90vw;
+        margin-top: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="gallery-container" aria-label="Bandits image gallery">
+    <img src="1wanted166_Image01.jpg" alt="Wanted bandit image 1" tabindex="0" />
+    <img src="1wanted166_Image02.jpg" alt="Wanted bandit image 2" tabindex="0" />
+  </div>
+
+  <div class="poster" role="main" aria-label="Wanted Dead or Alive Wild West poster">
+    <div class="decoration">🔫🤠🔫</div>
+    <h1>--- WANTED ---</h1>
+    <h2>DEAD OR ALIVE</h2>
+    <div class="names">
+      _lianity_ , fertility, queen Katlyn,<br>
+      Katyas friends, The Kid Blue,<br>
+      Max 3D, Dork, Jerk
+    </div>
+    <div class="decoration">🌵🔥🌵</div>
+  </div>
+
+  <!-- Overlay for zoom/pan -->
+  <div id="overlay" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button id="closeBtn" aria-label="Close image viewer">&times;</button>
+    <img src="" alt="Zoomed bandit" />
+    <div class="controls">
+      <button class="control-btn" id="prevBtn" aria-label="Previous image">&#9664;</button>
+      <button class="control-btn" id="nextBtn" aria-label="Next image">&#9654;</button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const images = [
+        "1wanted166_Image01.jpg",
+        "1wanted166_Image02.jpg"
+      ];
+      let currentIndex = 0;
+
+      const overlay = document.getElementById('overlay');
+      const overlayImg = overlay.querySelector('img');
+      const closeBtn = document.getElementById('closeBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const galleryImgs = document.querySelectorAll('.gallery-container img');
+
+      let scale = 1;
+      let originX = 0;
+      let originY = 0;
+      let startX = 0;
+      let startY = 0;
+      let isDragging = false;
+
+      function resetTransform() {
+        scale = 1;
+        originX = 0;
+        originY = 0;
+        updateTransform();
+      }
+
+      function updateTransform() {
+        overlayImg.style.transform = `translate(${originX}px, ${originY}px) scale(${scale})`;
+      }
+
+      function openOverlay(index) {
+        currentIndex = index;
+        overlayImg.src = images[currentIndex];
+        overlay.classList.add('active');
+        resetTransform();
+        document.body.style.overflow = 'hidden';
+        overlayImg.focus();
+      }
+
+      function closeOverlay() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        overlayImg.src = images[currentIndex];
+        resetTransform();
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        overlayImg.src = images[currentIndex];
+        resetTransform();
+      }
+
+      galleryImgs.forEach((img, i) => {
+        img.addEventListener('click', () => openOverlay(i));
+        img.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openOverlay(i);
+          }
+        });
+      });
+
+      closeBtn.addEventListener('click', closeOverlay);
+      overlay.addEventListener('click', e => {
+        if (e.target === overlay) closeOverlay();
+      });
+
+      nextBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        showNext();
+      });
+      prevBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        showPrev();
+      });
+
+      overlayImg.addEventListener('wheel', e => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        let newScale = scale + delta;
+        newScale = Math.min(Math.max(newScale, 1), 5);
+        if (newScale !== scale) {
+          const rect = overlayImg.getBoundingClientRect();
+          const offsetX = e.clientX - rect.left;
+          const offsetY = e.clientY - rect.top;
+          const dx = (offsetX - originX) / scale;
+          const dy = (offsetY - originY) / scale;
+
+          originX -= dx * (newScale - scale);
+          originY -= dy * (newScale - scale);
+
+          scale = newScale;
+          updateTransform();
+        }
+      }, { passive: false });
+
+      overlayImg.addEventListener('mousedown', e => {
+        e.preventDefault();
+        isDragging = true;
+        startX = e.clientX - originX;
+        startY = e.clientY - originY;
+        overlayImg.style.cursor = 'grabbing';
+      });
+      window.addEventListener('mouseup', () => {
+        isDragging = false;
+        overlayImg.style.cursor = 'grab';
+      });
+      window.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        originX = e.clientX - startX;
+        originY = e.clientY - startY;
+        updateTransform();
+      });
+
+      window.addEventListener('keydown', e => {
+        if (!overlay.classList.contains('active')) return;
+        if (e.key === 'Escape') {
+          closeOverlay();
+        } else if (e.key === 'ArrowRight') {
+          showNext();
+        } else if (e.key === 'ArrowLeft') {
+          showPrev();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

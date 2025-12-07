@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Guy Dude - Action Movie Gallery</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #111;
+    color: #eee;
+    font-family: 'Impact', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    margin: 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #ff3300;
+    text-shadow: 2px 2px 8px #900;
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+    gap: 1rem;
+    width: 90vw;
+    max-width: 1000px;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+  }
+  .gallery img, .gallery video {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border: 3px solid #ff3300;
+    border-radius: 8px;
+    cursor: pointer;
+    background: black;
+  }
+  .gallery video {
+    background: black;
+  }
+</style>
+</head>
+<body>
+<h1>Guy Dude</h1>
+<div class="gallery">
+  <img src="1fre001.jpg" alt="Action Image 1" />
+  <img src="1fre002.jpg" alt="Action Image 2" />
+  <img src="1fre003.jpg" alt="Action Image 3" />
+  <video src="1vid1.mp4" muted playsinline preload="metadata"></video>
+  <video src="1vid2.mp4" muted playsinline preload="metadata"></video>
+  <video src="1vid3.mp4" muted playsinline preload="metadata"></video>
+</div>
+
+<script>
+  function openMediaInNewTab(tagName, src) {
+    // Create HTML content for new tab
+    const html = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Guy Dude - Media View</title>
+      <style>
+        html, body {
+          margin:0; padding:0; height:100%; background:#111; display:flex; justify-content:center; align-items:center;
+        }
+        img, video {
+          max-width: 100vw;
+          max-height: 100vh;
+          object-fit: contain;
+          background: black;
+        }
+        video {
+          outline: none;
+        }
+      </style>
+      </head>
+      <body>
+        ${
+          tagName === 'IMG'
+          ? `<img src="${src}" alt="Guy Dude Image" />`
+          : `<video src="${src}" controls autoplay style="outline:none;"></video>`
+        }
+      </body>
+      </html>
+    `;
+
+    // Open new tab with blank page
+    const newWindow = window.open();
+    if (!newWindow) {
+      alert('Popup blocked! Please allow popups for this site.');
+      return;
+    }
+    // Write the HTML content into the new tab
+    newWindow.document.write(html);
+    newWindow.document.close();
+  }
+
+  const gallery = document.querySelector('.gallery');
+  gallery.addEventListener('click', e => {
+    const target = e.target;
+    if (target.tagName === 'IMG' || target.tagName === 'VIDEO') {
+      openMediaInNewTab(target.tagName, target.src);
+    }
+  });
+</script>
+</body>
+</html>

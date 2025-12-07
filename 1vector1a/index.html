@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platformer Game with Enhanced Physics</title>
+    <link rel="stylesheet" href="style1.css"> <!-- Link to the external CSS file -->
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background-image: url('res1/1thesefckers_Image04.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+        }
+        canvas { display: block; }
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s; /* Add transition for hover effect */
+        }
+        button:hover {
+            transform: scale(1.1); /* Scale up on hover */
+            background-color: rgba(255, 255, 255, 0.5); /* Change background color on hover */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div class="controls">
+        <div class="direction-buttons">
+            <button id="leftBtn">Left</button>
+            <button id="upBtn">Jump</button>
+            <button id="rightBtn">Right</button>
+        </div>
+        <div class="action-buttons">
+            <button id="action1Btn">Action 1 (Shoot)</button>
+        </div>
+    </div>
+    <script src="levels1.js"></script> <!-- Link to the external JavaScript file -->
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size to fill the window
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Player properties
+        const player = {
+            x: 50,
+            y: canvas.height - 200, // Adjusted for scaling
+            width: 200, // Scaled width
+            height: 200, // Scaled height
+            speed: 5,
+            maxSpeed: 20, // Maximum speed is now 2 times the original
+            acceleration: 0.4, // Faster acceleration
+            velocityX: 0,
+            velocityY: 0,
+            gravity: 0.5,
+            jumping: false,
+            direction: 1, // 1 for right, -1 for left
+            angle: 0 // Current angle for rotation
+        };
+
+        // Load player sprite
+        const playerImage = new Image();
+        playerImage.src = 'res1/1preview_Image02.png'; // Update the path as needed
+
+        // Enemy mob properties
+        const enemyMobs = [];
+        const enemyImage = new Image();
+        enemyImage.src = 'res1/1preview_Image01.png'; // Update the path as needed
+
+        // Key controls
+        const keys = {
+            right: false,
+            left: false,
+            up: false,
+            action1: false // "A" key for Action 1
+        };
+
+        // Event listeners for key presses
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'ArrowRight') keys.right = true;
+            if (e.code === 'ArrowLeft') keys.left = true;
+            if (e.code === 'ArrowUp' && !player.jumping) {
+                player.velocityY = -15; // Jump strength
+                player.jumping = true;
+            }
+            if (e.code === 'ShiftLeft') keys.action1 = true; // Action 1 (shoot)
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.code === 'ArrowRight') keys.right = false;
+            if (e.code === 'ArrowLeft') keys.left = false;
+            if (e.code === 'ShiftLeft') keys.action1 = false; // Stop action 1 on release
+        });
+
+        // Particle system for shooting sparkly particles
+        const particles = [];
+        function createParticle(x, y, angle) {
+            const particle = {
+                x: x,
+                y: y,
+                size: 5, // Fixed size for bullets
+                velocityX: 10 * Math.cos(angle + (Math.random() * 20 - 10) * Math.PI / 180), // Reverse speed of the bullet based on angle with randomization
+                velocityY: 10 * Math.sin(angle + (Math.random() * 20 - 10) * Math.PI / 180), // Reverse vertical component of the bullet with randomization
+                lifetime: 1000, // Lifetime in milliseconds
+                creationTime: Date.now() // Track when the particle was created
+            };
+            particles.push(particle);
+        }
+
+        function updateParticles() {
+            const currentTime = Date.now();
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const particle = particles[i];
+                particle.x += particle.velocityX; // Move particle forward
+                particle.y += particle.velocityY; // Move particle vertically
+
+                // Check if particle has exceeded its lifetime
+                if (currentTime - particle.creationTime > particle.lifetime) {
+                    particles.splice(i, 1); // Remove particle after its lifetime
+                }
+            }
+        }
+
+        function drawParticles() {
+            ctx.fillStyle = 'rgba(255, 105, 180, 0.8)'; // Pink color for sparkly effect
+            for (const particle of particles) {
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Function to create enemy mobs
+        function createEnemyMob() {
+            const enemyMob = {
+                x: Math.random() < 0.5 ? 0 : canvas.width - 200, // Randomly start from left or right
+                y: canvas.height - 200, // Start on the floor
+                width: 200, // Scaled width
+                height: 200, // Scaled height
+                velocityX: 1 + Math.random() * 2, // Random walking speed
+                velocityY: 0, // Initial vertical velocity
+                jumpTimer: Math.random() * 4000 + 1000 // Random jump timer between 1 to 5 seconds
+            };
+            enemyMobs.push(enemyMob);
+        }
+
+        function updateEnemyMobs() {
+            for (let i = enemyMobs.length - 1; i >= 0; i--) {
+                const mob = enemyMobs[i];
+                mob.x += mob.velocityX * (mob.x < player.x ? 1 : -1); // Move towards the player
+
+                // Randomly make the enemy jump
+                mob.jumpTimer -= 16; // Approximate time step
+                if (mob.jumpTimer <= 0) {
+                    mob.velocityY = -10; // Jump strength
+                    mob.jumpTimer = Math.random() * 4000 + 1000; // Reset jump timer
+                }
+
+                // Apply gravity to the enemy mob
+                mob.velocityY += player.gravity; // Use player's gravity for consistency
+                mob.y += mob.velocityY; // Move mob vertically
+
+                // Collision with the floor (bottom of the screen)
+                if (mob.y + mob.height >= canvas.height) {
+                    mob.y = canvas.height - mob.height; // Reset position to floor level
+                    mob.velocityY = 0; // Stop falling
+                }
+
+                // Check for collision with player
+                if (mob.x < player.x + player.width &&
+                    mob.x + mob.width > player.x &&
+                    mob.y < player.y + player.height &&
+                    mob.y + mob.height > player.y) {
+                    // Bounce player in a random direction with random speed
+                    const randomAngle = Math.random() * Math.PI * 2; // Random angle
+                    const randomSpeed = Math.random() * player.maxSpeed * 3; // Random speed up to 3 times max speed
+                    player.velocityX = randomSpeed * Math.cos(randomAngle);
+                    player.velocityY = randomSpeed * Math.sin(randomAngle);
+                    enemyMobs.splice(i, 1); // Remove the enemy mob on collision
+                }
+
+                // Check for collision with particles
+                for (let j = particles.length - 1; j >= 0; j--) {
+                    const particle = particles[j];
+                    if (particle.x < mob.x + mob.width &&
+                        particle.x + particle.size > mob.x &&
+                        particle.y < mob.y + mob.height &&
+                        particle.y + particle.size > mob.y) {
+                        // Remove enemy mob if it collides with a particle
+                        enemyMobs.splice(i, 1);
+                        particles.splice(j, 1); // Remove the particle
+                        // Create smoke puff effect (optional)
+                        break; // Exit the loop after removing the object
+                    }
+                }
+
+                // Remove enemy mob if it goes off the bottom of the screen
+                if (mob.y > canvas.height) {
+                    enemyMobs.splice(i, 1);
+                }
+            }
+        }
+
+        function drawEnemyMobs() {
+            for (const mob of enemyMobs) {
+                ctx.save();
+                ctx.scale(mob.x < player.x ? -1 : 1, 1); // Mirror horizontally if moving right
+                ctx.drawImage(enemyImage, mob.x * (mob.x < player.x ? -1 : 1), mob.y, mob.width, mob.height);
+                ctx.restore();
+            }
+        }
+
+        // Mouse click event to apply a powerful impulse to mobs
+        canvas.addEventListener('click', (event) => {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            for (const mob of enemyMobs) {
+                if (mouseX > mob.x && mouseX < mob.x + mob.width && 
+                    mouseY > mob.y && mouseY < mob.y + mob.height) {
+                    // Apply a powerful impulse
+                    const impulseX = (Math.random() - 0.5) * 20; // Random horizontal impulse
+                    const impulseY = (Math.random() - 1) * -20; // Strong upward impulse
+                    mob.velocityX += impulseX; // Apply impulse to horizontal velocity
+                    mob.velocityY += impulseY; // Apply impulse to vertical velocity
+                }
+            }
+        });
+
+        // Game loop
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Handle horizontal movement
+            if (keys.right) {
+                player.velocityX += player.acceleration;
+                player.direction = 1; // Facing right
+            }
+            if (keys.left) {
+                player.velocityX -= player.acceleration;
+                player.direction = -1; // Facing left
+            }
+
+            // Apply friction to slow down the player
+            player.velocityX *= 0.9; // Friction factor
+
+            // Limit maximum speed
+            if (Math.abs(player.velocityX) > player.maxSpeed) {
+                player.velocityX = player.maxSpeed * Math.sign(player.velocityX);
+            }
+
+            // Update player position
+            player.x += player.velocityX;
+
+            // Apply gravity
+            player.velocityY += player.gravity;
+            player.y += player.velocityY;
+
+            // Jumping logic
+            if (player.y + player.height >= canvas.height) {
+                player.y = canvas.height - player.height;
+                player.velocityY = 0;
+                player.jumping = false;
+            }
+
+            // Bounce off screen edges for player
+            if (player.x < 0) {
+                player.x = 0; // Prevent going off the left edge
+                player.velocityX *= -1; // Reverse direction
+            }
+            if (player.x + player.width > canvas.width) {
+                player.x = canvas.width - player.width; // Prevent going off the right edge
+                player.velocityX *= -1; // Reverse direction
+            }
+
+            // Calculate angle based on velocity
+            if (player.velocityX !== 0 || player.velocityY !== 0) {
+                player.angle = Math.atan2(player.velocityY, player.velocityX);
+            }
+
+            // Draw player with horizontal mirroring
+            ctx.save();
+            ctx.translate(player.x + player.width / 2, player.y + player.height / 2);
+            ctx.rotate(player.angle); // Rotate based on calculated angle
+            ctx.scale(1, player.direction); // Flip horizontally based on direction
+            ctx.drawImage(playerImage, -player.width / 2, -player.height / 2, player.width, player.height);
+            ctx.restore();
+
+            updateParticles();
+            drawParticles();
+            updateEnemyMobs();
+            drawEnemyMobs();
+
+            // Check for action keys
+            if (keys.action1) {
+                createParticle(player.x + player.width / 2, player.y + player.height / 2, player.angle); // Emit particles in the direction of the player
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start the game loop
+        gameLoop();
+
+        // Create enemy mobs at random intervals between 1 to 5 seconds
+        setInterval(createEnemyMob, Math.random() * 4000 + 1000); // Create a new enemy mob every 1 to 5 seconds
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            player.y = canvas.height - 200; // Adjusted for scaling
+        });
+    </script>
+</body>
+</html>

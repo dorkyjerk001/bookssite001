@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>We love Left 4 Dead</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #111;
+    color: #eee;
+    perspective: 1200px;
+  }
+
+  /* Parallax background - repeated */
+  #parallax-bg {
+    position: fixed;
+    top: 0; left: 0; width: 200%; height: 200%;
+    background: url('1bg166_Image01.jpg') repeat;
+    background-size: auto;
+    transform-style: preserve-3d;
+    will-change: transform;
+    z-index: -10;
+    filter: brightness(0.5);
+  }
+
+  /* Container */
+  #container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    position: relative;
+    z-index: 10;
+    user-select: none;
+  }
+
+  /* Logo */
+  #logo {
+    display: block;
+    margin: 0 auto 1rem;
+    width: 80vw;
+    max-width: 800px;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+    cursor: grab;
+    filter: drop-shadow(0 0 12px #6cf);
+  }
+  #logo:active {
+    cursor: grabbing;
+  }
+
+  /* Horizontal border images */
+  .border-line {
+    width: 100%;
+    height: 40px;
+    background: url('line1a.jpg') repeat-x center center;
+    background-size: contain;
+    margin: 1rem 0;
+    pointer-events: none;
+  }
+
+  /* Gallery container - flex to show both images side by side */
+  #gallery {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0 3rem;
+    user-select: none;
+  }
+  .gallery-item {
+    width: 80vw;
+    max-width: 900px;
+    aspect-ratio: 16 / 9;
+    cursor: pointer;
+    border-radius: 16px;
+    box-shadow:
+      0 0 20px #6cf,
+      0 0 40px #9cf77f44 inset;
+    overflow: hidden;
+    position: relative;
+    background: #222;
+    transition: box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+  }
+  .gallery-item:hover {
+    box-shadow:
+      0 0 30px #9cf,
+      0 0 60px #9cf77fbb inset;
+  }
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* full image visible, no cropping */
+    image-rendering: auto;
+    user-select: none;
+    pointer-events: none;
+    transform-origin: center center;
+    transition: filter 0.3s ease;
+  }
+
+  /* Highlighted story container with red and yellow text */
+  #story {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    background: rgba(0,0,0,0.6);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    box-shadow:
+      0 0 30px #ffcc00aa;
+    color: #ffcc00;
+    user-select: text;
+    filter: drop-shadow(0 0 5px #ff3300cc);
+    transition: transform 0.6s ease;
+  }
+  #story strong.title {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #ff3300;
+    text-shadow:
+      0 0 5px #ff3300,
+      0 0 15px #ffcc00;
+    margin-bottom: 1rem;
+  }
+
+  /* Story text animation */
+  #story.animate {
+    animation: fadeInUp 1.2s ease forwards;
+  }
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+      filter: drop-shadow(0 0 0 #ffcc0000);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      filter: drop-shadow(0 0 5px #ff3300cc);
+    }
+  }
+
+  /* Fullscreen overlay */
+  #fullscreen-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    cursor: grab;
+    overflow: hidden;
+  }
+  #fullscreen-overlay.active {
+    display: flex;
+  }
+  #fullscreen-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
+    transform-origin: center center;
+    transition: filter 0.3s ease;
+    will-change: transform;
+  }
+  #fullscreen-overlay.grabbing {
+    cursor: grabbing;
+  }
+
+  /* Instructions text */
+  #instructions {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffcc00cc;
+    font-size: 0.9rem;
+    font-family: monospace;
+    user-select: none;
+    z-index: 10000;
+    text-shadow: 0 0 5px #ff3300cc;
+  }
+</style>
+</head>
+<body>
+
+<div id="parallax-bg"></div>
+
+<div id="container">
+
+  <img id="logo" src="1lgo_s1a.png" alt="We love Left 4 Dead logo" tabindex="0" />
+
+  <div class="border-line"></div>
+
+  <div id="gallery" aria-label="Left 4 Dead Cool DooM t-shirt images gallery">
+    <div class="gallery-item" tabindex="0" data-index="0"><img src="1lefties166_Image01.jpg" alt="Left 4 Dead image 1" /></div>
+    <div class="gallery-item" tabindex="0" data-index="1"><img src="1lefties166_Image02.jpg" alt="Left 4 Dead image 2" /></div>
+  </div>
+
+  <div class="border-line"></div>
+
+  <div id="story" aria-live="polite" aria-atomic="true" tabindex="0">
+    <strong class="title">What ChatGPT Thinks About Left 4 Dead and Why It's So Good</strong>
+
+    Left 4 Dead stands out as a brilliant example of cooperative gameplay done right. What makes it truly special is its smart AI system, often called the "Director," which dynamically adjusts the game's pacing and difficulty based on how players are performing. This creates a thrilling, unpredictable experience every time you play, keeping the tension high and the teamwork essential.
+    The game’s design encourages players to rely on each other, fostering a strong sense of camaraderie as you fight through hordes of zombies. The blend of fast-paced action, strategic resource management, and varied enemy types keeps gameplay fresh and engaging. Plus, the atmospheric settings and memorable characters add depth and personality, making the experience immersive and emotionally resonant.
+    In essence, Left 4 Dead’s success lies in its perfect balance of challenge, cooperation, and replayability, all powered by intelligent AI that ensures no two playthroughs feel the same. It’s a game that not only tests your skills but also your ability to work as a team — and that’s why it remains beloved by players years after its release.
+  </div>
+
+</div>
+
+<!-- Fullscreen overlay -->
+<div id="fullscreen-overlay" tabindex="0" aria-label="Fullscreen image viewer" role="dialog" aria-modal="true">
+  <img id="fullscreen-img" src="" alt="Fullscreen Left 4 Dead image" />
+</div>
+
+<div id="instructions" aria-hidden="true">
+  Click image to open fullscreen. In fullscreen: drag to pan, scroll to zoom, right-drag to rotate, click background or press ESC to close, arrow keys to cycle.
+</div>
+
+<script>
+(() => {
+  const parallaxBg = document.getElementById('parallax-bg');
+  const logo = document.getElementById('logo');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+  const fullscreenImg = document.getElementById('fullscreen-img');
+
+  let currentIndex = 0;
+  const totalImages = galleryItems.length;
+
+  // Initialize gallery images transform state (small gallery)
+  let transforms = [];
+  for(let i=0; i<totalImages; i++) {
+    transforms[i] = { scale: 1, rotate: 0, posX: 0, posY: 0 };
+  }
+
+  // Show all images visible side by side, highlight current with glow
+  function updateGallery() {
+    galleryItems.forEach((item, i) => {
+      item.style.display = 'block'; // always visible
+      if(i === currentIndex) {
+        item.style.boxShadow =
+          '0 0 40px #9cf, 0 0 80px #9cf77fbb inset';
+      } else {
+        item.style.boxShadow =
+          '0 0 20px #6cf, 0 0 40px #9cf77f44 inset';
+      }
+      applyTransform(i);
+    });
+  }
+
+  // Reset transform for image i
+  function resetTransform(i) {
+    transforms[i] = { scale: 1, rotate: 0, posX: 0, posY: 0 };
+    applyTransform(i);
+  }
+
+  // Apply transform to image i
+  function applyTransform(i) {
+    const t = transforms[i];
+    const img = galleryItems[i].querySelector('img');
+    img.style.transform = `translate(${t.posX}px, ${t.posY}px) rotate(${t.rotate}deg) scale(${t.scale})`;
+    img.style.transformOrigin = 'center center';
+  }
+
+  // Cycle highlight in gallery
+  function showNext() {
+    currentIndex = (currentIndex + 1) % totalImages;
+    updateGallery();
+  }
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+    updateGallery();
+  }
+
+  // Initialize gallery
+  updateGallery();
+
+  // Zoom and pan for gallery images (only active image)
+  let isDragging = false;
+  let dragTargetIndex = null;
+  let startX = 0, startY = 0;
+  let isRotating = false;
+  let rotateStartX = 0;
+
+  galleryItems.forEach((item, i) => {
+    const img = item.querySelector('img');
+
+    // Wheel zoom (only active image)
+    img.addEventListener('wheel', e => {
+      if(i !== currentIndex) return;
+      e.preventDefault();
+
+      let delta = e.deltaY > 0 ? -0.1 : 0.1;
+      let t = transforms[i];
+      let newScale = t.scale + delta;
+      newScale = Math.min(Math.max(newScale, 0.5), 5);
+      if(newScale !== t.scale) {
+        t.scale = newScale;
+        applyTransform(i);
+      }
+    }, { passive: false });
+
+    // Drag to pan (only active image)
+    img.addEventListener('mousedown', e => {
+      if(i !== currentIndex) return;
+      if(e.button !== 0) return; // left button only
+      isDragging = true;
+      dragTargetIndex = i;
+      startX = e.clientX - transforms[i].posX;
+      startY = e.clientY - transforms[i].posY;
+      img.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+
+    // Rotate with right-click drag (only active image)
+    img.addEventListener('contextmenu', e => e.preventDefault()); // prevent context menu
+
+    img.addEventListener('mousedown', e => {
+      if(i !== currentIndex) return;
+      if(e.button === 2) {
+        isRotating = true;
+        dragTargetIndex = i;
+        rotateStartX = e.clientX;
+        e.preventDefault();
+      }
+    });
+  });
+
+  window.addEventListener('mouseup', e => {
+    if(dragTargetIndex !== null) {
+      const img = galleryItems[dragTargetIndex].querySelector('img');
+      img.style.cursor = 'grab';
+    }
+    isDragging = false;
+    isRotating = false;
+    dragTargetIndex = null;
+  });
+
+  window.addEventListener('mousemove', e => {
+    if(!isDragging && !isRotating) return;
+    if(dragTargetIndex === null) return;
+
+    const t = transforms[dragTargetIndex];
+    const img = galleryItems[dragTargetIndex].querySelector('img');
+
+    if(isDragging) {
+      t.posX = e.clientX - startX;
+      t.posY = e.clientY - startY;
+      applyTransform(dragTargetIndex);
+    } else if(isRotating) {
+      let dx = e.movementX || 0;
+      t.rotate += dx * 0.5;
+      applyTransform(dragTargetIndex);
+    }
+  });
+
+  // --- Fullscreen viewer logic ---
+
+  // State for fullscreen transform
+  let fsScale = 1;
+  let fsPosX = 0;
+  let fsPosY = 0;
+  let fsRotate = 0;
+
+  let fsDragging = false;
+  let fsDragStartX = 0;
+  let fsDragStartY = 0;
+
+  let fsRotating = false;
+  let fsRotateStartX = 0;
+
+  // Open fullscreen with given index
+  function openFullscreen(index) {
+    currentIndex = index;
+    fullscreenImg.src = galleryItems[index].querySelector('img').src;
+    fullscreenImg.alt = galleryItems[index].querySelector('img').alt;
+    resetFullscreenTransform();
+    fullscreenOverlay.classList.add('active');
+    fullscreenOverlay.focus();
+  }
+
+  // Close fullscreen
+  function closeFullscreen() {
+    fullscreenOverlay.classList.remove('active');
+  }
+
+  // Reset fullscreen transform
+  function resetFullscreenTransform() {
+    fsScale = 1;
+    fsPosX = 0;
+    fsPosY = 0;
+    fsRotate = 0;
+    applyFullscreenTransform();
+  }
+
+  // Apply fullscreen transform
+  function applyFullscreenTransform() {
+    fullscreenImg.style.transform = `translate(${fsPosX}px, ${fsPosY}px) rotate(${fsRotate}deg) scale(${fsScale})`;
+  }
+
+  // Cycle fullscreen images
+  function fsNextImage() {
+    currentIndex = (currentIndex + 1) % totalImages;
+    fullscreenImg.src = galleryItems[currentIndex].querySelector('img').src;
+    fullscreenImg.alt = galleryItems[currentIndex].querySelector('img').alt;
+    resetFullscreenTransform();
+  }
+  function fsPrevImage() {
+    currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+    fullscreenImg.src = galleryItems[currentIndex].querySelector('img').src;
+    fullscreenImg.alt = galleryItems[currentIndex].querySelector('img').alt;
+    resetFullscreenTransform();
+  }
+
+  // Click gallery image to open fullscreen
+  galleryItems.forEach((item, i) => {
+    item.addEventListener('click', () => openFullscreen(i));
+  });
+
+  // Fullscreen event listeners
+
+  // Close on background click (not image)
+  fullscreenOverlay.addEventListener('click', e => {
+    if(e.target === fullscreenOverlay) {
+      closeFullscreen();
+    }
+  });
+
+  // Keyboard controls in fullscreen
+  fullscreenOverlay.addEventListener('keydown', e => {
+    if(e.key === "Escape") {
+      e.preventDefault();
+      closeFullscreen();
+    } else if(e.key === "ArrowRight" || e.key === "ArrowDown") {
+      e.preventDefault();
+      fsNextImage();
+    } else if(e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      e.preventDefault();
+      fsPrevImage();
+    } else if(e.key === "r" || e.key === "R") {
+      e.preventDefault();
+      resetFullscreenTransform();
+    }
+  });
+
+  // Wheel zoom in fullscreen
+  fullscreenOverlay.addEventListener('wheel', e => {
+    e.preventDefault();
+    const delta = e.deltaY < 0 ? 0.1 : -0.1;
+    let newScale = fsScale + delta;
+    newScale = Math.min(Math.max(newScale, 0.5), 10);
+    if(newScale !== fsScale) {
+      // Zoom relative to cursor position
+      const rect = fullscreenImg.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+      const dx = (offsetX - fsPosX) / fsScale;
+      const dy = (offsetY - fsPosY) / fsScale;
+
+      fsPosX -= dx * (newScale - fsScale);
+      fsPosY -= dy * (newScale - fsScale);
+      fsScale = newScale;
+      applyFullscreenTransform();
+    }
+  }, { passive: false });
+
+  // Drag to pan fullscreen image
+  fullscreenImg.style.cursor = 'grab';
+  fullscreenImg.addEventListener('mousedown', e => {
+    if(e.button !== 0) return; // left mouse only
+    fsDragging = true;
+    fsDragStartX = e.clientX - fsPosX;
+    fsDragStartY = e.clientY - fsPosY;
+    fullscreenOverlay.classList.add('grabbing');
+    e.preventDefault();
+  });
+  window.addEventListener('mouseup', e => {
+    fsDragging = false;
+    fullscreenOverlay.classList.remove('grabbing');
+  });
+  window.addEventListener('mousemove', e => {
+    if(!fsDragging) return;
+    fsPosX = e.clientX - fsDragStartX;
+    fsPosY = e.clientY - fsDragStartY;
+    applyFullscreenTransform();
+  });
+
+  // Rotate with right mouse drag in fullscreen
+  fullscreenImg.addEventListener('contextmenu', e => e.preventDefault());
+  fullscreenImg.addEventListener('mousedown', e => {
+    if(e.button === 2) {
+      fsRotating = true;
+      fsRotateStartX = e.clientX;
+      e.preventDefault();
+    }
+  });
+  window.addEventListener('mouseup', e => {
+    fsRotating = false;
+  });
+  window.addEventListener('mousemove', e => {
+    if(!fsRotating) return;
+    const dx = e.clientX - fsRotateStartX;
+    fsRotate += dx * 0.5;
+    fsRotateStartX = e.clientX;
+    applyFullscreenTransform();
+  });
+
+  // Logo tilt and drag (same as before)
+  logo.style.transition = 'transform 0.1s ease';
+  logo.style.transformStyle = 'preserve-3d';
+  logo.style.cursor = 'grab';
+  let logoDragging = false;
+  let logoStartX = 0, logoStartY = 0;
+  let logoPosX = 0, logoPosY = 0;
+
+  logo.addEventListener('mousemove', e => {
+    if(logoDragging) return;
+    const rect = logo.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    const rotY = (px - 0.5) * 20;
+    const rotX = (0.5 - py) * 20;
+    logo.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) translateX(${logoPosX}px) translateY(${logoPosY}px)`;
+  });
+  logo.addEventListener('mouseleave', e => {
+    if(logoDragging) return;
+    logo.style.transform = `translateX(${logoPosX}px) translateY(${logoPosY}px) rotateX(0) rotateY(0)`;
+  });
+
+  logo.addEventListener('mousedown', e => {
+    logoDragging = true;
+    logoStartX = e.clientX - logoPosX;
+    logoStartY = e.clientY - logoPosY;
+    logo.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  window.addEventListener('mouseup', () => {
+    logoDragging = false;
+    logo.style.cursor = 'grab';
+  });
+  window.addEventListener('mousemove', e => {
+    if(!logoDragging) return;
+    logoPosX = e.clientX - logoStartX;
+    logoPosY = e.clientY - logoStartY;
+    logo.style.transform = `translateX(${logoPosX}px) translateY(${logoPosY}px) rotateX(0) rotateY(0)`;
+  });
+
+  // Stronger parallax background on mousemove
+  window.addEventListener('mousemove', e => {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const dx = (e.clientX - cx) / cx;
+    const dy = (e.clientY - cy) / cy;
+    parallaxBg.style.transform = `translateX(${dx * 60}px) translateY(${dy * 60}px) scale(1.15)`;
+  });
+
+  // Animate story text on load
+  window.addEventListener('load', () => {
+    const story = document.getElementById('story');
+    story.classList.add('animate');
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Daycare for Elder Ukrainians</title>
+<style>
+  /* Pixelated background animation */
+  @keyframes pixelShift {
+    0%, 100% { background-position: 0 0; }
+    50% { background-position: 20px 20px; }
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background:
+      linear-gradient(45deg, #ffd1dc 25%, transparent 25%), 
+      linear-gradient(-45deg, #ffd1dc 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #ffb6c1 75%),
+      linear-gradient(-45deg, transparent 75%, #ffb6c1 75%);
+    background-size: 40px 40px;
+    background-repeat: repeat;
+    animation: pixelShift 10s linear infinite;
+    color: #5a2a27;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+  }
+
+  header {
+    margin-top: 1rem;
+    text-align: center;
+    animation: fadeIn 2s ease forwards;
+  }
+
+  /* Logo pixelated hover effect */
+  .logo {
+    width: 60vw;
+    height: auto;
+    image-rendering: pixelated;
+    border: 5px solid #c85a6a;
+    border-radius: 20px;
+    box-shadow: 0 0 15px #f5a9b8;
+    transition: filter 0.5s ease;
+    cursor: pointer;
+  }
+  .logo:hover {
+    filter: contrast(140%) saturate(150%) brightness(110%);
+  }
+
+  main {
+    max-width: 600px;
+    background: rgba(255 255 255 / 0.85);
+    border-radius: 15px;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    box-shadow:
+      0 0 10px #f4b1b1,
+      inset 0 0 30px #fcdfe3;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    text-align: justify;
+    animation: fadeInUp 1.5s ease forwards;
+  }
+
+  /* Animated pixel hearts at bottom */
+  .pixel-heart {
+    width: 12px;
+    height: 12px;
+    position: fixed;
+    bottom: 10px;
+    background-color: #ff4b6e;
+    clip-path: polygon(
+      50% 0%, 61% 12%, 75% 12%, 88% 25%, 
+      88% 43%, 75% 55%, 50% 80%, 25% 55%, 
+      12% 43%, 12% 25%, 25% 12%, 39% 12%
+    );
+    animation: heartBeat 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 2px #ff4b6e);
+  }
+
+  /* Animate pixel hearts with random horizontal motion */
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  @keyframes fadeInUp {
+    from {opacity: 0; transform: translateY(30px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="img1/1art166_Image01.jpg" alt="Daycare Logo" class="logo" />
+  <h1>Daycare for Elder Ukrainians</h1>
+</header>
+
+<main>
+  <p>
+    Hi. Friends. As a longtime blogger i'm about to share my expiriance on daycare for elder ukrainians. Ukrainians, especialy Elder ones with a marazmatic disorders are also people who are as good as babies. They need care. They are here to claim their special corner in our kind hearted mansion.
+  </p>
+  <p>
+    We as a united artists community is here to help them on their last days to care about their hygiene and show em we haven't forgot about their disabilitys and their stories of a time being young that actualy passed so quick.
+  </p>
+  <p>
+    I mean. They need hug and care. Thats when animals gets in handy. While they communicate with animales they feel joy of being the natures only loved children even while dying. That is how we let them forget about how old they are.
+  </p>
+  <p>
+    If you are an artist of a community consider joining our kind hearted non profit collaboration. Kindly thank you for listening. Peace.
+  </p>
+</main>
+
+<!-- Pixel hearts animation -->
+<script>
+  // Create multiple pixel hearts with random positions and delays
+  const colors = ['#ff4b6e', '#ff6f91', '#ffadc6'];
+  for (let i = 0; i < 12; i++) {
+    const heart = document.createElement('div');
+    heart.classList.add('pixel-heart');
+    heart.style.left = (Math.random() * window.innerWidth) + 'px';
+    heart.style.bottom = (10 + Math.random() * 40) + 'px';
+    heart.style.animationDelay = (Math.random() * 2) + 's';
+    heart.style.backgroundColor = colors[i % colors.length];
+    heart.style.filter = `drop-shadow(0 0 2px ${colors[i % colors.length]})`;
+    document.body.appendChild(heart);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youtube Memories</title>
+    <style>
+        body {
+            background-color: red;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background: url('img1/1preview_Image01.jpg') no-repeat center center fixed; /* Path to your image */
+            background-size: 80%;
+        }
+        .logo {
+            width: 60%; /* Logo takes up 50% of the page width */
+            max-width: 600px; /* Optional max width */
+            filter: drop-shadow(0 0 20px red); /* Glowing effect */
+        }
+        h1 {
+            font-size: 3em;
+            margin: 20px 0;
+            text-shadow: 0 0 10px red, 0 0 20px red; /* Glowing text effect */
+        }
+        p {
+            font-size: 1.5em;
+            text-shadow: 0 0 5px red, 0 0 10px red; /* Glowing text effect */
+        }
+        .button {
+            display: inline-block;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1.2em;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .button:hover {
+            background-color: darkred;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .button:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: width 0.5s, height 0.5s, top 0.5s, left 0.5s;
+            z-index: 0;
+            transform: translate(-50%, -50%) scale(0);
+        }
+        .button:hover:before {
+            width: 400%;
+            height: 400%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .button span {
+            position: relative;
+            z-index: 1;
+        }allery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .gallery img {
+            width: 150px;
+            height: auto;
+            border: 2px solid red;
+            transition: transform 0.3s;
+        }
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: width 0.5s, height 0.5s, top 0.5s, left 0.5s;
+            z-index: 0;
+            transform: translate(-50%, -50%) scale(0);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Youtube Memories</h1>
+        <img src="img1/1preview_Image193.jpg" alt="Logo" class="logo">
+
+<button class="button" onclick="location.href='../index.html'">Main</button>
+
+    <div class="gallery">
+        <a href="img1/1preview_Image01.jpg"><img src="img1/1preview_Image01.jpg" alt="Image 1"></a>
+        <a href="img1/1preview_Image02.jpg"><img src="img1/1preview_Image02.jpg" alt="Image 2"></a>
+        <a href="img1/1preview_Image03.jpg"><img src="img1/1preview_Image03.jpg" alt="Image 3"></a>
+        <a href="img1/1preview_Image04.jpg"><img src="img1/1preview_Image04.jpg" alt="Image 4"></a>
+        <a href="img1/1preview_Image05.jpg"><img src="img1/1preview_Image05.jpg" alt="Image 5"></a>
+        <a href="img1/1preview_Image06.jpg"><img src="img1/1preview_Image06.jpg" alt="Image 6"></a>
+        <a href="img1/1preview_Image07.jpg"><img src="img1/1preview_Image07.jpg" alt="Image 7"></a>
+        <a href="img1/1preview_Image08.jpg"><img src="img1/1preview_Image08.jpg" alt="Image 8"></a>
+        <a href="img1/1preview_Image09.jpg"><img src="img1/1preview_Image09.jpg" alt="Image 9"></a>
+        <a href="img1/1preview_Image10.jpg"><img src="img1/1preview_Image10.jpg" alt="Image 10"></a>
+        <a href="img1/1preview_Image136.jpg"><img src="img1/1preview_Image136.jpg" alt="Image 136"></a>
+        <a href="img1/1preview_Image137.jpg"><img src="img1/1preview_Image137.jpg" alt="Image 137"></a>
+        <a href="img1/1preview_Image138.jpg"><img src="img1/1preview_Image138.jpg" alt="Image 138"></a>
+        <a href="img1/1preview_Image139.jpg"><img src="img1/1preview_Image139.jpg" alt="Image 139"></a>
+        <a href="img1/1preview_Image140.jpg"><img src="img1/1preview_Image140.jpg" alt="Image 140"></a>
+        <a href="img1/1preview_Image141.jpg"><img src="img1/1preview_Image141.jpg" alt="Image 141"></a>
+        <a href="img1/1preview_Image142.jpg"><img src="img1/1preview_Image142.jpg" alt="Image 142"></a>
+        <a href="img1/1preview_Image143.jpg"><img src="img1/1preview_Image143.jpg" alt="Image 143"></a>
+        <a href="img1/1preview_Image144.jpg"><img src="img1/1preview_Image144.jpg" alt="Image 144"></a>
+        <a href="img1/1preview_Image145.jpg"><img src="img1/1preview_Image145.jpg" alt="Image 145"></a>
+        <a href="img1/1preview_Image146.jpg"><img src="img1/1preview_Image146.jpg" alt="Image 146"></a>
+        <a href="img1/1preview_Image147.jpg"><img src="img1/1preview_Image147.jpg" alt="Image 147"></a>
+        <a href="img1/1preview_Image148.jpg"><img src="img1/1preview_Image148.jpg" alt="Image 148"></a>
+        <a href="img1/1preview_Image149.jpg"><img src="img1/1preview_Image149.jpg" alt="Image 149"></a>
+        <a href="img1/1preview_Image150.jpg"><img src="img1/1preview_Image150.jpg" alt="Image 150"></a>
+        <a href="img1/1preview_Image151.jpg"><img src="img1/1preview_Image151.jpg" alt="Image 151"></a>
+        <a href="img1/1preview_Image152.jpg"><img src="img1/1preview_Image152.jpg" alt="Image 152"></a>
+        <a href="img1/1preview_Image153.jpg"><img src="img1/1preview_Image153.jpg" alt="Image 153"></a>
+        <a href="img1/1preview_Image154.jpg"><img src="img1/1preview_Image154.jpg" alt="Image 154"></a>
+        <a href="img1/1preview_Image155.jpg"><img src="img1/1preview_Image155.jpg" alt="Image 155"></a>
+        <a href="img1/1preview_Image156.jpg"><img src="img1/1preview_Image156.jpg" alt="Image 156"></a>
+        <a href="img1/1preview_Image157.jpg"><img src="img1/1preview_Image157.jpg" alt="Image 157"></a>
+        <a href="img1/1preview_Image158.jpg"><img src="img1/1preview_Image158.jpg" alt="Image 158"></a>
+        <a href="img1/1preview_Image159.jpg"><img src="img1/1preview_Image159.jpg" alt="Image 159"></a>
+        <a href="img1/1preview_Image160.jpg"><img src="img1/1preview_Image160.jpg" alt="Image 160"></a>
+        <a href="img1/1preview_Image161.jpg"><img src="img1/1preview_Image161.jpg" alt="Image 161"></a>
+        <a href="img1/1preview_Image162.jpg"><img src="img1/1preview_Image162.jpg" alt="Image 162"></a>
+        <a href="img1/1preview_Image163.jpg"><img src="img1/1preview_Image163.jpg" alt="Image 163"></a>
+        <a href="img1/1preview_Image164.jpg"><img src="img1/1preview_Image164.jpg" alt="Image 164"></a>
+        <a href="img1/1preview_Image165.jpg"><img src="img1/1preview_Image165.jpg" alt="Image 165"></a>
+        <a href="img1/1preview_Image166.jpg"><img src="img1/1preview_Image166.jpg" alt="Image 166"></a>
+        <a href="img1/1preview_Image167.jpg"><img src="img1/1preview_Image167.jpg" alt="Image 167"></a>
+        <a href="img1/1preview_Image168.jpg"><img src="img1/1preview_Image168.jpg" alt="Image 168"></a>
+        <a href="img1/1preview_Image169.jpg"><img src="img1/1preview_Image169.jpg" alt="Image 169"></a>
+        <a href="img1/1preview_Image170.jpg"><img src="img1/1preview_Image170.jpg" alt="Image 170"></a>
+        <a href="img1/1preview_Image171.jpg"><img src="img1/1preview_Image171.jpg" alt="Image 171"></a>
+        <a href="img1/1preview_Image172.jpg"><img src="img1/1preview_Image172.jpg" alt="Image 172"></a>
+        <a href="img1/1preview_Image173.jpg"><img src="img1/1preview_Image173.jpg" alt="Image 173"></a>
+        <a href="img1/1preview_Image174.jpg"><img src="img1/1preview_Image174.jpg" alt="Image 174"></a>
+        <a href="img1/1preview_Image175.jpg"><img src="img1/1preview_Image175.jpg" alt="Image 175"></a>
+        <a href="img1/1preview_Image176.jpg"><img src="img1/1preview_Image176.jpg" alt="Image 176"></a>
+        <a href="img1/1preview_Image177.jpg"><img src="img1/1preview_Image177.jpg" alt="Image 177"></a>
+        <a href="img1/1preview_Image178.jpg"><img src="img1/1preview_Image178.jpg" alt="Image 178"></a>
+        <a href="img1/1preview_Image179.jpg"><img src="img1/1preview_Image179.jpg" alt="Image 179"></a>
+        <a href="img1/1preview_Image180.jpg"><img src="img1/1preview_Image180.jpg" alt="Image 180"></a>
+        <a href="img1/1preview_Image181.jpg"><img src="img1/1preview_Image181.jpg" alt="Image 181"></a>
+        <a href="img1/1preview_Image182.jpg"><img src="img1/1preview_Image182.jpg" alt="Image 182"></a>
+        <a href="img1/1preview_Image183.jpg"><img src="img1/1preview_Image183.jpg" alt="Image 183"></a>
+        <a href="img1/1preview_Image184.jpg"><img src="img1/1preview_Image184.jpg" alt="Image 184"></a>
+        <a href="img1/1preview_Image185.jpg"><img src="img1/1preview_Image185.jpg" alt="Image 185"></a>
+        <a href="img1/1preview_Image186.jpg"><img src="img1/1preview_Image186.jpg" alt="Image 186"></a>
+        <a href="img1/1preview_Image187.jpg"><img src="img1/1preview_Image187.jpg" alt="Image 187"></a>
+        <a href="img1/1preview_Image188.jpg"><img src="img1/1preview_Image188.jpg" alt="Image 188"></a>
+        <a href="img1/1preview_Image189.jpg"><img src="img1/1preview_Image189.jpg" alt="Image 189"></a>
+        <a href="img1/1preview_Image190.jpg"><img src="img1/1preview_Image190.jpg" alt="Image 190"></a>
+        <a href="img1/1preview_Image191.jpg"><img src="img1/1preview_Image191.jpg" alt="Image 191"></a>
+        <a href="img1/1preview_Image192.jpg"><img src="img1/1preview_Image192.jpg" alt="Image 192"></a>
+        <a href="img1/1preview_Image193.jpg"><img src="img1/1preview_Image193.jpg" alt="Image 193"></a>
+        <a href="img1/1preview_Image194.jpg"><img src="img1/1preview_Image194.jpg" alt="Image 194"></a>
+        <a href="img1/1preview_Image195.jpg"><img src="img1/1preview_Image195.jpg" alt="Image 195"></a>
+        <a href="img1/1preview_Image196.jpg"><img src="img1/1preview_Image196.jpg" alt="Image 196"></a>
+        <a href="img1/1preview_Image197.jpg"><img src="img1/1preview_Image197.jpg" alt="Image 197"></a>
+        <a href="img1/1preview_Image198.jpg"><img src="img1/1preview_Image198.jpg" alt="Image 198"></a>
+        <a href="img1/1preview_Image199.jpg"><img src="img1/1preview_Image199.jpg" alt="Image 199"></a>
+        <a href="img1/1preview_Image200.jpg"><img src="img1/1preview_Image200.jpg" alt="Image 200"></a>
+        <a href="img1/1preview_Image201.jpg"><img src="img1/1preview_Image201.jpg" alt="Image 201"></a>
+        <a href="img1/1preview_Image202.jpg"><img src="img1/1preview_Image202.jpg" alt="Image 202"></a>
+        <a href="img1/1preview_Image203.jpg"><img src="img1/1preview_Image203.jpg" alt="Image 203"></a>
+        <a href="img1/1preview_Image204.jpg"><img src="img1/1preview_Image204.jpg" alt="Image 204"></a>
+        <a href="img1/1preview_Image205.jpg"><img src="img1/1preview_Image205.jpg" alt="Image 205"></a>
+        <a href="img1/1preview_Image206.jpg"><img src="img1/1preview_Image206.jpg" alt="Image 206"></a>
+        <a href="img1/1preview_Image207.jpg"><img src="img1/1preview_Image207.jpg" alt="Image 207"></a>
+        <a href="img1/1preview_Image208.jpg"><img src="img1/1preview_Image208.jpg" alt="Image 208"></a>
+        <a href="img1/1preview_Image209.jpg"><img src="img1/1preview_Image209.jpg" alt="Image 209"></a>
+        <a href="img1/1preview_Image210.jpg"><img src="img1/1preview_Image210.jpg" alt="Image 210"></a>
+        <a href="img1/1preview_Image211.jpg"><img src="img1/1preview_Image211.jpg" alt="Image 211"></a>
+        <a href="img1/1preview_Image212.jpg"><img src="img1/1preview_Image212.jpg" alt="Image 212"></a>
+        <a href="img1/1preview_Image213.jpg"><img src="img1/1preview_Image213.jpg" alt="Image 213"></a>
+        <a href="img1/1preview_Image214.jpg"><img src="img1/1preview_Image214.jpg" alt="Image 214"></a>
+        <a href="img1/1preview_Image215.jpg"><img src="img1/1preview_Image215.jpg" alt="Image 215"></a>
+        <a href="img1/1preview_Image216.jpg"><img src="img1/1preview_Image216.jpg" alt="Image 216"></a>
+        <a href="img1/1preview_Image217.jpg"><img src="img1/1preview_Image217.jpg" alt="Image 217"></a>
+        <a href="img1/1preview_Image218.jpg"><img src="img1/1preview_Image218.jpg" alt="Image 218"></a>
+        <a href="img1/1preview_Image219.jpg"><img src="img1/1preview_Image219.jpg" alt="Image 219"></a>
+        <a href="img1/1preview_Image220.jpg"><img src="img1/1preview_Image220.jpg" alt="Image 220"></a>
+        <a href="img1/1preview_Image221.jpg"><img src="img1/1preview_Image221.jpg" alt="Image 221"></a>
+        <a href="img1/1preview_Image222.jpg"><img src="img1/1preview_Image222.jpg" alt="Image 222"></a>
+        <a href="img1/1preview_Image223.jpg"><img src="img1/1preview_Image223.jpg" alt="Image 223"></a>
+        <a href="img1/1preview_Image224.jpg"><img src="img1/1preview_Image224.jpg" alt="Image 224"></a>
+        <a href="img1/1preview_Image225.jpg"><img src="img1/1preview_Image225.jpg" alt="Image 225"></a>
+        <a href="img1/1preview_Image226.jpg"><img src="img1/1preview_Image226.jpg" alt="Image 226"></a>
+        <a href="img1/1preview_Image227.jpg"><img src="img1/1preview_Image227.jpg" alt="Image 227"></a>
+        <a href="img1/1preview_Image228.jpg"><img src="img1/1preview_Image228.jpg" alt="Image 228"></a>
+        <a href="img1/1preview_Image229.jpg"><img src="img1/1preview_Image229.jpg" alt="Image 229"></a>
+        <a href="img1/1preview_Image230.jpg"><img src="img1/1preview_Image230.jpg" alt="Image 230"></a>
+        <a href="img1/1preview_Image231.jpg"><img src="img1/1preview_Image231.jpg" alt="Image 231"></a>
+        <a href="img1/1preview_Image232.jpg"><img src="img1/1preview_Image232.jpg" alt="Image 232"></a>
+        <a href="img1/1preview_Image233.jpg"><img src="img1/1preview_Image233.jpg" alt="Image 233"></a>
+        <a href="img1/1preview_Image234.jpg"><img src="img1/1preview_Image234.jpg" alt="Image 234"></a>
+        <a href="img1/1preview_Image235.jpg"><img src="img1/1preview_Image235.jpg" alt="Image 235"></a>
+        <a href="img1/1preview_Image236.jpg"><img src="img1/1preview_Image236.jpg" alt="Image 236"></a>
+        <a href="img1/1preview_Image237.jpg"><img src="img1/1preview_Image237.jpg" alt="Image 237"></a>
+
+    </div>
+        <img src="img1/1preview_Image193.jpg" alt="Logo" class="logo">
+    <div>
+    <h1>Spetsnaz Central</h1>
+    <a href="https://octashitone.wixsite.com/spetsnaz-forever" class="button"><span>Spetsnaz Forever!</span></a>
+    <a href="https://spetsnaz-thornberrys.tumblr.com/" class="button"><span>Special  Thornberrys Adventure!</span></a>
+    <a href="https://www.youtube.com/@1011-z2m/videos" class="button"><span>Special Videos!</span></a>
+    <a href="https://app.ardrive.io/#/drives/f4c90f46-6021-4c01-9261-79ce49ebbe6b" class="button"><span>Special Ardrive Vault!</span></a>
+    <a href="https://2vrkkw4onykevqpte6tqcuiukl3jplktgt5fmhwaqxqum3f2k6fq.arweave.net/1WKlW45uFErB8yenAVEUUvaXrVM0-lYewIXhRmy6V4s/" class="button"><span>Special Website 1!</span></a>
+    <a href="https://6y5q3ct7i5bbs7u6yzztnwawtrnag7tlmnrrwxake2bbyqeih4kq.arweave.net/9jsNin9HQhl-nsZzNtgWnFoDfmtjYxtcCiaCHECIPxU/" class="button"><span>Special Website 2!</span></a>
+    <a href="https://qlr6ctsvizjimc4bt2g7umzkbfzuzvpac4vnanughphzovujbm5a.arweave.net/guPhTlVGUoYLgZ6N-jMqCXNM1eAXKtA2hjvPl1aJCzo/" class="button"><span>Special Website 3!</span></a>
+    </div>
+        <img src="img1/1preview_Image204.jpg" alt="Logo" class="logo">
+</body>
+</html>

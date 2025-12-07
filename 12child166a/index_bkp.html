@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Best Pie Ever</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      background: #fffae6;
+      font-family: 'Verdana', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      color: #6b341a;
+      overflow-x: hidden;
+      padding: 40px 20px 60px;
+      user-select: none;
+    }
+    .title-container {
+      position: relative;
+      margin-top: 20px;
+      margin-bottom: 25px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .title {
+      font-size: 3.5em;
+      font-weight: 900;
+      text-align: center;
+      color: #b55e1e;
+      letter-spacing: 4px;
+      text-shadow:
+        2px 2px 0 #f2c27a,
+        4px 4px 8px #a35a15aa;
+      animation: pulse 2.2s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.07); }
+    }
+    /* Animated pie slice ring around title */
+    .pie-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 190px;
+      height: 190px;
+      margin-left: -95px;
+      margin-top: -95px;
+      pointer-events: none;
+      animation: spin 22s linear infinite;
+      z-index: -1;
+    }
+    .pie-slice {
+      position: absolute;
+      width: 40px;
+      height: 80px;
+      background: linear-gradient(45deg, #d17c1a 30%, #f0c27a 70%);
+      border-radius: 0 80px 80px 0;
+      box-shadow: inset 0 0 6px #a55a10;
+      transform-origin: left center;
+      filter: drop-shadow(0 0 2px #b07519);
+    }
+    /* place 8 slices evenly */
+    .slice1 { transform: rotate(0deg) translateX(75px) rotate(10deg); }
+    .slice2 { transform: rotate(45deg) translateX(75px) rotate(10deg); }
+    .slice3 { transform: rotate(90deg) translateX(75px) rotate(10deg); }
+    .slice4 { transform: rotate(135deg) translateX(75px) rotate(10deg); }
+    .slice5 { transform: rotate(180deg) translateX(75px) rotate(10deg); }
+    .slice6 { transform: rotate(225deg) translateX(75px) rotate(10deg); }
+    .slice7 { transform: rotate(270deg) translateX(75px) rotate(10deg); }
+    .slice8 { transform: rotate(315deg) translateX(75px) rotate(10deg); }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    /* Pie icon below title */
+    .pie-icon {
+      margin-bottom: 28px;
+      width: 140px;
+      height: 140px;
+      cursor: pointer;
+      animation: wobble 3s ease-in-out infinite;
+      user-select: none;
+    }
+    @keyframes wobble {
+      0%, 100% { transform: rotate(0deg);}
+      25% { transform: rotate(8deg);}
+      50% { transform: rotate(-7deg);}
+      75% { transform: rotate(6deg);}
+    }
+
+    /* Text block */
+    .main-text {
+      max-width: 480px;
+      font-size: 1.2em;
+      background: #fff3d6;
+      padding: 24px 30px;
+      border-radius: 18px;
+      box-shadow: 0 6px 16px #b5853b44;
+      border: 3px solid #d9af6f;
+      line-height: 1.7;
+      color: #6b3f15;
+      user-select: text;
+      white-space: pre-line;
+      text-align: center;
+      font-weight: 600;
+    }
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      z-index: 9999;
+    }
+    @media (max-width: 600px) {
+      .title { font-size: 2.5em; }
+      .pie-icon { width: 100px; height: 100px; }
+      .main-text { font-size: 1em; max-width: 90vw; padding: 16px 18px; }
+      .pie-ring { width: 140px; height: 140px; margin-left: -70px; margin-top: -70px; }
+      .pie-slice { width: 28px; height: 56px; border-radius: 0 56px 56px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="confetti"></div>
+
+  <div class="title-container" title="Click me for magic!">
+    <div class="title">Best Pie Ever</div>
+    <div class="pie-ring" aria-hidden="true">
+      <div class="pie-slice slice1"></div>
+      <div class="pie-slice slice2"></div>
+      <div class="pie-slice slice3"></div>
+      <div class="pie-slice slice4"></div>
+      <div class="pie-slice slice5"></div>
+      <div class="pie-slice slice6"></div>
+      <div class="pie-slice slice7"></div>
+      <div class="pie-slice slice8"></div>
+    </div>
+  </div>
+
+  <!-- Pie SVG icon with crust and lattice -->
+  <svg class="pie-icon" viewBox="0 0 200 200" aria-label="A delicious pie icon" role="img" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="85" fill="#f3c892" stroke="#b67e35" stroke-width="8"/>
+    <circle cx="100" cy="100" r="75" fill="#f7d9ab"/>
+    <!-- lattice -->
+    <path stroke="#b67e35" stroke-width="8" stroke-linecap="round"
+          d="M 45 45 L 155 155 M 65 45 L 175 155 M 85 45 L 195 155
+             M 115 45 L 25 155 M 135 45 L 15 155 M 155 45 L 5 155"/>
+    <!-- crust edge -->
+    <path fill="#d8a14b" stroke="#a5692d" stroke-width="3" d="M 15 100 Q 40 160 100 170 Q 160 160 185 100 Q 160 40 100 30 Q 40 40 15 100 Z"/>
+  </svg>
+
+  <div class="main-text" tabindex="0">
+The worst planet ever.
+
+Did iconic Marriane Thornberry just forces you to
+have a plastic surgerry. Since years you still a child?
+Should you stay or leave? Are you a good comedian?
+Are you iconic or does your tallents make you pathetic?
+What do the best pirates ever and santa think about
+Meg Griffin? Are you still iconic? How much do you
+pay for ukrainian army? Is your real job iconic?
+Is a Trump tower just felt on you and crushed a peepee?
+Is american pies this good?
+  </div>
+
+  <script>
+    // Confetti colors for pie theme
+    const confettiColors = ['#f7d9ab','#d8a14b','#b67e35','#f3c892','#a5692d','#f4e2b3','#b37a13'];
+    const confettiContainer = document.querySelector('.confetti');
+
+    function createConfettiPiece() {
+      const confetti = document.createElement('div');
+      const size = Math.random() * 14 + 7;
+      confetti.style.width = confetti.style.height = size + 'px';
+      confetti.style.position = 'absolute';
+      confetti.style.borderRadius = Math.random() > 0.6 ? '50%' : '20%';
+      confetti.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.top = '-30px';
+      confetti.style.opacity = 0.85;
+      confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+      confetti.style.filter = 'drop-shadow(0 0 1px #855e19)';
+      confetti.style.transition = 'top 3s linear, transform 2.2s ease-in-out';
+      setTimeout(() => {
+        confetti.style.top = '110vh';
+        confetti.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random()})`;
+      }, 10);
+      setTimeout(() => confetti.remove(), 3200);
+      return confetti;
+    }
+
+    function launchConfettiBurst(count = 25) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          confettiContainer.appendChild(createConfettiPiece());
+        }, i * 30);
+      }
+    }
+
+    // Interactivity: clicking title or pie triggers confetti & sound
+    const titleContainer = document.querySelector('.title-container');
+    const pieIcon = document.querySelector('.pie-icon');
+
+    function playDingSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, ctx.currentTime);
+        const gainNode = ctx.createGain();
+        gainNode.gain.setValueAtTime(0.15, ctx.currentTime);
+        osc.connect(gainNode).connect(ctx.destination);
+        osc.start();
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+        osc.stop(ctx.currentTime + 0.36);
+        setTimeout(() => ctx.close(), 400);
+      } catch (e) {}
+    }
+
+    function onClickHandler() {
+      launchConfettiBurst(28);
+      playDingSound();
+    }
+
+    titleContainer.addEventListener('click', onClickHandler);
+    pieIcon.addEventListener('click', onClickHandler);
+  </script>
+</body>
+</html>

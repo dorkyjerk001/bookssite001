@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wild Thornberrys Glowing Fun Page</title>
+    <style>
+        /* Base Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #d4af37;
+            font-family: 'UnifrakturMaguntia', cursive;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Medieval Font */
+        @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+
+        /* Spark Particles */
+        .spark {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: #ff6600;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(1px);
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0.2); opacity: 0; }
+        }
+
+        /* Header Image - 80% of page width */
+        .header-image {
+            width: 80vw;
+            max-width: 1200px;
+            margin: 2vh auto;
+            display: block;
+            border: 3px solid #5e2c04;
+            box-shadow: 0 0 30px #ff6600;
+        }
+
+        /* Main Title */
+        h1 {
+            font-size: calc(2vw + 2rem);
+            text-shadow: 0 0 10px #ff6600, 0 0 20px #ff3300;
+            letter-spacing: 5px;
+            margin: 2vh 0;
+            padding: 0 10vw;
+            position: relative;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff5722, 0 0 20px #ff9800;
+            }
+            to {
+                text-shadow: 0 0 20px #ff5722, 0 0 30px #ff9800;
+            }
+        }
+
+        header {
+            margin-bottom: 20px;
+        }
+
+        img.header {
+            width: 80%; /* Full width for header image */
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #ff5722; /* Glowing shadow */
+        }
+
+        img {
+            width: 40%; /* Scale images to 40% of the page size */
+            height: auto;
+            margin: 10px;
+            border: 5px solid #ff5722; /* Orange border */
+            border-radius: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        img:hover {
+            transform: scale(1.05); /* Zoom effect on hover */
+            box-shadow: 0 0 20px #ff5722, 0 0 30px #ff9800; /* Glowing shadow on hover */
+        }
+
+        iframe {
+            width: 100%; /* Scale images to 40% of the page size */
+            height: 100%;
+            margin: 10vw;
+            margin-top: 10vh;
+            border: 5px solid #ff5722; /* Orange border */
+            border-radius: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn1 {
+            margin-top: 50vh;
+        }
+
+        .logo3 {
+            width: 80vw;
+            height: 30vw;
+            margin: 3vh auto;
+            padding: 10px;
+        }
+
+        /* Bottom Decoration */
+        .bottom-decoration {
+            position: fixed;
+            margin-top: 30vh;
+            width: 100%;
+            height: 50%;
+            background-image: url('1flames1.png');
+            z-index: -1;
+        }
+
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background-color: #ff9800; /* Darker orange */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 0 10px #ff9800; /* Glowing effect */
+        }
+
+        .button:hover {
+            background-color: #fb8c00; /* Lighter orange on hover */
+            transform: scale(1.1); /* Scale effect on hover */
+            box-shadow: 0 0 20px #ff9800; /* Enhanced glow on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img class="header" src="img1/1lgo_t1a.gif" alt="Wild Thornberrys Logo">
+    </header>
+
+    <h1>Welcome to Strange and Twisted World!</h1>
+
+    <div>
+        <img src="img1/1preview_Image01.jpg" alt="Image 1">
+        <img src="img1/1preview_Image02.jpg" alt="Image 2">
+        <img src="img1/1preview_Image03.jpg" alt="Image 3">
+        <img src="img1/1preview_Image04.jpg" alt="Image 4">
+    </div>
+
+<div class="sketchfab-embed-wrapper"> <iframe title="Thornberrys_van_0624172519_texture" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/31fd39f801ca41228881df6bccaeb04a/embed?autostart=1&camera=0&preload=1&ui_theme=dark"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/thornberrys-van-0624172519-texture-31fd39f801ca41228881df6bccaeb04a?utm_medium=embed&utm_campaign=share-popup&utm_content=31fd39f801ca41228881df6bccaeb04a" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Thornberrys_van_0624172519_texture </a> by <a href="https://sketchfab.com/gingerfck01?utm_medium=embed&utm_campaign=share-popup&utm_content=31fd39f801ca41228881df6bccaeb04a" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> gingerfck01 </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=31fd39f801ca41228881df6bccaeb04a" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+
+        <div class="btn1">
+    <h2>Explore More!</h2>
+
+    <a class="button" href="https://sketchfab.com/gingerfck01" target="_blank">Gingerfck01 on Sketchfab</a>
+    <a class="button" href="https://skfb.ly/pyzVX" target="_blank">Model 1</a>
+    <a class="button" href="https://skfb.ly/pyzWz" target="_blank">Model 2</a>
+        </div>
+
+        <div>
+    <h1>Spetsnaz Central</h1>
+    <a href="https://octashitone.wixsite.com/spetsnaz-forever" class="button"><span>Spetsnaz Forever!</span></a>
+    <a href="https://spetsnaz-thornberrys.tumblr.com/" class="button"><span>Special  Thornberrys Adventure!</span></a>
+    <a href="https://www.youtube.com/@1011-z2m/videos" class="button"><span>Special Videos!</span></a>
+    <a href="https://app.ardrive.io/#/drives/f4c90f46-6021-4c01-9261-79ce49ebbe6b" class="button"><span>Special Ardrive Vault!</span></a>
+    <a href="https://2vrkkw4onykevqpte6tqcuiukl3jplktgt5fmhwaqxqum3f2k6fq.arweave.net/1WKlW45uFErB8yenAVEUUvaXrVM0-lYewIXhRmy6V4s/" class="button"><span>Special Website 1!</span></a>
+    <a href="https://6y5q3ct7i5bbs7u6yzztnwawtrnag7tlmnrrwxake2bbyqeih4kq.arweave.net/9jsNin9HQhl-nsZzNtgWnFoDfmtjYxtcCiaCHECIPxU/" class="button"><span>Special Website 2!</span></a>
+    <a href="https://qlr6ctsvizjimc4bt2g7umzkbfzuzvpac4vnanughphzovujbm5a.arweave.net/guPhTlVGUoYLgZ6N-jMqCXNM1eAXKtA2hjvPl1aJCzo/" class="button"><span>Special Website 3!</span></a>
+    <a href="https://i7wibljlkuciazksb2yi7vuzbgs2h2akizts6vm537cvikyebsba.arweave.net/R-yArStVBIBlUg6wj9aZCaWj6ApGZy9Vnd_FVCsEDII/" class="button"><span>Special Website 4!</span></a>
+    <a href="https://2rywdr4lzhkaivly7iwipdvhyic6czu2235mjxpg6scfm52o3mpq.arweave.net/1HFhx4vJ1ARVePosh46nwgXhZprW-sTd5vSEVndO2x8/" class="button"><span>Special Website 5!</span></a>
+        </div> 
+
+    <div class="bottom-decoration">
+
+    <!-- Bottom Decoration -->
+
+    <img src="img1/1flames1.png" alt="Flames Decoration" class="logo3">
+
+    </div>
+
+</body>
+</html>

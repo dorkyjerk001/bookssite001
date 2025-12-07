@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All American Pie Formal Meeting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* American color palette */
+    :root {
+      --red: #B31942;
+      --white: #FFFFFF;
+      --blue: #0A3161;
+      --silver: #CECECE;
+    }
+
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--red) 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .button {
+      margin: 32px 0 24px 0;
+      font-size: 2.2rem;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 2px;
+      color: var(--white);
+      text-shadow:
+        0 0 8px var(--white),
+        0 0 16px var(--blue),
+        0 0 32px var(--red),
+        0 0 48px var(--blue),
+        0 0 64px var(--red);
+      animation: glow-pulse 2s infinite alternate;
+    }
+
+    .button:hover {
+      margin: 32px 0 24px 0;
+      font-size: 2.2rem;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 2px;
+      color: var(--blue);
+      text-shadow:
+        0 0 8px var(--red),
+        0 0 16px var(--blue),
+        0 0 32px var(--red),
+        0 0 48px var(--blue),
+        0 0 64px var(--white);
+      animation: glow-pulse 2s infinite alternate;
+    }
+
+    /* Header image */
+    .header-img {
+      width: 100%;
+      max-width: 1700px;
+      display: block;
+      margin: 32px auto 0 auto;
+      border-radius: 16px;
+      box-shadow: 0 0 40px 10px var(--blue), 0 0 80px 20px var(--red);
+    }
+
+
+    /* Glowing welcome text */
+    .glow-text {
+      margin: 32px 0 24px 0;
+      font-size: 3.2rem;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 2px;
+      color: var(--white);
+      text-shadow:
+        0 0 8px var(--white),
+        0 0 16px var(--blue),
+        0 0 32px var(--red),
+        0 0 48px var(--blue),
+        0 0 64px var(--red);
+      animation: glow-pulse 2s infinite alternate;
+    }
+
+
+    @keyframes glow-pulse {
+      from {
+        text-shadow:
+          0 0 8px var(--white),
+          0 0 16px var(--blue),
+          0 0 32px var(--red),
+          0 0 48px var(--blue),
+          0 0 64px var(--red);
+      }
+      to {
+        text-shadow:
+          0 0 16px var(--white),
+          0 0 32px var(--red),
+          0 0 64px var(--blue),
+          0 0 96px var(--red),
+          0 0 128px var(--blue);
+      }
+    }
+
+
+    /* Responsive gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto 40px auto;
+      justify-items: center;
+    }
+    .gallery a {
+      display: block;
+      width: 100%;
+      max-width: 40vw;
+      min-width: 200px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px 4px var(--white), 0 0 40px 8px var(--blue);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .gallery a:hover, .gallery a:focus {
+      transform: scale(1.05);
+      box-shadow: 0 0 32px 8px var(--red), 0 0 64px 16px var(--blue);
+      outline: none;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: var(--silver);
+    }
+
+
+    /* Bottom decoration */
+    .bottom-decor {
+      width: 90%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 5vw;
+      margin: 48px auto 24px auto;
+    }
+    .bottom-decor img {
+      width: 40vw;
+      max-width: 400px;
+      min-width: 180px;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 0 24px 6px var(--blue), 0 0 48px 12px var(--red);
+      background: var(--white);
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 700px) {
+      .header-img { max-width: 98vw; }
+      .gallery a { max-width: 90vw; }
+      .bottom-decor img { width: 90vw; max-width: 90vw; }
+      .glow-text { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Image -->
+  <img src="img1/1head1a.gif" alt="All American Pie Header" class="header-img">
+
+
+  <!-- Glowing Welcome Text -->
+  <div class="glow-text">
+    Welcome to All American Pie formal meeting of delegates
+  </div>
+
+
+  <!-- Clickable Gallery -->
+  <div class="gallery">
+    <a href="img1/1piehunt5_Image01.jpg" target="_blank">
+      <img src="img1/1piehunt5_Image01.jpg" alt="Pie Gallery Image 1" loading="lazy">
+    </a>
+    <a href="img1/1piehunt5_Image02.jpg" target="_blank">
+      <img src="img1/1piehunt5_Image02.jpg" alt="Pie Gallery Image 2" loading="lazy">
+    </a>
+    <a href="img1/1piehunt5_Image03.jpg" target="_blank">
+      <img src="img1/1piehunt5_Image03.jpg" alt="Pie Gallery Image 3" loading="lazy">
+    </a>
+    <a href="img1/1piehunt5_Image04.jpg" target="_blank">
+      <img src="img1/1piehunt5_Image04.jpg" alt="Pie Gallery Image 4" loading="lazy">
+    </a>
+    <a href="img1/1piehunt5_Image05.jpg" target="_blank">
+      <img src="img1/1piehunt5_Image05.jpg" alt="Pie Gallery Image 5" loading="lazy">
+    </a>
+    <a href="img1/1piehunt5_Image06.jpg" target="_blank">
+      <img src="img1/1piehunt5_Image06.jpg" alt="Pie Gallery Image 6" loading="lazy">
+    </a>
+    <a href="img1/1piehunt5_Image07.jpg" target="_blank">
+      <img src="img1/1piehunt5_Image07.jpg" alt="Pie Gallery Image 7" loading="lazy">
+    </a>
+  </div>
+
+
+  <!-- Bottom Decorative Images -->
+  <div class="bottom-decor">
+    <img src="img1/1pie5_Image01.png" alt="Pie Decoration 1" loading="lazy">
+    <img src="img1/1pie5_Image02.png" alt="Pie Decoration 2" loading="lazy">
+  </div>
+
+        <div>
+    <h1>Spetsnaz Central</h1>
+    <a href="https://octashitone.wixsite.com/spetsnaz-forever" class="button"><span>Spetsnaz Forever!</span></a>
+    <a href="https://spetsnaz-thornberrys.tumblr.com/" class="button"><span>Special  Thornberrys Adventure!</span></a>
+    <a href="https://www.youtube.com/@1011-z2m/videos" class="button"><span>Special Videos!</span></a>
+    <a href="https://app.ardrive.io/#/drives/f4c90f46-6021-4c01-9261-79ce49ebbe6b" class="button"><span>Special Ardrive Vault!</span></a>
+    <a href="https://2vrkkw4onykevqpte6tqcuiukl3jplktgt5fmhwaqxqum3f2k6fq.arweave.net/1WKlW45uFErB8yenAVEUUvaXrVM0-lYewIXhRmy6V4s/" class="button"><span>Special Website 1!</span></a>
+    <a href="https://6y5q3ct7i5bbs7u6yzztnwawtrnag7tlmnrrwxake2bbyqeih4kq.arweave.net/9jsNin9HQhl-nsZzNtgWnFoDfmtjYxtcCiaCHECIPxU/" class="button"><span>Special Website 2!</span></a>
+    <a href="https://qlr6ctsvizjimc4bt2g7umzkbfzuzvpac4vnanughphzovujbm5a.arweave.net/guPhTlVGUoYLgZ6N-jMqCXNM1eAXKtA2hjvPl1aJCzo/" class="button"><span>Special Website 3!</span></a>
+    <a href="https://i7wibljlkuciazksb2yi7vuzbgs2h2akizts6vm537cvikyebsba.arweave.net/R-yArStVBIBlUg6wj9aZCaWj6ApGZy9Vnd_FVCsEDII/" class="button"><span>Special Website 4!</span></a>
+    <a href="https://2rywdr4lzhkaivly7iwipdvhyic6czu2235mjxpg6scfm52o3mpq.arweave.net/1HFhx4vJ1ARVePosh46nwgXhZprW-sTd5vSEVndO2x8/" class="button"><span>Special Website 5!</span></a>
+    <a href="https://b3e3yuggfk3wpbabxxkjreawa57uylu4yvirrptjsr6axefmfwka.arweave.net/Dsm8UMYqt2eEAb3UmJAWB39MLpzFURi-aZR8C5CsLZQ/" class="button"><span>Special Website 6!</span></a>
+    <a href="https://ub7ypmibzgni5i6cwvb3b3ctvfmfk6ni5i3srzbi2svzsoghkrsa.arweave.net/oH-HsQHJmo6jwrVDsOxTqVhVeajqNyjkKNSrmTjHVGQ/" class="button"><span>Special Website 7!</span></a>
+    <a href="https://mzyesji7n4zc3ru4q3yc5uwetuhacej26ummzokicwnfkb5vl63q.arweave.net/ZnBJJR9vMi3GnIbwLtLEnQ4BETr1GMy5SBWaVQe1X7c/" class="button"><span>Special Website 8!</span></a>
+        </div>
+
+    <div class="logo-container2 pulse">
+        <img src="img1/amb1.jpg" 
+             alt="Logo showing dramatic baby silhouette against orange and green cosmic background with production line imagery" 
+             class="logo-img">
+    </div>
+</body>
+</html>

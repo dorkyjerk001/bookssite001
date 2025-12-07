@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hotel Inferno</title>
+<style>
+  :root {
+    --glow-blue: #00cfff;
+    --glow-cyan: #00f0ff;
+    --bg-dark: #001a26;
+    --modal-bg: rgba(0, 31, 51, 0.95);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0;
+    min-height: 100vh;
+    background: var(--bg-dark);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* Container with asymmetric curved glowing borders */
+  .container {
+    position: relative;
+    max-width: 1200px;
+    margin: 3vh auto 5vh auto;
+    padding: 3vh 3vw 5vh 3vw;
+    background:
+      linear-gradient(135deg, var(--glow-cyan), var(--glow-blue));
+    border-radius: 60% 40% 30% 70% / 40% 60% 70% 30%;
+    box-shadow:
+      0 0 30px 6px var(--glow-cyan),
+      inset 0 0 40px 8px var(--glow-blue);
+    overflow: visible;
+  }
+
+  .inner {
+    background: #002a3d;
+    border-radius: 40% 60% 70% 30% / 60% 40% 30% 70%;
+    padding: 2vh 2vw 4vh 2vw;
+    box-shadow:
+      inset 0 0 20px 3px var(--glow-cyan);
+    overflow: visible;
+  }
+
+  /* Title */
+  h1 {
+    text-align: center;
+    font-size: 3.5rem;
+    margin-bottom: 2vh;
+    color: var(--glow-cyan);
+    text-shadow:
+      0 0 10px var(--glow-cyan),
+      0 0 20px var(--glow-blue),
+      0 0 30px var(--glow-cyan);
+    animation: flicker 3s infinite alternate ease-in-out;
+    user-select: none;
+  }
+
+  @keyframes flicker {
+    0%, 100% { opacity: 1; text-shadow:
+      0 0 10px var(--glow-cyan),
+      0 0 20px var(--glow-blue),
+      0 0 30px var(--glow-cyan);}
+    50% { opacity: 0.85; text-shadow:
+      0 0 5px var(--glow-cyan),
+      0 0 10px var(--glow-blue);}
+  }
+
+  /* Front plane all images container */
+  .front-plane {
+    position: relative;
+    width: 100%;
+    min-height: 160vh;
+    margin-top: 1vh;
+    perspective: 1200px;
+    overflow: visible;
+
+    /* Center images horizontally */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3vw 3vh;
+  }
+
+  /* All images stacked absolutely on front plane */
+  .front-plane img {
+    position: relative; /* changed from absolute to relative for flex layout */
+    border-radius: 1.5vw;
+    box-shadow:
+      0 0 20px 6px var(--glow-blue),
+      0 0 40px 12px var(--glow-cyan);
+    filter: drop-shadow(0 0 8px var(--glow-cyan));
+    cursor: pointer;
+    transition:
+      transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.6s ease,
+      filter 0.6s ease;
+    image-rendering: pixelated;
+    max-width: 40vw;
+    max-height: 40vh;
+    user-select: none;
+    opacity: 1;
+    flex-shrink: 0;
+    /* Add subtle 3D floating animation */
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Different animation delays for variety */
+  .front-plane img:nth-child(odd) {
+    animation-delay: 0s;
+  }
+  .front-plane img:nth-child(even) {
+    animation-delay: 3s;
+  }
+
+  /* Logo special size and animation */
+  .logo {
+    width: 40vw;
+    max-width: 480px;
+    animation: floatSlow 6s ease-in-out infinite;
+    flex-basis: 100%;
+    margin-bottom: 2vh;
+  }
+
+  /* Floating animations */
+  @keyframes float {
+    0%, 100% { transform: translate3d(0, 0, 0) rotateY(0deg) rotateX(0deg); }
+    50% { transform: translate3d(0, 10px, 20px) rotateY(10deg) rotateX(5deg); }
+  }
+  @keyframes floatSlow {
+    0%, 100% { transform: translateY(0) rotateZ(0deg); }
+    50% { transform: translateY(-15px) rotateZ(3deg); }
+  }
+
+  /* Hover effect: bring image forward and intensify glow */
+  .front-plane img:hover {
+    transform: translateZ(60px) scale(1.1) rotateY(0deg) rotateX(0deg);
+    box-shadow:
+      0 0 40px 12px var(--glow-blue),
+      0 0 60px 20px var(--glow-cyan);
+    filter: drop-shadow(0 0 20px var(--glow-cyan));
+    z-index: 100 !important;
+  }
+
+  /* Tooltip style for accessibility */
+  .front-plane img[title] {
+    position: relative;
+  }
+  .front-plane img[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glow-cyan);
+    color: #001a26;
+    padding: 0.3em 0.6em;
+    border-radius: 0.5em;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    text-shadow: none;
+  }
+
+  /* Fullscreen modal overlay */
+  #modalOverlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--modal-bg);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    cursor: zoom-out;
+  }
+  #modalOverlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 1vw;
+    box-shadow:
+      0 0 40px 12px var(--glow-blue),
+      0 0 60px 20px var(--glow-cyan);
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+  <div class="container" aria-label="Main container with glowing asymmetric curved borders">
+    <div class="inner">
+      <h1>Hotel Inferno</h1>
+
+      <div class="front-plane" aria-label="All images displayed on front plane with animation">
+        <!-- Logo -->
+        <img src="img1/1lgo5_Image01.jpg" alt="Hotel Inferno Logo" class="logo" title="Hotel Inferno Logo" />
+
+        <!-- Gallery images all front plane -->
+        <img src="img1/1inferno5_Image01.jpg" alt="Gallery image 1" title="Gallery image 1" />
+        <img src="img1/1inferno5_Image14.jpg" alt="Gallery image 2" title="Gallery image 2" />
+        <img src="img1/1inferno5_Image27.jpg" alt="Gallery image 3" title="Gallery image 3" />
+        <img src="img1/1inferno5_Image02.jpg" alt="Gallery image 4" title="Gallery image 4" />
+        <img src="img1/1inferno5_Image15.jpg" alt="Gallery image 5" title="Gallery image 5" />
+        <img src="img1/1inferno5_Image28.jpg" alt="Gallery image 6" title="Gallery image 6" />
+        <img src="img1/1inferno5_Image03.jpg" alt="Gallery image 7" title="Gallery image 7" />
+        <img src="img1/1inferno5_Image16.jpg" alt="Gallery image 8" title="Gallery image 8" />
+        <img src="img1/1inferno5_Image29.jpg" alt="Gallery image 9" title="Gallery image 9" />
+        <img src="img1/1inferno5_Image04.jpg" alt="Gallery image 10" title="Gallery image 10" />
+
+        <img src="img1/1inferno5_Image17.jpg" alt="Gallery image 11" title="Gallery image 11" />
+        <img src="img1/1inferno5_Image30.jpg" alt="Gallery image 12" title="Gallery image 12" />
+        <img src="img1/1inferno5_Image05.jpg" alt="Gallery image 13" title="Gallery image 13" />
+        <img src="img1/1inferno5_Image18.jpg" alt="Gallery image 14" title="Gallery image 14" />
+        <img src="img1/1inferno5_Image31.jpg" alt="Gallery image 15" title="Gallery image 15" />
+        <img src="img1/1inferno5_Image06.jpg" alt="Gallery image 16" title="Gallery image 16" />
+        <img src="img1/1inferno5_Image19.jpg" alt="Gallery image 17" title="Gallery image 17" />
+        <img src="img1/1inferno5_Image32.jpg" alt="Gallery image 18" title="Gallery image 18" />
+        <img src="img1/1inferno5_Image07.jpg" alt="Gallery image 19" title="Gallery image 19" />
+        <img src="img1/1inferno5_Image20.jpg" alt="Gallery image 20" title="Gallery image 20" />
+
+        <img src="img1/1inferno5_Image33.jpg" alt="Gallery image 21" title="Gallery image 21" />
+        <img src="img1/1inferno5_Image08.jpg" alt="Gallery image 22" title="Gallery image 22" />
+        <img src="img1/1inferno5_Image21.jpg" alt="Gallery image 23" title="Gallery image 23" />
+        <img src="img1/1inferno5_Image34.jpg" alt="Gallery image 24" title="Gallery image 24" />
+        <img src="img1/1inferno5_Image09.jpg" alt="Gallery image 25" title="Gallery image 25" />
+        <img src="img1/1inferno5_Image22.jpg" alt="Gallery image 26" title="Gallery image 26" />
+        <img src="img1/1inferno5_Image35.jpg" alt="Gallery image 27" title="Gallery image 27" />
+        <img src="img1/1inferno5_Image10.jpg" alt="Gallery image 28" title="Gallery image 28" />
+        <img src="img1/1inferno5_Image23.jpg" alt="Gallery image 29" title="Gallery image 29" />
+        <img src="img1/1inferno5_Image36.jpg" alt="Gallery image 30" title="Gallery image 30" />
+
+        <img src="img1/1inferno5_Image11.jpg" alt="Gallery image 31" title="Gallery image 31" />
+        <img src="img1/1inferno5_Image24.jpg" alt="Gallery image 32" title="Gallery image 32" />
+        <img src="img1/1inferno5_Image37.jpg" alt="Gallery image 33" title="Gallery image 33" />
+        <img src="img1/1inferno5_Image12.jpg" alt="Gallery image 34" title="Gallery image 34" />
+        <img src="img1/1inferno5_Image25.jpg" alt="Gallery image 35" title="Gallery image 35" />
+        <img src="img1/1inferno5_Image38.jpg" alt="Gallery image 36" title="Gallery image 36" />
+        <img src="img1/1inferno5_Image13.jpg" alt="Gallery image 37" title="Gallery image 37" />
+        <img src="img1/1inferno5_Image26.jpg" alt="Gallery image 38" title="Gallery image 38" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen modal overlay -->
+  <div id="modalOverlay" role="dialog" aria-modal="true" aria-label="Fullscreen image viewer">
+    <img src="" alt="Fullscreen preview" />
+  </div>
+
+<script>
+  const modal = document.getElementById('modalOverlay');
+  const modalImg = modal.querySelector('img');
+
+  // Open modal on image click
+  document.querySelectorAll('.front-plane img').forEach(img => {
+    img.addEventListener('click', e => {
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modal.style.display = 'flex';
+      // Prevent body scroll while modal open
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  // Close modal on overlay click
+  modal.addEventListener('click', e => {
+    if (e.target === modal || e.target === modalImg) {
+      modal.style.display = 'none';
+      modalImg.src = '';
+      modalImg.alt = '';
+      document.body.style.overflow = 'auto';
+    }
+  });
+
+  // Close modal on ESC key
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.style.display === 'flex') {
+      modal.style.display = 'none';
+      modalImg.src = '';
+      modalImg.alt = '';
+      document.body.style.overflow = 'auto';
+    }
+  });
+</script>
+</body>
+</html>

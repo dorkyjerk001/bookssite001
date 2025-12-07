@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Google Search API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .loading {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result-item {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .result-title {
+            font-size: 18px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .result-title:hover {
+            text-decoration: underline;
+        }
+        .result-snippet {
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Automatic Google Search API Results</h1>
+    <div class="loading" id="loading">Loading results...</div>
+    <div class="results" id="results"></div>
+
+    <script>
+        const apiKey = "AIzaSyBuGeT4KwRUcYToiYRF0M3C7S0FvlXCf-I"; // Replace with your API key
+        const searchEngineId = "873d793753feb4f7a"; // Replace with your Custom Search Engine ID
+
+        // Function to generate random search queries
+        function generateRandomQueries() {
+            const baseTags = [
+                "bottomless girl", "bottomless female", "bottomless woman", 
+                "girl with no pants", "pantless girl", "bottomless girl red shirt", 
+                "bottomless girl yellow shirt", "bottomless girl jacket", 
+                "bottomless girl in a dress", "bottomless girl with accessories"
+            ];
+
+            const additionalTags = [
+                "bottomless girl in a park", "bottomless girl at the beach", 
+                "bottomless girl with friends", "bottomless girl in a city", 
+                "bottomless girl in a cafe", "bottomless girl in a party", 
+                "bottomless girl with a hat", "bottomless girl in a summer dress", 
+                "bottomless girl with sunglasses", "bottomless girl in a winter coat",
+                "bottomless girl in a garden", "bottomless girl at a concert",
+                "bottomless girl in a movie", "bottomless girl at a festival",
+                "bottomless girl in a magazine", "bottomless girl in a photoshoot",
+                "bottomless girl with a dog", "bottomless girl in a car",
+                "bottomless girl at a pool", "bottomless girl in a hotel"
+            ];
+
+            // Combine and shuffle the tags
+            const allTags = baseTags.concat(additionalTags);
+            const shuffledTags = allTags.sort(() => 0.5 - Math.random());
+
+            // Select a subset of 10 random tags
+            return shuffledTags.slice(0, 10);
+        }
+
+        // Function to perform the search
+        async function fetchSearchResults(query) {
+            const apiUrl = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&key=${apiKey}&cx=${searchEngineId}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const result = await response.json(); // Get the response as JSON
+
+                // Check if items exist in the response
+                if (result.items && result.items.length > 0) {
+                    const resultsContainer = document.getElementById('results');
+
+                    result.items.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'result-item';
+
+                        // Create a link for the title
+                        const titleLink = document.createElement('a');
+                        titleLink.href = item.link; // Link to the result
+                        titleLink.target = '_blank'; // Open link in a new tab
+                        titleLink.className = 'result-title';
+                        titleLink.innerText = item.title; // Set the title text
+
+                        // Create a snippet paragraph
+                        const snippetParagraph = document.createElement('p');
+                        snippetParagraph.className = 'result-snippet';
+                        snippetParagraph.innerText = item.snippet; // Set the snippet text
+
+                        // Append elements to the item div
+                        itemDiv.appendChild(titleLink);
+                        itemDiv.appendChild(snippetParagraph);
+                        resultsContainer.appendChild(itemDiv);
+                    });
+                } else {
+                    document.getElementById('results').innerText = "No results found.";
+                }
+            } catch (error) {
+                console.error("Error fetching search results:", error);
+                document.getElementById('results').innerText = "Error fetching results.";
+            }
+        }
+
+        // Automatically search for each random query
+        async function performSearches() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').innerHTML = '';
+
+            const randomQueries = generateRandomQueries();
+            for (const query of randomQueries) {
+                await fetchSearchResults(query);
+            }
+
+            document.getElementById('loading').style.display = 'none'; // Hide loading message
+        }
+
+        // Start the automatic search
+        performSearches();
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sally the Rat</title>
+<style>
+    html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #111;
+        font-family: Arial, sans-serif;
+    }
+
+    #container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        cursor: grab;
+    }
+
+    #art {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform-origin: center center;
+        transform: translate(-50%, -50%) scale(1);
+        transition: transform 0.05s linear;
+        image-rendering: auto;
+        max-width: none;
+    }
+
+    #fullscreen-btn {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        background: rgba(255,255,255,0.9);
+        border: none;
+        padding: 8px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 6px;
+    }
+</style>
+</head>
+<body>
+
+<button id="fullscreen-btn">Fullscreen</button>
+
+<div id="container">
+    <img id="art" src="ratsy001.jpg" alt="Sally the rat artwork">
+</div>
+
+<script>
+const container = document.getElementById("container");
+const art = document.getElementById("art");
+let scale = 1;
+let posX = 0;
+let posY = 0;
+let isDragging = false;
+let startX, startY;
+
+// Zoom with mouse wheel
+container.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const zoomIntensity = 0.1;
+    const wheel = e.deltaY < 0 ? 1 : -1;
+    const prevScale = scale;
+    scale += wheel * zoomIntensity;
+    scale = Math.min(Math.max(0.2, scale), 10);
+
+    // Zoom relative to cursor position
+    const rect = container.getBoundingClientRect();
+    const dx = (e.clientX - rect.left - posX);
+    const dy = (e.clientY - rect.top - posY);
+
+    posX -= dx * (scale - prevScale) / scale;
+    posY -= dy * (scale - prevScale) / scale;
+
+    updateTransform();
+});
+
+// Drag to pan
+container.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    container.style.cursor = "grabbing";
+    startX = e.clientX - posX;
+    startY = e.clientY - posY;
+});
+window.addEventListener("mouseup", () => {
+    isDragging = false;
+    container.style.cursor = "grab";
+});
+window.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    posX = e.clientX - startX;
+    posY = e.clientY - startY;
+    updateTransform();
+});
+
+// Apply transforms
+function updateTransform() {
+    art.style.transform =
+        `translate(calc(-50% + ${posX}px), calc(-50% + ${posY}px)) scale(${scale})`;
+}
+
+// Fullscreen toggle
+const fsBtn = document.getElementById("fullscreen-btn");
+
+fsBtn.onclick = toggleFullscreen;
+document.addEventListener("keydown", e => {
+    if (e.key.toLowerCase() === "f") toggleFullscreen();
+});
+
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        fsBtn.textContent = "Exit Fullscreen";
+    } else {
+        document.exitFullscreen();
+        fsBtn.textContent = "Fullscreen";
+    }
+}
+</script>
+
+</body>
+</html>

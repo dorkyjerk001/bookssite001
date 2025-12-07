@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Official Camera Statement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Pixelated background using CSS */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: repeating-linear-gradient(
+        135deg,
+        #2d2d44 0px, #2d2d44 8px,
+        #39395c 8px, #39395c 16px
+      );
+      image-rendering: pixelated;
+      font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+      color: #f8f8f2;
+      overflow-x: hidden;
+      animation: bgMove 10s linear infinite alternate;
+    }
+    @keyframes bgMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 100px 100px; }
+    }
+
+    /* Library bookshelf styling */
+    .bookshelf {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 12px;
+      margin: 40px 0 0 0;
+      height: 120px;
+      position: relative;
+      z-index: 2;
+    }
+    .book {
+      width: 28px;
+      height: 80px;
+      background: linear-gradient(90deg, #b5651d 60%, #e2a76f 100%);
+      border: 2px solid #7c4700;
+      border-radius: 3px 3px 2px 2px;
+      box-shadow: 0 4px 0 #222, 0 0 0 4px #fff2;
+      position: relative;
+      animation: bookWobble 2.5s infinite alternate;
+      transition: transform 0.2s;
+    }
+    .book:nth-child(2n) { background: linear-gradient(90deg, #3b3b6d 60%, #6c6cb2 100%); }
+    .book:nth-child(3n) { background: linear-gradient(90deg, #4e9a06 60%, #8ae234 100%); }
+    .book:nth-child(4n) { background: linear-gradient(90deg, #a40000 60%, #ef2929 100%); }
+    .book:hover { transform: scale(1.1) rotate(-2deg); }
+    @keyframes bookWobble {
+      0% { transform: rotate(-2deg) scaleY(1); }
+      100% { transform: rotate(2deg) scaleY(1.05); }
+    }
+    .shelf {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 16px;
+      background: #7c4700;
+      box-shadow: 0 2px 8px #0008;
+      z-index: 1;
+    }
+
+    /* Book label for the title */
+    .book-label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-90deg);
+      font-size: 10px;
+      color: #fff;
+      text-shadow: 1px 1px 0 #000, 0 0 2px #fff;
+      letter-spacing: 1px;
+      width: 80px;
+      text-align: center;
+      pointer-events: none;
+      user-select: none;
+    }
+    .book:first-child .book-label {
+      font-weight: bold;
+      color: #ffe066;
+      text-shadow: 2px 2px 0 #7c4700, 0 0 4px #fff;
+    }
+
+    /* Statement container styled as a pixelated book page */
+    .statement-container {
+      max-width: 600px;
+      margin: 40px auto 0 auto;
+      background: repeating-linear-gradient(
+        to bottom,
+        #fff8e1 0px, #fff8e1 4px,
+        #f5e6c8 4px, #f5e6c8 8px
+      );
+      border: 4px solid #b5651d;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px #000a, 0 0 0 8px #fff2;
+      padding: 32px 28px;
+      font-size: 1.1rem;
+      color: #2d2d44;
+      font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+      line-height: 1.7;
+      position: relative;
+      z-index: 2;
+      filter: url(#pixelate);
+      animation: pageFloat 4s ease-in-out infinite alternate;
+    }
+    @keyframes pageFloat {
+      0% { transform: translateY(0) scale(1); box-shadow: 0 8px 32px #000a; }
+      100% { transform: translateY(-10px) scale(1.01); box-shadow: 0 16px 48px #000c; }
+    }
+
+    /* Animated pixel border */
+    .statement-container::before, .statement-container::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 8px;
+      background: repeating-linear-gradient(
+        90deg,
+        #b5651d 0px, #b5651d 4px,
+        #fff8e1 4px, #fff8e1 8px
+      );
+      z-index: 3;
+      animation: borderAnim 2s linear infinite alternate;
+    }
+    .statement-container::before { top: 0; }
+    .statement-container::after { bottom: 0; }
+    @keyframes borderAnim {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 32px; }
+    }
+
+    /* Title styling */
+    .statement-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #a40000;
+      text-shadow: 2px 2px 0 #fff8e1, 0 0 8px #a40000;
+      margin-bottom: 18px;
+      letter-spacing: 2px;
+      text-align: center;
+      font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+      animation: titlePulse 2s infinite alternate;
+    }
+    @keyframes titlePulse {
+      0% { color: #a40000; text-shadow: 2px 2px 0 #fff8e1, 0 0 8px #a40000; }
+      100% { color: #ef2929; text-shadow: 2px 2px 0 #fff8e1, 0 0 16px #ef2929; }
+    }
+
+    /* Pixel shader effect using SVG filter (simulated) */
+    /* For real pixel shader, WebGL/canvas is needed, but this is a CSS/SVG approximation */
+    svg { display: none; }
+
+    /* Responsive adjustments */
+    @media (max-width: 700px) {
+      .statement-container { padding: 16px 6px; font-size: 0.95rem; }
+      .bookshelf { height: 80px; }
+      .book { width: 18px; height: 50px; }
+    }
+  </style>
+  <!-- Pixel font from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Animated pixelated bookshelf -->
+  <div class="bookshelf">
+    <div class="book"><span class="book-label">Official Camera Statement</span></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+    <div class="book"></div>
+  </div>
+  <div class="shelf"></div>
+
+  <!-- Statement as a book page -->
+  <div class="statement-container">
+    <div class="statement-title">Official statement over illigaly occupied territory.</div>
+    <div class="statement-text">
+      As i have not any possibility to realy contact the<br>
+      device owner who is a my poor moronic neighbor - i release<br>
+      this statement to officialy address and comment this issue.<br><br>
+      As i might just realy invite many people out there as<br>
+      a neighbors of virtualy extemnded building. I wanna apply<br>
+      a real life social rules onto this territory such as<br>
+      human behaviour. Obviously for many reasons such as disguast<br>
+      and hatered i am officialy not allowing morons that keep recieving<br>
+      an invitation to go fuck themselfs, not allowing to play hide and<br>
+      seek on a realy reallife private territory. Personaly i realy up to<br>
+      physicaly remove their bodies from playing hide and seek due to<br>
+      a valuable nature of a territory i and my moronic parents realy own.
+    </div>
+  </div>
+
+  <!-- SVG filter for pixelation (simulated pixel shader effect) -->
+  <svg>
+    <filter id="pixelate" x="0" y="0">
+      <feFlood x="4" y="4" height="4" width="4" />
+      <feComposite in2="SourceGraphic" operator="in" />
+      <feMorphology operator="dilate" radius="1" />
+    </filter>
+  </svg>
+
+  <!-- Canvas for animated pixel shader effect (optional, for extra motion) -->
+  <canvas id="pixel-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:0;"></canvas>
+  <script>
+    // Simple animated pixel effect on the background using canvas
+    const canvas = document.getElementById('pixel-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function drawPixels(time) {
+      const w = canvas.width, h = canvas.height;
+      const pixelSize = 16;
+      ctx.clearRect(0, 0, w, h);
+      for (let y = 0; y < h; y += pixelSize) {
+        for (let x = 0; x < w; x += pixelSize) {
+          // Animate color based on time and position for a "shader" effect
+          const r = Math.floor(40 + 40 * Math.sin((x + time/10) * 0.02));
+          const g = Math.floor(40 + 40 * Math.sin((y + time/20) * 0.03));
+          const b = Math.floor(60 + 60 * Math.sin((x + y + time/15) * 0.01));
+          ctx.fillStyle = `rgb(${r},${g},${b})`;
+          ctx.fillRect(x, y, pixelSize, pixelSize);
+        }
+      }
+      requestAnimationFrame(drawPixels);
+    }
+    requestAnimationFrame(drawPixels);
+  </script>
+</body>
+</html>

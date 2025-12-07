@@ -1,0 +1,104 @@
+/* General body styles */
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Press Start 2P', cursive; /* Retro font */
+    background-color: #000; /* Black background for retro feel */
+}
+
+/* Canvas styling */
+canvas {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Controls styling */
+.controls {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2; /* Ensure controls are above the canvas */
+}
+
+/* Button styling */
+button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid #fff;
+    border-radius: 5px;
+    color: #fff;
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+/* Button hover effect */
+button:hover {
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 105, 180, 0.8);
+}
+
+/* Glitch effect for the canvas */
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(2px, -2px); }
+    60% { transform: translate(-2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+canvas {
+    animation: glitch 1s infinite; /* Apply glitch effect */
+}
+
+/* Particle effect */
+@keyframes particle {
+    0% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-50px); }
+}
+
+/* Particle styling */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 105, 180, 0.8);
+    animation: particle 1s forwards; /* Animate particles */
+}
+
+/* Retro glow effect */
+.glow {
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.8), 0 0 30px rgba(255, 105, 180, 0.5);
+}
+
+/* Weather effects */
+@keyframes rain {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100vh); }
+}
+
+.rain {
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    animation: rain linear infinite;
+}
+
+/* Add random wind effect */
+@keyframes wind {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(-10px); }
+}
+
+.wind {
+    animation: wind 1s infinite alternate; /* Apply wind effect */
+}

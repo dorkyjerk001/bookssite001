@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Damned to the FLOOR</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #111;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    header {
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 10px;
+      width: 90%;
+      max-width: 1600px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: auto;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.03);
+      opacity: 0.9;
+    }
+
+    /* Fullscreen Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+    }
+
+    .lightbox .close, .lightbox .prev, .lightbox .next {
+      position: absolute;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .lightbox .close { top: 20px; right: 30px; }
+    .lightbox .prev { left: 30px; }
+    .lightbox .next { right: 30px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Damned to the FLOOR</h1>
+  </header>
+
+  <div class="gallery" id="gallery"></div>
+
+  <div class="lightbox" id="lightbox">
+    <span class="close" id="close">&times;</span>
+    <span class="prev" id="prev">&#10094;</span>
+    <img id="lightbox-img" src="" alt="Fullscreen Image">
+    <span class="next" id="next">&#10095;</span>
+  </div>
+
+  <script>
+    const images = [
+      '1hse001.jpg','1hse002.jpg','1hse003.jpg','1hse004.jpg','1hse005.jpg','1hse006.jpg',
+      '1hse007.jpg','1hse008.jpg','1hse009.jpg','1hse010.jpg','1hse011.jpg','1hse012.jpg',
+      '1hse013.jpg','1hse014.jpg','1hse015.jpg','1hse016.jpg','1hse017.jpg','1hse018.jpg',
+      '1hse019.jpg','1hse020.jpg','1hse021.jpg','1hse022.jpg','1hse023.jpg','1hse024.jpg',
+      '1hse025.jpg','1hse026.jpg','1hse027.jpg','1hse028.jpg'
+    ];
+
+    const gallery = document.getElementById('gallery');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.getElementById('close');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+
+    let currentIndex = 0;
+
+    // Populate gallery
+    images.forEach((img, index) => {
+      const imageEl = document.createElement('img');
+      imageEl.src = img;
+      imageEl.alt = `Project Image ${index + 1}`;
+      imageEl.addEventListener('click', () => openLightbox(index));
+      gallery.appendChild(imageEl);
+    });
+
+    function openLightbox(index) {
+      currentIndex = index;
+      lightboxImg.src = images[index];
+      lightbox.style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      lightbox.style.display = 'none';
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % images.length;
+      lightboxImg.src = images[currentIndex];
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      lightboxImg.src = images[currentIndex];
+    }
+
+    closeBtn.addEventListener('click', closeLightbox);
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.style.display === 'flex') {
+        if (e.key === 'ArrowRight') showNext();
+        else if (e.key === 'ArrowLeft') showPrev();
+        else if (e.key === 'Escape') closeLightbox();
+      }
+    });
+  </script>
+</body>
+</html>

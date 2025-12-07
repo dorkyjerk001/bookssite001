@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Studio office presents: the office studio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #111;
+    color: #0ff;
+    font-family: 'Press Start 2P', cursive;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    user-select: none;
+    position: relative;
+    z-index: 0;
+  }
+
+  /* Parallax background */
+  .parallax-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-image: url('1bg166_Image01.jpg');
+    background-size: 50%;
+    background-position: center;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    filter: brightness(0.75);
+    z-index: -1000;
+    will-change: transform;
+    transition: transform 0.1s ease-out;
+    pointer-events: none;
+    /* fallback bg color so we know it's visible */
+    background-color: #222;
+  }
+
+  header {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    text-shadow:
+      2px 2px 0 #000,
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000;
+    position: relative;
+    z-index: 10;
+  }
+  header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  header img.divider {
+    max-width: 100%;
+    max-height: 120px;
+    object-fit: contain;
+  }
+
+  .gallery-grid {
+    width: 40vw;
+    max-width: 600px;
+    margin: 3rem auto 5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    border: 4px solid #0ff;
+    background-color: #222;
+    box-shadow:
+      0 0 10px #0ff,
+      inset 0 0 8px #0ff;
+    border-radius: 8px;
+    padding: 1rem;
+    user-select: none;
+    position: relative;
+    z-index: 10;
+  }
+
+  .gallery-grid img {
+    width: 100%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .gallery-grid img:hover,
+  .gallery-grid img:focus {
+    transform: scale(1.05);
+    border-color: #0ff;
+    outline: none;
+  }
+
+  #fullscreenOverlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  #fullscreenOverlay.visible {
+    visibility: visible;
+    opacity: 1;
+  }
+  #fullscreenOverlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    cursor: zoom-out;
+    border: 4px solid #0ff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #0ff;
+  }
+
+  .fullscreen-controls {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    z-index: 10000;
+  }
+  .fullscreen-controls button {
+    background: #0ff;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+    user-select: none;
+  }
+  .fullscreen-controls button:hover {
+    background: #06c;
+    color: #0ff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #111;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #0ff;
+    border-radius: 6px;
+    border: 3px solid #111;
+  }
+</style>
+</head>
+<body>
+
+<div class="parallax-bg" id="parallaxBg"></div>
+
+<header>
+  <h1>Studio office presents: the office studio</h1>
+  <img src="1cau166a.png" alt="Divider" class="divider" />
+</header>
+
+<div class="gallery-grid" aria-label="Image gallery" role="list">
+  <img src="studodoo001.jpg" alt="Gallery image 1" tabindex="0" role="listitem" />
+  <img src="studodoo002.jpg" alt="Gallery image 2" tabindex="0" role="listitem" />
+  <img src="studodoo003.jpg" alt="Gallery image 3" tabindex="0" role="listitem" />
+  <img src="studodoo004.jpg" alt="Gallery image 4" tabindex="0" role="listitem" />
+  <img src="studodoo005.jpg" alt="Gallery image 5" tabindex="0" role="listitem" />
+</div>
+
+<div id="fullscreenOverlay" role="dialog" aria-modal="true" aria-label="Fullscreen image view">
+  <img src="" alt="Fullscreen gallery image" id="fullscreenImage" />
+  <div class="fullscreen-controls">
+    <button id="prevBtn" aria-label="Previous image">Prev</button>
+    <button id="closeBtn" aria-label="Close fullscreen">Close</button>
+    <button id="nextBtn" aria-label="Next image">Next</button>
+  </div>
+</div>
+
+<script>
+  const parallaxBg = document.getElementById('parallaxBg');
+  window.addEventListener('mousemove', e => {
+    // Move background max 15px in each direction, subtle effect
+    const x = (e.clientX / window.innerWidth - 0.5) * 15;
+    const y = (e.clientY / window.innerHeight - 0.5) * 15;
+    parallaxBg.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1.05)`;
+  });
+
+  const galleryGrid = document.querySelector('.gallery-grid');
+  const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+  const fullscreenImage = document.getElementById('fullscreenImage');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const closeBtn = document.getElementById('closeBtn');
+
+  const galleryImages = Array.from(galleryGrid.querySelectorAll('img'));
+  const images = galleryImages.map(img => ({ src: img.src, alt: img.alt }));
+
+  let currentIndex = 0;
+
+  function openFullscreen(index) {
+    currentIndex = index;
+    updateFullscreenImage();
+    fullscreenOverlay.classList.add('visible');
+    closeBtn.focus();
+  }
+
+  function updateFullscreenImage() {
+    fullscreenImage.src = images[currentIndex].src;
+    fullscreenImage.alt = images[currentIndex].alt;
+  }
+
+  function closeFullscreen() {
+    fullscreenOverlay.classList.remove('visible');
+  }
+
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    updateFullscreenImage();
+  }
+
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % images.length;
+    updateFullscreenImage();
+  }
+
+  galleryImages.forEach((img, i) => {
+    img.addEventListener('click', () => openFullscreen(i));
+    img.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openFullscreen(i);
+      }
+    });
+  });
+
+  prevBtn.addEventListener('click', prevImage);
+  nextBtn.addEventListener('click', nextImage);
+  closeBtn.addEventListener('click', closeFullscreen);
+
+  fullscreenOverlay.addEventListener('click', e => {
+    if (e.target === fullscreenOverlay) closeFullscreen();
+  });
+
+  window.addEventListener('keydown', e => {
+    if (!fullscreenOverlay.classList.contains('visible')) return;
+    if (e.key === 'Escape') closeFullscreen();
+    else if (e.key === 'ArrowRight') nextImage();
+    else if (e.key === 'ArrowLeft') prevImage();
+  });
+</script>
+
+</body>
+</html>

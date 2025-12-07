@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCV deployed</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+  /* Reset & base */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body, html {
+    min-height: 100%;
+    background: radial-gradient(circle at center, #0a0a0a 0%, #000000 90%);
+    font-family: 'Orbitron', monospace, sans-serif;
+    color: #ff2a2a;
+    user-select: none;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+
+  /* Container */
+  #container {
+    position: relative;
+    width: 100vw;
+    min-height: 300vh; /* enough height for scrolling */
+    perspective: 1200px;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    gap: 25vh; /* vertical spacing between elements = 50% viewport height */
+    z-index: 10;
+  }
+
+  /* Title with glowing shader & fake 3D */
+  h1 {
+    font-size: 5vw;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: #ff1a1a;
+    text-shadow:
+      0 0 10px #ff1a1a,
+      0 0 20px #ff1a1a,
+      0 0 30px #ff4d4d,
+      0 0 40px #ff4d4d,
+      0 0 70px #ff0000,
+      0 0 80px #ff0000,
+      0 0 100px #ff0000,
+      0 0 150px #ff0000;
+    transform-style: preserve-3d;
+    animation: pulseGlow 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    0% {
+      text-shadow:
+        0 0 10px #ff1a1a,
+        0 0 20px #ff1a1a,
+        0 0 30px #ff4d4d,
+        0 0 40px #ff4d4d,
+        0 0 70px #ff0000,
+        0 0 80px #ff0000,
+        0 0 100px #ff0000,
+        0 0 150px #ff0000;
+      transform: translateZ(0);
+    }
+    100% {
+      text-shadow:
+        0 0 20px #ff4d4d,
+        0 0 40px #ff4d4d,
+        0 0 60px #ff6666,
+        0 0 80px #ff6666,
+        0 0 100px #ff3300,
+        0 0 120px #ff3300,
+        0 0 140px #ff3300,
+        0 0 200px #ff3300;
+      transform: translateZ(20px);
+    }
+  }
+
+  /* Iframe container with fake 3D and subtle glow */
+  #iframe-wrapper {
+    width: 80vw;
+    height: 60vh;
+    border: 4px solid #ff1a1a;
+    border-radius: 12px;
+    box-shadow:
+      0 0 20px #ff1a1a,
+      0 0 40px #ff4d4d,
+      inset 0 0 30px #ff0000;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    animation: float3D 6s ease-in-out infinite alternate;
+  }
+
+  #iframe-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    filter:
+      drop-shadow(0 0 5px #ff2a2a)
+      drop-shadow(0 0 10px #ff4d4d);
+    transform-style: preserve-3d;
+  }
+
+  @keyframes float3D {
+    0% {
+      transform: rotateX(2deg) rotateY(-3deg) translateZ(0);
+      box-shadow:
+        0 0 20px #ff1a1a,
+        0 0 40px #ff4d4d,
+        inset 0 0 30px #ff0000;
+    }
+    100% {
+      transform: rotateX(-2deg) rotateY(3deg) translateZ(15px);
+      box-shadow:
+        0 0 40px #ff4d4d,
+        0 0 60px #ff6666,
+        inset 0 0 50px #ff3300;
+    }
+  }
+
+  /* Stylish glowing button */
+  #ardrive-btn {
+    font-family: 'Orbitron', monospace, sans-serif;
+    font-weight: 700;
+    font-size: 1.8vw;
+    color: #ff1a1a;
+    background: linear-gradient(45deg, #ff0000, #ff4d4d);
+    border: 3px solid #ff1a1a;
+    border-radius: 12px;
+    padding: 0.8em 2.5em;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    box-shadow:
+      0 0 10px #ff1a1a,
+      0 0 20px #ff4d4d,
+      0 0 30px #ff0000;
+    transition: all 0.3s ease;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  #ardrive-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255, 0, 0, 0.6), transparent 70%);
+    animation: pulseLight 3s linear infinite;
+    pointer-events: none;
+    filter: blur(10px);
+    z-index: 0;
+  }
+
+  #ardrive-btn:hover {
+    color: #fff;
+    background: linear-gradient(45deg, #ff3300, #ff6666);
+    box-shadow:
+      0 0 20px #ff3300,
+      0 0 40px #ff6666,
+      0 0 60px #ff3300;
+  }
+
+  #ardrive-btn span {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes pulseLight {
+    0% {
+      transform: rotate(0deg);
+      opacity: 0.7;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(360deg);
+      opacity: 0.7;
+    }
+  }
+
+  /* Canvas for radar effect */
+  #canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    background: transparent;
+  }
+</style>
+</head>
+<body>
+  <div id="container">
+    <h1>MCV DEPLOYED</h1>
+    <div id="iframe-wrapper">
+      <iframe src="https://y4fkgqltn7yqbps3ay4yy67nfetz56zwkmx25mx23aln4qyf6j7a.arweave.net/xwqjQXNv8QC-WwY5jHvtKSee-zZTL66y-tgW3kMF8n4/#slide1" allowfullscreen></iframe>
+    </div>
+    <button id="ardrive-btn" onclick="window.open('https://app.ardrive.io/#/drives/45ae46f2-8600-4a71-aa40-7c967ccb2059/folders/2099735f-6777-4eb5-a7cf-3e7953b857e5', '_blank')">
+      <span>Open ArDrive</span>
+    </button>
+  </div>
+  <canvas id="canvas"></canvas>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Radar sweep parameters
+  function getCenter() {
+    return { x: W / 2, y: H / 2 };
+  }
+  let sweepAngle = 0;
+
+  function drawRadar() {
+    ctx.clearRect(0, 0, W, H);
+
+    const { x: centerX, y: centerY } = getCenter();
+    const maxRadius = Math.min(W, H) * 0.45;
+
+    // Draw radar circles
+    ctx.strokeStyle = 'rgba(255, 0, 0, 0.3)';
+    ctx.lineWidth = 1;
+    for(let i = 1; i <= 5; i++) {
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, (maxRadius / 5) * i, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Draw cross lines
+    ctx.beginPath();
+    ctx.moveTo(centerX - maxRadius, centerY);
+    ctx.lineTo(centerX + maxRadius, centerY);
+    ctx.moveTo(centerX, centerY - maxRadius);
+    ctx.lineTo(centerX, centerY + maxRadius);
+    ctx.stroke();
+
+    // Draw sweeping radar beam
+    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
+    gradient.addColorStop(0, 'rgba(255, 0, 0, 0.4)');
+    gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+
+    ctx.fillStyle = gradient;
+
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.rotate(sweepAngle);
+
+    // Draw a pie slice for the sweep beam
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, maxRadius, -0.05, 0.05);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+
+    // Draw center glow
+    const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius * 0.1);
+    glowGradient.addColorStop(0, 'rgba(255, 0, 0, 0.8)');
+    glowGradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+    ctx.fillStyle = glowGradient;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, maxRadius * 0.1, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Increment sweep angle
+    sweepAngle += 0.015;
+    if (sweepAngle > Math.PI * 2) sweepAngle -= Math.PI * 2;
+  }
+
+  function animate() {
+    drawRadar();
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+</body>
+</html>

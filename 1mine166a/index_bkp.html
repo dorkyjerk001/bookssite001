@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>get your dirty hands off my stuff</title>
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    background: #f5f0e6;
+    font-family: 'Georgia', serif;
+    color: #4a3c31;
+    user-select: none;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  h1 {
+    margin: 2rem 0 1rem;
+    font-size: 2.8rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #c9bba3;
+    color: #6b4f3f;
+  }
+  /* Gallery container */
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 40vw;
+    max-width: 90vw;
+    justify-content: center;
+  }
+  .gallery img {
+    width: 100%;
+    max-width: 40vw;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow:
+      0 4px 8px rgba(74, 60, 49, 0.3),
+      0 0 10px rgba(74, 60, 49, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    object-fit: cover;
+  }
+  .gallery img:hover,
+  .gallery img:focus {
+    outline: none;
+    transform: scale(1.05);
+    box-shadow:
+      0 6px 12px rgba(74, 60, 49, 0.5),
+      0 0 20px rgba(74, 60, 49, 0.4);
+  }
+
+  /* Fullscreen overlay */
+  #viewer {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(74, 60, 49, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    overflow: hidden;
+    cursor: grab;
+  }
+  #viewer.active {
+    display: flex;
+  }
+  #viewer img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 16px;
+    box-shadow:
+      0 0 40px #6b4f3fcc,
+      0 0 80px #6b4f3f99;
+    transition: transform 0.1s ease-out;
+    user-select: none;
+    will-change: transform;
+    background: #f5f0e6;
+  }
+  #viewer:active {
+    cursor: grabbing;
+  }
+
+  /* Controls */
+  .controls {
+    position: fixed;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    user-select: none;
+    z-index: 10000;
+  }
+  button.control-btn {
+    pointer-events: auto;
+    background: #6b4f3f;
+    border: none;
+    color: #f5f0e6;
+    font-size: 3rem;
+    padding: 0.2rem 1rem;
+    border-radius: 12px;
+    margin: 0 1rem;
+    user-select: none;
+    box-shadow:
+      0 0 10px #6b4f3fcc;
+    transition: background 0.3s ease;
+    cursor: pointer;
+    font-family: 'Georgia', serif;
+  }
+  button.control-btn:hover {
+    background: #8a6a4a;
+  }
+
+  /* Close button */
+  #closeBtn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: #6b4f3f;
+    border: none;
+    color: #f5f0e6;
+    font-size: 2.5rem;
+    padding: 0.2rem 0.8rem;
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow:
+      0 0 10px #6b4f3fcc;
+    transition: background 0.3s ease;
+    z-index: 10001;
+    font-family: 'Georgia', serif;
+  }
+  #closeBtn:hover {
+    background: #8a6a4a;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .gallery {
+      width: 90vw;
+      gap: 0.8rem;
+    }
+    .gallery img {
+      max-width: 90vw;
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+  <h1>get your dirty hands off my stuff</h1>
+  <div class="gallery" aria-label="Home Sweet Home image gallery">
+    <img src="1mine166_Image01.jpg" alt="Home Sweet Home image 1" tabindex="0" />
+    <img src="1mine166_Image02.jpg" alt="Home Sweet Home image 2" tabindex="0" />
+    <img src="1mine166_Image03.jpg" alt="Home Sweet Home image 3" tabindex="0" />
+    <img src="1mine166_Image04.jpg" alt="Home Sweet Home image 4" tabindex="0" />
+    <img src="1mine166_Image05.jpg" alt="Home Sweet Home image 5" tabindex="0" />
+    <img src="1mine166_Image06.jpg" alt="Home Sweet Home image 6" tabindex="0" />
+    <img src="1mine166_Image07.jpg" alt="Home Sweet Home image 7" tabindex="0" />
+    <img src="1mine166_Image08.jpg" alt="Home Sweet Home image 8" tabindex="0" />
+    <img src="1mine166_Image09.jpg" alt="Home Sweet Home image 9" tabindex="0" />
+    <img src="1mine166_Image10.jpg" alt="Home Sweet Home image 10" tabindex="0" />
+  </div>
+
+  <!-- Fullscreen viewer -->
+  <div id="viewer" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button id="closeBtn" aria-label="Close viewer">&times;</button>
+    <img src="" alt="Zoomed Home Sweet Home image" />
+    <div class="controls">
+      <button class="control-btn" id="prevBtn" aria-label="Previous image">&#9664;</button>
+      <button class="control-btn" id="nextBtn" aria-label="Next image">&#9654;</button>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const images = [
+    "1mine166_Image01.jpg",
+    "1mine166_Image02.jpg",
+    "1mine166_Image03.jpg",
+    "1mine166_Image04.jpg",
+    "1mine166_Image05.jpg",
+    "1mine166_Image06.jpg",
+    "1mine166_Image07.jpg",
+    "1mine166_Image08.jpg",
+    "1mine166_Image09.jpg",
+    "1mine166_Image10.jpg"
+  ];
+  let currentIndex = 0;
+
+  const viewer = document.getElementById('viewer');
+  const viewerImg = viewer.querySelector('img');
+  const closeBtn = document.getElementById('closeBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const galleryImgs = document.querySelectorAll('.gallery img');
+
+  // Zoom & pan variables
+  let scale = 1;
+  let originX = 0;
+  let originY = 0;
+  let startX = 0;
+  let startY = 0;
+  let isDragging = false;
+  let velocityX = 0;
+  let velocityY = 0;
+  let animationFrame;
+
+  function resetTransform() {
+    scale = 1;
+    originX = 0;
+    originY = 0;
+    updateTransform();
+  }
+
+  function updateTransform() {
+    viewerImg.style.transform = `translate(${originX}px, ${originY}px) scale(${scale})`;
+  }
+
+  function openViewer(index) {
+    currentIndex = index;
+    viewerImg.src = images[currentIndex];
+    viewer.classList.add('active');
+    resetTransform();
+    document.body.style.overflow = 'hidden';
+    viewerImg.focus();
+  }
+
+  function closeViewer() {
+    viewer.classList.remove('active');
+    document.body.style.overflow = '';
+    cancelAnimationFrame(animationFrame);
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % images.length;
+    viewerImg.src = images[currentIndex];
+    resetTransform();
+  }
+
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    viewerImg.src = images[currentIndex];
+    resetTransform();
+  }
+
+  galleryImgs.forEach((img, i) => {
+    img.addEventListener('click', () => openViewer(i));
+    img.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openViewer(i);
+      }
+    });
+  });
+
+  closeBtn.addEventListener('click', closeViewer);
+  viewer.addEventListener('click', e => {
+    if (e.target === viewer) closeViewer();
+  });
+
+  nextBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    showNext();
+  });
+  prevBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    showPrev();
+  });
+
+  // Zoom with wheel
+  viewerImg.addEventListener('wheel', e => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    let newScale = scale + delta;
+    newScale = Math.min(Math.max(newScale, 1), 5);
+    if (newScale !== scale) {
+      const rect = viewerImg.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+      const dx = (offsetX - originX) / scale;
+      const dy = (offsetY - originY) / scale;
+
+      originX -= dx * (newScale - scale);
+      originY -= dy * (newScale - scale);
+
+      scale = newScale;
+      updateTransform();
+    }
+  }, { passive: false });
+
+  // Pan with drag + inertia
+  viewerImg.addEventListener('mousedown', e => {
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX - originX;
+    startY = e.clientY - originY;
+    velocityX = 0;
+    velocityY = 0;
+    viewerImg.style.cursor = 'grabbing';
+    cancelAnimationFrame(animationFrame);
+  });
+  window.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    viewerImg.style.cursor = 'grab';
+    inertia();
+  });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const prevX = originX;
+    const prevY = originY;
+    originX = e.clientX - startX;
+    originY = e.clientY - startY;
+    velocityX = originX - prevX;
+    velocityY = originY - prevY;
+    updateTransform();
+  });
+
+  function inertia() {
+    velocityX *= 0.92;
+    velocityY *= 0.92;
+    originX += velocityX;
+    originY += velocityY;
+    updateTransform();
+    if (Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1) {
+      animationFrame = requestAnimationFrame(inertia);
+    }
+  }
+
+  // Keyboard navigation
+  window.addEventListener('keydown', e => {
+    if (!viewer.classList.contains('active')) return;
+    if (e.key === 'Escape') {
+      closeViewer();
+    } else if (e.key === 'ArrowRight') {
+      showNext();
+    } else if (e.key === 'ArrowLeft') {
+      showPrev();
+    }
+  });
+})();
+</script>
+</body>
+</html>

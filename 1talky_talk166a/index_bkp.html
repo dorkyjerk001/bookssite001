@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Eliza's special message</title>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: linear-gradient(135deg, #a0d8f7, #ffd27f);
+    font-family: 'Trebuchet MS', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: #2c3e50;
+    overflow-x: hidden;
+    user-select: none;
+  }
+  header {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 1rem 0 0.5rem;
+    text-shadow: 2px 2px 8px #ffcc00;
+    color: #d9534f;
+    text-align: center;
+  }
+  #logoContainer {
+    width: 75vw;
+    max-width: 900px;
+    position: relative;
+    margin-bottom: 1rem;
+    overflow: visible;
+  }
+  #logo {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 0 24px rgba(217, 83, 79, 0.8);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    user-select: none;
+  }
+  #logo:hover {
+    box-shadow: 0 0 36px #d9534f;
+  }
+  #zoomHint {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #d9534f;
+    margin-bottom: 1rem;
+    user-select: none;
+  }
+  #clickMessage {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #d9534f;
+    text-align: center;
+    margin-bottom: 1.2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s ease;
+  }
+  #clickMessage:hover {
+    color: #b44141;
+  }
+  #audioControls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  button {
+    background-color: #d9534f;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    color: white;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(217, 83, 79, 0.7);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    user-select: none;
+  }
+  button:active {
+    transform: scale(0.95);
+  }
+  button:hover {
+    background-color: #c24343;
+  }
+  #statusMessage {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #555;
+    min-height: 1.5rem;
+    text-align: center;
+    user-select: none;
+  }
+  #dropdownContainer {
+    max-width: 75vw;
+    max-width: 900px;
+    background: rgba(255 255 255 / 0.9);
+    border-radius: 16px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.15);
+    padding: 1rem 1.5rem;
+    font-size: 1.15rem;
+    line-height: 1.45;
+    color: #3a3a3a;
+    user-select: text;
+    cursor: default;
+    margin-bottom: 3rem;
+  }
+  #dropdownToggle {
+    background: #d9534f;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 32px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(217, 83, 79, 0.6);
+    margin-bottom: 0.8rem;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  #dropdownToggle:hover {
+    background-color: #b44141;
+  }
+  #dropdownText {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, padding 0.5s ease;
+    padding: 0 0;
+  }
+  #dropdownText.open {
+    max-height: 500px; /* big enough for text */
+    padding: 1rem 0;
+  }
+</style>
+</head>
+<body>
+
+<header>Eliza's special message</header>
+
+<div id="logoContainer" role="img" aria-label="Eliza Thornberry logo image">
+  <img id="logo" src="1red166_Image04.jpg" alt="Eliza Thornberry" />
+</div>
+
+<div id="zoomHint" aria-live="polite" aria-atomic="true">
+  Scroll over the image to zoom in/out
+</div>
+
+<div id="clickMessage" tabindex="0" role="button" aria-pressed="false" aria-label="Play or pause Eliza's special message">
+  Click me to talk
+</div>
+
+<div id="audioControls" aria-live="polite" aria-atomic="true" aria-relevant="text">
+  <button id="playPauseBtn" aria-pressed="false" aria-label="Play special message">▶️ Play</button>
+</div>
+
+<div id="statusMessage" aria-live="polite" aria-atomic="true"></div>
+
+<div id="dropdownContainer">
+  <button id="dropdownToggle" aria-expanded="false" aria-controls="dropdownText">Show Eliza's message</button>
+  <div id="dropdownText" role="region" tabindex="0" aria-hidden="true">
+    Hi my name is Eliza Thornberry. People say I'm weird but I can talk to animals. You don't believe? Whatever! Because I don't really much care about people - especially men. ok? Me and my animal friends are having a lot of fun together without any people. Oh and by the way if you think I'm a nerd loser girl with a serious sexual starvation or problem to meet somebody to love? Wrong! Ha!!! Me and my animal friends having a lot of sex and party and seriously happy together without even inviting you in our beautiful perfect world...So... Beat it buster! And never come back!!!
+  </div>
+</div>
+
+<audio id="elizaAudio" src="1eliza_special1a.mp3" preload="auto"></audio>
+
+<script>
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const audio = document.getElementById('elizaAudio');
+  const statusMessage = document.getElementById('statusMessage');
+  const logo = document.getElementById('logo');
+  const clickMessage = document.getElementById('clickMessage');
+  const dropdownToggle = document.getElementById('dropdownToggle');
+  const dropdownText = document.getElementById('dropdownText');
+
+  let scale = 1;
+  const minScale = 1;
+  const maxScale = 3;
+  let lastScrollTime = 0;
+
+  // Zoom function on scroll over image
+  logo.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const now = Date.now();
+    // Throttle zooming to ~30fps max (33ms)
+    if (now - lastScrollTime < 33) return;
+    lastScrollTime = now;
+
+    const delta = -e.deltaY || e.wheelDelta;
+    if (delta > 0) {
+      scale = Math.min(scale + 0.1, maxScale);
+    } else {
+      scale = Math.max(scale - 0.1, minScale);
+    }
+    logo.style.transform = `scale(${scale})`;
+  }, { passive: false });
+
+  // Play/pause toggle logic
+  function updateButton(isPlaying) {
+    if (isPlaying) {
+      playPauseBtn.textContent = '⏸️ Pause';
+      playPauseBtn.setAttribute('aria-pressed', 'true');
+      clickMessage.textContent = "Hear Eliza's voice";
+      clickMessage.setAttribute('aria-pressed', 'true');
+      statusMessage.textContent = "Eliza is speaking...";
+      logo.style.filter = 'drop-shadow(0 0 12px #d9534f)';
+    } else {
+      playPauseBtn.textContent = '▶️ Play';
+      playPauseBtn.setAttribute('aria-pressed', 'false');
+      clickMessage.textContent = "Click me to talk";
+      clickMessage.setAttribute('aria-pressed', 'false');
+      statusMessage.textContent = "Click play or the image to hear Eliza's special message.";
+      logo.style.filter = 'none';
+    }
+  }
+
+  // Initialize status message
+  statusMessage.textContent = "Click play or the image to hear Eliza's special message.";
+
+  // Button click
+  playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) audio.play();
+    else audio.pause();
+  });
+
+  // Click message click toggles audio
+  clickMessage.addEventListener('click', () => {
+    if (audio.paused) audio.play();
+    else audio.pause();
+  });
+  // Keyboard accessibility for clickMessage
+  clickMessage.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      clickMessage.click();
+    }
+  });
+
+  // Logo click toggles audio as well
+  logo.addEventListener('click', () => {
+    if (audio.paused) audio.play();
+    else audio.pause();
+  });
+
+  // Update button states on audio events
+  audio.addEventListener('play', () => updateButton(true));
+  audio.addEventListener('pause', () => updateButton(false));
+  audio.addEventListener('ended', () => updateButton(false));
+
+  // Dropdown toggle logic
+  dropdownToggle.addEventListener('click', () => {
+    const isOpen = dropdownText.classList.toggle('open');
+    dropdownToggle.setAttribute('aria-expanded', isOpen);
+    dropdownText.setAttribute('aria-hidden', !isOpen);
+    dropdownToggle.textContent = isOpen ? "Hide Eliza's message" : "Show Eliza's message";
+  });
+
+  // Keyboard accessible dropdown toggle
+  dropdownToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      dropdownToggle.click();
+    }
+  });
+</script>
+
+</body>
+</html>

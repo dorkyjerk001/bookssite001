@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>I can't see without my glasses</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        #fdf6e3,
+        #fdf6e3 10px,
+        #eee8d5 10px,
+        #eee8d5 20px
+      );
+    font-family: 'Courier New', Courier, monospace;
+    color: #004400;
+    overflow-y: scroll;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Paper texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background:
+      url('https://www.transparenttextures.com/patterns/pw-maze-white.png') repeat;
+    opacity: 0.1;
+    z-index: 0;
+  }
+
+  /* Title */
+  h1 {
+    text-align: center;
+    margin: 1rem 0;
+    font-size: 2.5rem;
+    text-shadow:
+      1px 1px 0 #ccc,
+      2px 2px 0 #aaa;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Gallery container with vertical scroll and perspective */
+  .gallery {
+    max-width: 90vw;
+    max-height: 80vh;
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 20px;
+    padding: 20px;
+    border: 2px solid #004400;
+    background: rgba(255 255 255 / 0.85);
+    box-shadow:
+      inset 0 0 10px #004400;
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    perspective: 1200px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Scrollbar styling */
+  .gallery::-webkit-scrollbar {
+    width: 10px;
+  }
+  .gallery::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .gallery::-webkit-scrollbar-thumb {
+    background: #004400aa;
+    border-radius: 5px;
+  }
+
+  /* Each preview: 12vh height (2.5 times smaller than before), full width */
+  .gallery a {
+    flex: 0 0 12vh; /* reduced from 30vh */
+    scroll-snap-align: center;
+    display: block;
+    border: 1px solid #004400;
+    border-radius: 6px;
+    box-shadow: 0 0 8px #00440088;
+    background: white;
+    cursor: zoom-in;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+    width: 40%;
+    max-width: 40%;
+  }
+  .gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    display: block;
+  }
+  .gallery a:focus,
+  .gallery a:hover {
+    outline: 2px solid #004400;
+    box-shadow: 0 0 12px #004400cc;
+    transform: scale(1.05) rotateY(8deg);
+    z-index: 10;
+  }
+
+  /* Fullscreen overlay */
+  .fullscreen {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(240, 240, 220, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    overflow: auto;
+    scroll-behavior: smooth;
+  }
+  .fullscreen:target {
+    display: flex;
+  }
+
+  /* Fullscreen image */
+  .fullscreen img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border: 4px solid #004400;
+    border-radius: 6px;
+    box-shadow:
+      0 0 20px #004400cc;
+    cursor: grab;
+    user-select: none;
+  }
+
+  /* Close button */
+  .close-btn {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #004400;
+    background: #e0e0c0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 0 8px #004400aa;
+    z-index: 10000;
+  }
+  .close-btn:hover {
+    background: #c0c0a0;
+  }
+
+  /* Navigation arrows */
+  .nav-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    font-weight: bold;
+    color: #004400;
+    background: #e0e0c0;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 0 8px #004400aa;
+    z-index: 10000;
+    user-select: none;
+  }
+  .nav-arrow:hover {
+    background: #c0c0a0;
+  }
+  .nav-prev {
+    left: 20px;
+  }
+  .nav-next {
+    right: 20px;
+  }
+
+  /* Caption */
+  .caption {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #004400;
+    font-size: 1rem;
+    font-style: italic;
+    text-shadow: 1px 1px 0 #fff;
+    user-select: none;
+    z-index: 10000;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 700px) {
+    .gallery {
+      max-width: 95vw;
+      max-height: 70vh;
+    }
+    .gallery a {
+      flex: 0 0 16vh; /* slightly bigger on small screens */
+    }
+    .nav-arrow {
+      font-size: 2rem;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>I can't see without my glasses</h1>
+
+<div class="gallery" aria-label="Glasses images gallery">
+  <a href="#img1" aria-label="Open image 1 fullscreen"><img src="img1/1glasses166_Image01.jpg" alt="Glasses Image 01" /></a>
+  <a href="#img2" aria-label="Open image 2 fullscreen"><img src="img1/1glasses166_Image02.jpg" alt="Glasses Image 02" /></a>
+  <a href="#img3" aria-label="Open image 3 fullscreen"><img src="img1/1glasses166_Image03.jpg" alt="Glasses Image 03" /></a>
+  <a href="#img4" aria-label="Open image 4 fullscreen"><img src="img1/1glasses166_Image04.jpg" alt="Glasses Image 04" /></a>
+  <a href="#img5" aria-label="Open image 5 fullscreen"><img src="img1/1glasses166_Image05.jpg" alt="Glasses Image 05" /></a>
+  <a href="#img6" aria-label="Open image 6 fullscreen"><img src="img1/1glasses166_Image06.jpg" alt="Glasses Image 06" /></a>
+  <a href="#img7" aria-label="Open image 7 fullscreen"><img src="img1/1glasses166_Image07.jpg" alt="Glasses Image 07" /></a>
+</div>
+
+<!-- Fullscreen overlays with navigation -->
+<div id="img1" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 1">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img7" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="img1/1glasses166_Image01.jpg" alt="Glasses Image 01 Fullscreen" />
+  <a href="#img2" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img2" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 2">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img1" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="img1/1glasses166_Image02.jpg" alt="Glasses Image 02 Fullscreen" />
+  <a href="#img3" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img3" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 3">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img2" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="img1/1glasses166_Image03.jpg" alt="Glasses Image 03 Fullscreen" />
+  <a href="#img4" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img4" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 4">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img3" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="img1/1glasses166_Image04.jpg" alt="Glasses Image 04 Fullscreen" />
+  <a href="#img5" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img5" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 5">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img4" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="img1/1glasses166_Image05.jpg" alt="Glasses Image 05 Fullscreen" />
+  <a href="#img6" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img6" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 6">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img5" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="img1/1glasses166_Image06.jpg" alt="Glasses Image 06 Fullscreen" />
+  <a href="#img7" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img7" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 7">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img6" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="img1/1glasses166_Image07.jpg" alt="Glasses Image 07 Fullscreen" />
+  <a href="#img1" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+
+<div class="caption">Click an image to view fullscreen. Use arrows to navigate. Scroll or pinch to zoom and pan.</div>
+
+</body>
+</html>

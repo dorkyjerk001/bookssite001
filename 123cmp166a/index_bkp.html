@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Uranus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* Background and overall style */
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at center, #0b1a2d 0%, #000010 100%);
+      color: #a0c4ff;
+      font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 40px 20px 60px;
+      user-select: none;
+    }
+
+    /* Star field */
+    .stars {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      background: transparent;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      background: #a0c4ff;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 3s infinite alternate;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    /* Title container */
+    .title-container {
+      position: relative;
+      margin-top: 40px;
+      margin-bottom: 30px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 2;
+      text-align: center;
+      width: 260px;
+      height: 260px;
+    }
+    .title {
+      font-size: 4em;
+      font-weight: 900;
+      color: #87bfff;
+      letter-spacing: 5px;
+      text-shadow:
+        0 0 10px #87bfffaa,
+        0 0 20px #a0c4ffcc,
+        0 0 30px #87bfffdd;
+      animation: glow-pulse 2.7s ease-in-out infinite;
+      position: relative;
+      z-index: 10;
+      padding-top: 110px;
+      user-select: none;
+    }
+    @keyframes glow-pulse {
+      0%, 100% { text-shadow:
+        0 0 10px #87bfffaa,
+        0 0 20px #a0c4ffcc,
+        0 0 30px #87bfffdd;
+      }
+      50% { text-shadow:
+        0 0 20px #a0c4ffdd,
+        0 0 40px #87bfffdd,
+        0 0 60px #a0c4ffee;
+      }
+    }
+
+    /* Uranus planet with orbit rings */
+    .planet {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #7fb8ff 40%, #164a91 90%);
+      box-shadow:
+        0 0 20px #5a9cffaa,
+        inset -15px -10px 30px #a3c9ffcc,
+        inset 15px 10px 20px #1a3d7288;
+      cursor: pointer;
+      user-select: none;
+      z-index: 11;
+      animation: planet-glow 3.5s ease-in-out infinite;
+    }
+    /* Rings orbit */
+    .rings {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 220px;
+      height: 140px;
+      margin-left: -110px;
+      margin-top: -70px;
+      border: 3.5px solid rgba(135, 190, 255, 0.4);
+      border-radius: 50% / 35%;
+      transform: rotate(30deg);
+      box-shadow: 0 0 10px rgba(135, 190, 255, 0.3);
+      animation: slow-spin 40s linear infinite reverse;
+      pointer-events: none;
+      z-index: 9;
+    }
+
+    @keyframes slow-spin {
+      0% { transform: rotate(30deg);}
+      100% { transform: rotate(390deg);}
+    }
+    @keyframes planet-glow {
+      0%, 100% {
+        box-shadow:
+          0 0 20px #5a9cffaa,
+          inset -15px -10px 30px #a3c9ffcc,
+          inset 15px 10px 20px #1a3d7288;
+      }
+      50% {
+        box-shadow:
+          0 0 35px #7fc0ffcc,
+          inset -20px -12px 40px #c1d8ffdd,
+          inset 20px 15px 25px #1a3d7288;
+      }
+    }
+
+    /* Main text block */
+    .main-text {
+      max-width: 540px;
+      background: rgba(15, 26, 48, 0.85);
+      border-radius: 20px;
+      padding: 28px 36px;
+      color: #bcd9ff;
+      font-size: 1.18em;
+      line-height: 1.6;
+      box-shadow: 0 0 30px #2c4d7d88;
+      border: 2px solid #4f7fccaa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      user-select: text;
+      white-space: pre-line;
+      text-align: center;
+      margin-top: 24px;
+      z-index: 10;
+    }
+
+    /* Confetti container */
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      z-index: 9999;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .title { font-size: 2.8em; padding-top: 80px; }
+      .planet { width: 110px; height: 110px; top: 40px; }
+      .rings { width: 150px; height: 95px; margin-left: -75px; margin-top: -47.5px; }
+      .main-text { font-size: 1em; max-width: 90vw; padding: 22px 24px; }
+      .title-container { width: 200px; height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+
+  <div class="title-container" title="Click me for a cosmic surprise!">
+    <div class="planet" aria-label="Planet Uranus" role="img" tabindex="0"></div>
+    <div class="rings"></div>
+    <div class="title">Uranus</div>
+  </div>
+
+  <div class="main-text" tabindex="0">
+Uranus.
+
+I got so fed up with that binary and nonbinery bullshit.
+What is meat have to do with my beautiful art.
+You fucking cingle cell cells who cock-roach in my beloved
+appartament that i love unlike your pathetic and
+discusting presense in here. I don't be friends
+with that ass of a creatures - you fucking balls
+of a human.
+  </div>
+
+  <div class="confetti"></div>
+
+  <script>
+    // Create a star field
+    const starCount = 120;
+    const starsContainer = document.querySelector('.stars');
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      const size = Math.random() * 2 + 0.7;
+      star.style.width = star.style.height = size + 'px';
+      star.style.top = Math.random() * 100 + 'vh';
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.animationDuration = (2 + Math.random() * 3) + 's';
+      star.style.animationDelay = (Math.random() * 5) + 's';
+      starsContainer.appendChild(star);
+    }
+
+    // Confetti colors: icy blues and soft whites
+    const confettiColors = ['#9fc7ff', '#c2d9ff', '#dceeff', '#a0c4ff', '#bee1ff', '#d7e7ff'];
+    const confettiContainer = document.querySelector('.confetti');
+
+    function createConfettiPiece() {
+      const confetti = document.createElement('div');
+      const size = Math.random() * 14 + 8;
+      confetti.style.width = confetti.style.height = size + 'px';
+      confetti.style.position = 'absolute';
+      confetti.style.borderRadius = Math.random() > 0.6 ? '50%' : '15%';
+      confetti.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.top = '-30px';
+      confetti.style.opacity = 0.9;
+      confetti.style.filter = 'drop-shadow(0 0 6px #8cb2ffcc)';
+      confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+      confetti.style.transition = 'top 3.2s linear, transform 2.3s ease-in-out';
+      setTimeout(() => {
+        confetti.style.top = '110vh';
+        confetti.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random()})`;
+      }, 10);
+      setTimeout(() => confetti.remove(), 3400);
+      return confetti;
+    }
+
+    function launchConfettiBurst(count = 30) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          confettiContainer.appendChild(createConfettiPiece());
+        }, i * 25);
+      }
+    }
+
+    // Sound effect: soft spacey chime
+    function playSpaceSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(370, ctx.currentTime);
+        const gainNode = ctx.createGain();
+        gainNode.gain.setValueAtTime(0.12, ctx.currentTime);
+        osc.connect(gainNode).connect(ctx.destination);
+        osc.start();
+        osc.frequency.exponentialRampToValueAtTime(740, ctx.currentTime + 0.4);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.45);
+        osc.stop(ctx.currentTime + 0.46);
+        setTimeout(() => ctx.close(), 480);
+      } catch (e) {}
+    }
+
+    // Interactivity: click title or planet triggers confetti and sound
+    const titleContainer = document.querySelector('.title-container');
+    const planet = document.querySelector('.planet');
+    const titleText = document.querySelector('.title');
+
+    function onClickHandler() {
+      launchConfettiBurst(32);
+      playSpaceSound();
+    }
+
+    titleContainer.addEventListener('click', onClickHandler);
+    planet.addEventListener('click', onClickHandler);
+    titleText.addEventListener('click', onClickHandler);
+  </script>
+</body>
+</html>

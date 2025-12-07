@@ -1,0 +1,59 @@
+body {
+    margin: 0; padding: 0; background: url('img1/1preview_Image02.jpg') no-repeat center center fixed; background-size: cover; color: black; font-family: 'Segoe UI', sans-serif;
+}
+
+.desktop {
+    width: 100vw; height: 100vh; position: relative; animation: fadeIn 1s;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.icon {
+    width: 100px; margin: 10px; cursor: pointer; transition: transform 0.3s;
+}
+
+.icon:hover { transform: scale(1.1); }
+
+.folder {
+    border: 2px solid #DAA520; border-radius: 5px; padding: 5px; background: rgba(255, 255, 255, 0.8);
+}
+
+.folder:hover { background: rgba(255, 255, 255, 1); }
+
+.start-button {
+    position: absolute; bottom: 20px; left: 20px; background: #FF69B4; color: white; padding: 10px; border-radius: 5px;
+}
+
+.start-button:hover { background: #FF1493; }
+
+.popup {
+    display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); border: 2px solid #DAA520; padding: 20px; z-index: 100; width: 400px; max-height: 80%; overflow-y: auto; animation: slideIn 0.5s;
+}
+
+@keyframes slideIn { from { transform: translate(-50%, -60%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
+
+.popup h2 { margin: 0 0 10px; }
+
+.file {
+    padding: 5px; cursor: pointer; transition: background 0.3s;
+}
+
+.file:hover { background: #f0f0f0; }
+
+.close-popup {
+    display: block; margin: 10px auto; padding: 5px 10px; background: #FF69B4; color: white; text-align: center; border-radius: 5px; cursor: pointer;
+}
+
+.close-popup:hover { background: #FF1493; }
+
+.start-menu {
+    display: none; position: absolute; top: 50px; left: 20px; background: white; border: 2px solid #DAA520; padding: 10px; z-index: 100; width: 200px;
+}
+
+.start-menu h2 { margin: 0; font-size: 16px; }
+
+.start-menu .file {
+    padding: 5px; cursor: pointer; transition: background 0.3s;
+}
+
+.start-menu .file:hover { background: #f0f0f0; }

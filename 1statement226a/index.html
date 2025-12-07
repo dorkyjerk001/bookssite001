@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My ceasefire conditions - Federal Document</title>
+<style>
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    background:
+      #fefcf5 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill-opacity="0.02"><rect width="100" height="100" fill="black"/></svg>') repeat;
+    font-family: Georgia, serif;
+    color: #1a1a1a;
+    overflow-y: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+    padding: 2em 1em 5em;
+  }
+
+  /* Container */
+  .container {
+    background: #fffef9;
+    max-width: 800px;
+    margin: 0 auto 4em;
+    padding: 3em 3em 3.5em;
+    border: 2px solid #111;
+    box-shadow:
+      inset 0 0 15px #d7d2c7,
+      0 0 40px rgba(0,0,0,0.07);
+    position: relative;
+    transform-style: preserve-3d;
+    animation: float3d 8s ease-in-out infinite;
+  }
+
+  @keyframes float3d {
+    0%, 100% {
+      transform: rotateX(0.5deg) rotateY(-1deg);
+    }
+    50% {
+      transform: rotateX(-0.5deg) rotateY(1deg);
+    }
+  }
+
+  /* Federal header */
+  .header {
+    text-align: center;
+    margin-bottom: 2em;
+    position: relative;
+    font-variant: small-caps;
+  }
+  .header h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 1.8rem;
+    border-bottom: 3px solid #111;
+    padding-bottom: 0.25em;
+    letter-spacing: 0.12em;
+    color: #111;
+  }
+  .doc-id {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 0.4em;
+    color: #555;
+    letter-spacing: 0.2em;
+  }
+
+  /* Content text */
+  .content {
+    font-size: 1.15rem;
+    text-align: justify;
+    color: #222;
+    line-height: 1.7;
+    margin-top: 1em;
+  }
+
+  /* 3D subtle text shadow for formality */
+  .content p {
+    text-shadow:
+      0.5px 0.5px 0 #d9d6d0;
+    margin-bottom: 1.25em;
+  }
+
+  /* Watermark behind container */
+  .watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-family: Georgia, serif;
+    font-size: 7rem;
+    color: #eee;
+    opacity: 0.1;
+    user-select: none;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    pointer-events: none;
+    white-space: nowrap;
+    letter-spacing: 0.3em;
+  }
+
+  /* Particle background - subtle and monochrome */
+  #particles {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    filter: grayscale(70%) brightness(80%);
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: #999999;
+    opacity: 0.15;
+    filter: drop-shadow(0 0 1px #999999aa);
+    will-change: transform, opacity;
+  }
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<div class="container" role="main" aria-label="My ceasefire conditions federal document statement">
+  <div class="watermark" aria-hidden="true">CONFIDENTIAL</div>
+  <div class="header">
+    <h1>MY CEASEFIRE CONDITIONS</h1>
+    <div class="doc-id">DOC-2025-08-02-A1B2C3</div>
+  </div>
+  <div class="content">
+    <p>
+      Hi. Im kindly here without any offence to release<br>
+      a statement and a cease fire condition.
+    </p>
+    <p>
+      I am to ask people to stop protecting me from Izrael army<br>
+      because i am fully satisfied by my ukrainian emergency state<br>
+      before gathering unneeded mass media attention such as<br>
+      illegal immigrant reporters trying to share the message<br>
+      of helping me out by their unnecesary presense and presense<br>
+      of other people i never saw that not anyhow involved in<br>
+      the main cast of series i never asked for.
+    </p>
+    <p>
+      About a main cast that owe me one for keeping a production<br>
+      in my protest im not releasing them to free and wild.<br>
+      Anyhow any attempt to escape is the direct sign you are lazy<br>
+      and unresponsible person. Contract established.
+    </p>
+  </div>
+</div>
+
+<script>
+  // Particle system - monochrome subtle particles
+  const particleCount = 60;
+  const particles = [];
+
+  const container = document.getElementById('particles');
+  const colors = ['#999999', '#bbbbbb', '#888888'];
+
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  class Particle {
+    constructor() {
+      this.el = document.createElement('div');
+      this.el.className = 'particle';
+      this.size = randomRange(4, 10);
+      this.el.style.width = this.size + 'px';
+      this.el.style.height = this.size + 'px';
+      this.el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      this.x = Math.random() * window.innerWidth;
+      this.y = Math.random() * window.innerHeight;
+      this.speedX = randomRange(-0.1, 0.1);
+      this.speedY = randomRange(-0.1, 0.1);
+      this.opacity = randomRange(0.1, 0.2);
+      this.el.style.opacity = this.opacity;
+      container.appendChild(this.el);
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      if (this.x < 0) this.x = window.innerWidth;
+      if (this.x > window.innerWidth) this.x = 0;
+      if (this.y < 0) this.y = window.innerHeight;
+      if (this.y > window.innerHeight) this.y = 0;
+
+      this.el.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
+    }
+  }
+
+  for(let i=0; i<particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  function animate() {
+    particles.forEach(p => p.update());
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  window.addEventListener('resize', () => {
+    particles.forEach(p => {
+      p.x = Math.min(p.x, window.innerWidth);
+      p.y = Math.min(p.y, window.innerHeight);
+    });
+  });
+</script>
+
+</body>
+</html>

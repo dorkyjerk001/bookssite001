@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results for "Bottomless Girl"</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .loading {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result-item {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .result-title {
+            font-size: 18px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .result-title:hover {
+            text-decoration: underline;
+        }
+        .result-snippet {
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search Results for "Bottomless Girl"</h1>
+    <div class="loading">Loading results...</div>
+    <div class="results" id="results"></div>
+
+    <script>
+        const apiKey = "cb22dec30be86cb02e637a619bc1eb55096234f5";
+        const query = "bottomless girl";
+        const apiUrl = `https://google.serper.dev/search?q=${encodeURIComponent(query)}&apiKey=${apiKey}`;
+
+        async function fetchSearchResults() {
+            try {
+                const response = await fetch(apiUrl);
+                const result = await response.json(); // Get the response as JSON
+                console.log(result); // Log the result for debugging
+                document.querySelector('.loading').style.display = 'none'; // Hide loading message
+
+                // Check if organic results exist
+                if (result.organic && result.organic.length > 0) {
+                    const resultsContainer = document.getElementById('results');
+
+                    result.organic.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'result-item';
+
+                        // Create a link for the title
+                        const titleLink = document.createElement('a');
+                        titleLink.href = item.link; // Link to the result
+                        titleLink.target = '_blank'; // Open link in a new tab
+                        titleLink.className = 'result-title';
+                        titleLink.innerText = item.title; // Set the title text
+
+                        // Create a snippet paragraph
+                        const snippetParagraph = document.createElement('p');
+                        snippetParagraph.className = 'result-snippet';
+                        snippetParagraph.innerText = item.snippet; // Set the snippet text
+
+                        // Append elements to the item div
+                        itemDiv.appendChild(titleLink);
+                        itemDiv.appendChild(snippetParagraph);
+                        resultsContainer.appendChild(itemDiv);
+                    });
+                } else {
+                    document.getElementById('results').innerText = "No results found.";
+                }
+            } catch (error) {
+                console.error("Error fetching search results:", error);
+                document.querySelector('.loading').innerText = "Error fetching results.";
+            }
+        }
+
+        fetchSearchResults();
+    </script>
+</body>
+</html>

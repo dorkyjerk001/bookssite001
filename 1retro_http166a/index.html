@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Retro Gamer Gallery - Random Spacing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+  :root {
+    --bg-color: #0b0c1a;
+    --neon-blue: #00ffff;
+    --neon-pink: #ff00ff;
+    --neon-yellow: #ffff00;
+    --neon-green: #00ff00;
+    --scanline-color: rgba(255, 255, 255, 0.05);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    background: var(--bg-color);
+    color: var(--neon-yellow);
+    font-family: 'Press Start 2P', cursive, monospace;
+    user-select: none;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 3rem;
+    margin: 1rem 0 2rem;
+    color: var(--neon-pink);
+    text-shadow:
+      0 0 5px var(--neon-pink),
+      0 0 10px var(--neon-pink),
+      0 0 20px var(--neon-pink),
+      0 0 40px var(--neon-pink);
+    animation: flicker 3s infinite alternate;
+  }
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+      opacity: 1;
+      text-shadow:
+        0 0 5px var(--neon-pink),
+        0 0 10px var(--neon-pink),
+        0 0 20px var(--neon-pink),
+        0 0 40px var(--neon-pink);
+    }
+    20%, 22%, 24%, 55% {
+      opacity: 0.6;
+      text-shadow: none;
+    }
+  }
+
+  main {
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  main img {
+    width: 40vw;
+    max-width: 350px;
+    height: auto;
+    border: 4px solid var(--neon-blue);
+    border-radius: 6px;
+    image-rendering: pixelated;
+    box-shadow:
+      0 0 8px var(--neon-blue),
+      inset 0 0 10px var(--neon-pink);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    background: black;
+    /* Default margin */
+    margin: 10px;
+  }
+
+  /* Randomized margins for "random" spacing */
+  main img:nth-child(3n+1) {
+    margin: 5px 20px 15px 10px;
+  }
+  main img:nth-child(3n+2) {
+    margin: 15px 10px 5px 20px;
+  }
+  main img:nth-child(3n+3) {
+    margin: 20px 15px 10px 5px;
+  }
+
+  main img:hover {
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow:
+      0 0 15px var(--neon-yellow),
+      inset 0 0 20px var(--neon-green);
+    z-index: 10;
+  }
+
+  main::before {
+    content: "";
+    pointer-events: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        var(--scanline-color) 3px,
+        transparent 4px
+      );
+    mix-blend-mode: overlay;
+    z-index: 1000;
+    animation: scanlineMove 10s linear infinite;
+  }
+  @keyframes scanlineMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+  }
+
+  body, main img {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><rect width="32" height="32" fill="none"/><rect x="8" y="8" width="16" height="16" fill="cyan"/></svg>') 16 16, auto;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--neon-green);
+    margin-bottom: 2rem;
+    animation: blink 1.5s infinite;
+  }
+  @keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 2rem;
+    }
+    main img {
+      width: 90vw;
+      max-width: none;
+      margin: 10px 5px;
+    }
+  }
+</style>
+</head>
+<body>
+  <h1>RETRO GAMER GALLERY</h1>
+  <main>
+    <img src="img1/1retro5_Image01.jpg" alt="Retro Image 01" />
+    <img src="img1/1retro5_Image02.jpg" alt="Retro Image 02" />
+    <img src="img1/1retro5_Image03.jpg" alt="Retro Image 03" />
+    <img src="img1/1retro5_Image04.jpg" alt="Retro Image 04" />
+    <img src="img1/1retro5_Image05.jpg" alt="Retro Image 05" />
+    <img src="img1/1retro5_Image06.jpg" alt="Retro Image 06" />
+    <img src="img1/1retro5_Image07.jpg" alt="Retro Image 07" />
+    <img src="img1/1retro5_Image08.jpg" alt="Retro Image 08" />
+    <img src="img1/1retro5_Image09.jpg" alt="Retro Image 09" />
+    <img src="img1/1retro5_Image10.jpg" alt="Retro Image 10" />
+    <img src="img1/1retro5_Image11.jpg" alt="Retro Image 11" />
+    <img src="img1/1retro5_Image12.jpg" alt="Retro Image 12" />
+    <img src="img1/1retro5_Image13.jpg" alt="Retro Image 13" />
+    <img src="img1/1retro5_Image14.jpg" alt="Retro Image 14" />
+    <img src="img1/1retro5_Image15.jpg" alt="Retro Image 15" />
+    <img src="img1/1retro5_Image16.jpg" alt="Retro Image 16" />
+    <img src="img1/1retro5_Image17.jpg" alt="Retro Image 17" />
+    <img src="img1/1retro5_Image18.jpg" alt="Retro Image 18" />
+    <img src="img1/1retro5_Image19.jpg" alt="Retro Image 19" />
+    <img src="img1/1retro5_Image20.jpg" alt="Retro Image 20" />
+    <img src="img1/1retro5_Image21.jpg" alt="Retro Image 21" />
+    <img src="img1/1retro5_Image22.jpg" alt="Retro Image 22" />
+    <img src="img1/1retro5_Image23.jpg" alt="Retro Image 23" />
+    <img src="img1/1retro5_Image24.jpg" alt="Retro Image 24" />
+    <img src="img1/1retro5_Image25.jpg" alt="Retro Image 25" />
+    <img src="img1/1retro5_Image26.jpg" alt="Retro Image 26" />
+    <img src="img1/1retro5_Image27.jpg" alt="Retro Image 27" />
+    <img src="img1/1retro5_Image28.jpg" alt="Retro Image 28" />
+    <img src="img1/1retro5_Image29.jpg" alt="Retro Image 29" />
+    <img src="img1/1retro5_Image30.jpg" alt="Retro Image 30" />
+    <img src="img1/1retro5_Image31.jpg" alt="Retro Image 31" />
+    <img src="img1/1retro5_Image32.jpg" alt="Retro Image 32" />
+    <img src="img1/1retro5_Image33.jpg" alt="Retro Image 33" />
+    <img src="img1/1retro5_Image34.jpg" alt="Retro Image 34" />
+    <img src="img1/1retro5_Image35.jpg" alt="Retro Image 35" />
+    <img src="img1/1retro5_Image36.jpg" alt="Retro Image 36" />
+    <img src="img1/1retro5_Image37.jpg" alt="Retro Image 37" />
+    <img src="img1/1retro5_Image38.jpg" alt="Retro Image 38" />
+    <img src="img1/1retro5_Image39.jpg" alt="Retro Image 39" />
+    <img src="img1/1retro5_Image40.jpg" alt="Retro Image 40" />
+  </main>
+  <footer>PRESS START TO PLAY</footer>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trick or Treat</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
+  body {
+    margin: 0;
+    font-family: 'Creepster', cursive, sans-serif;
+    background: linear-gradient(135deg, #1a0000, #4b1a00);
+    color: #ff7518;
+    overflow-x: hidden;
+  }
+  header {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-shadow: 3px 3px 5px #000000cc;
+    user-select: none;
+  }
+  #gallery {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+  #gallery img {
+    width: 250px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #ff7518cc;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 3px solid #ff7518;
+  }
+  #gallery img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #ff7518ff;
+  }
+
+  /* Fullscreen overlay */
+  #fullscreenOverlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(14px);
+    z-index: 9999;
+    overflow: hidden;
+    user-select: none;
+  }
+  #fullscreenOverlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #fullscreenImage {
+    max-width: 90vw;
+    max-height: 90vh;
+    cursor: grab;
+    border-radius: 16px;
+    box-shadow: 0 0 40px #ff7518;
+    transition: transform 0.3s ease;
+  }
+  #fullscreenImage:active {
+    cursor: grabbing;
+  }
+  /* Controls */
+  #controls {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1.5rem;
+    z-index: 10000;
+  }
+  .btn {
+    background: #ff7518;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    color: black;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(255,117,24,0.8);
+    transition: background 0.3s ease;
+    user-select: none;
+    font-family: 'Creepster', cursive, sans-serif;
+  }
+  .btn:hover {
+    background: #ffa040;
+  }
+
+  /* Halloween confetti style */
+  #confetti {
+    position: fixed;
+    pointer-events: none;
+    width: 100vw;
+    height: 100vh;
+    top: 0; left: 0;
+    z-index: 10001;
+  }
+</style>
+</head>
+<body>
+
+<header>🎃 Trick or Treat 🎃</header>
+
+<div id="gallery" aria-label="Trick or Treat Image Gallery">
+  <img src="1flood001.jpg" alt="Trick or Treat Image 1" data-index="0" />
+  <img src="1flood002.jpg" alt="Trick or Treat Image 2" data-index="1" />
+  <img src="1flood003.jpg" alt="Trick or Treat Image 3" data-index="2" />
+  <img src="1flood004.jpg" alt="Trick or Treat Image 4" data-index="3" />
+  <img src="1flood005.jpg" alt="Trick or Treat Image 5" data-index="4" />
+  <img src="1flood006.jpg" alt="Trick or Treat Image 6" data-index="5" />
+  <img src="1flood007.jpg" alt="Trick or Treat Image 7" data-index="6" />
+  <img src="1flood008.jpg" alt="Trick or Treat Image 8" data-index="7" />
+  <img src="1flood009.jpg" alt="Trick or Treat Image 9" data-index="8" />
+  <img src="1flood010.jpg" alt="Trick or Treat Image 10" data-index="9" />
+  <img src="1flood011.jpg" alt="Trick or Treat Image 11" data-index="10" />
+  <img src="1flood012.jpg" alt="Trick or Treat Image 12" data-index="11" />
+  <img src="1flood013.jpg" alt="Trick or Treat Image 13" data-index="12" />
+  <img src="1flood014.jpg" alt="Trick or Treat Image 14" data-index="13" />
+  <img src="1flood015.jpg" alt="Trick or Treat Image 15" data-index="14" />
+  <img src="1flood016.jpg" alt="Trick or Treat Image 16" data-index="15" />
+  <img src="1flood017.jpg" alt="Trick or Treat Image 17" data-index="16" />
+  <img src="1flood018.jpg" alt="Trick or Treat Image 18" data-index="17" />
+  <img src="1flood019.jpg" alt="Trick or Treat Image 19" data-index="18" />
+  <img src="1flood020.jpg" alt="Trick or Treat Image 20" data-index="19" />
+  <img src="1flood021.jpg" alt="Trick or Treat Image 21" data-index="20" />
+  <img src="1flood022.jpg" alt="Trick or Treat Image 22" data-index="21" />
+  <img src="1flood023.jpg" alt="Trick or Treat Image 23" data-index="22" />
+  <img src="1flood024.jpg" alt="Trick or Treat Image 24" data-index="23" />
+  <img src="1flood025.jpg" alt="Trick or Treat Image 25" data-index="24" />
+  <img src="1flood026.jpg" alt="Trick or Treat Image 26" data-index="25" />
+</div>
+
+<div id="fullscreenOverlay" role="dialog" aria-modal="true" aria-label="Fullscreen image view">
+  <img id="fullscreenImage" src="" alt="Enlarged Trick or Treat Image" />
+</div>
+
+<div id="controls" aria-label="Gallery Controls" hidden>
+  <button class="btn" id="prevBtn" aria-label="Previous Image">⟨ Prev</button>
+  <button class="btn" id="zoomOutBtn" aria-label="Zoom Out">➖ Zoom Out</button>
+  <button class="btn" id="zoomInBtn" aria-label="Zoom In">➕ Zoom In</button>
+  <button class="btn" id="nextBtn" aria-label="Next Image">Next ⟩</button>
+  <button class="btn" id="closeBtn" aria-label="Close Fullscreen">✕ Close</button>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<script>
+// Variables
+const images = [
+  '1flood001.jpg', '1flood002.jpg', '1flood003.jpg', '1flood004.jpg', '1flood005.jpg',
+  '1flood006.jpg', '1flood007.jpg', '1flood008.jpg', '1flood009.jpg', '1flood010.jpg',
+  '1flood011.jpg', '1flood012.jpg', '1flood013.jpg', '1flood014.jpg', '1flood015.jpg',
+  '1flood016.jpg', '1flood017.jpg', '1flood018.jpg', '1flood019.jpg', '1flood020.jpg',
+  '1flood021.jpg', '1flood022.jpg', '1flood023.jpg', '1flood024.jpg', '1flood025.jpg',
+  '1flood026.jpg'
+];
+const gallery = document.getElementById('gallery');
+const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+const fullscreenImage = document.getElementById('fullscreenImage');
+const controls = document.getElementById('controls');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const zoomInBtn = document.getElementById('zoomInBtn');
+const zoomOutBtn = document.getElementById('zoomOutBtn');
+const closeBtn = document.getElementById('closeBtn');
+
+let currentIndex = 0;
+let scale = 1;
+let translateX = 0;
+let translateY = 0;
+let isDragging = false;
+let dragStartX, dragStartY;
+
+function updateFullscreenImage() {
+  fullscreenImage.src = images[currentIndex];
+  fullscreenImage.style.transform = `translate(0px, 0px) scale(1)`;
+  scale = 1;
+  translateX = 0;
+  translateY = 0;
+}
+
+// Open fullscreen on image click
+gallery.querySelectorAll('img').forEach(img => {
+  img.addEventListener('click', () => {
+    currentIndex = parseInt(img.dataset.index);
+    updateFullscreenImage();
+    fullscreenOverlay.classList.add('active');
+    controls.hidden = false;
+    document.body.style.overflow = 'hidden';
+    startConfetti();
+  });
+});
+
+// Close fullscreen
+function closeFullscreen() {
+  fullscreenOverlay.classList.remove('active');
+  controls.hidden = true;
+  document.body.style.overflow = '';
+  stopConfetti();
+}
+closeBtn.addEventListener('click', closeFullscreen);
+fullscreenOverlay.addEventListener('click', e => {
+  if (e.target === fullscreenOverlay) closeFullscreen();
+});
+
+// Navigation
+prevBtn.addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateFullscreenImage();
+});
+nextBtn.addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateFullscreenImage();
+});
+
+// Zoom In / Out
+zoomInBtn.addEventListener('click', () => {
+  scale = Math.min(scale + 0.25, 5);
+  applyTransform();
+});
+zoomOutBtn.addEventListener('click', () => {
+  scale = Math.max(scale - 0.25, 1);
+  if (scale <= 1) {
+    translateX = 0;
+    translateY = 0;
+  }
+  applyTransform();
+});
+
+function applyTransform() {
+  fullscreenImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+}
+
+// Panning with mouse
+fullscreenImage.addEventListener('mousedown', e => {
+  if (scale <= 1) return; 
+  isDragging = true;
+  dragStartX = e.clientX - translateX;
+  dragStartY = e.clientY - translateY;
+  fullscreenImage.style.cursor = 'grabbing';
+});
+window.addEventListener('mouseup', () => {
+  isDragging = false;
+  fullscreenImage.style.cursor = 'grab';
+});
+window.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  translateX = e.clientX - dragStartX;
+  translateY = e.clientY - dragStartY;
+  constrainTranslate();
+  applyTransform();
+});
+
+// Touch support for panning
+fullscreenImage.addEventListener('touchstart', e => {
+  if (scale <= 1 || e.touches.length !== 1) return;
+  isDragging = true;
+  dragStartX = e.touches[0].clientX - translateX;
+  dragStartY = e.touches[0].clientY - translateY;
+});
+fullscreenImage.addEventListener('touchend', e => {
+  isDragging = false;
+});
+fullscreenImage.addEventListener('touchmove', e => {
+  if (!isDragging || e.touches.length !== 1) return;
+  translateX = e.touches[0].clientX - dragStartX;
+  translateY = e.touches[0].clientY - dragStartY;
+  constrainTranslate();
+  applyTransform();
+});
+
+// Constrain panning so image doesn't move out too far
+function constrainTranslate() {
+  const rect = fullscreenImage.getBoundingClientRect();
+  const parentRect = fullscreenOverlay.getBoundingClientRect();
+
+  const maxX = (rect.width - parentRect.width) / 2;
+  const maxY = (rect.height - parentRect.height) / 2;
+
+  translateX = Math.min(maxX, Math.max(-maxX, translateX));
+  translateY = Math.min(maxY, Math.max(-maxY, translateY));
+}
+
+// Keyboard controls for accessibility
+window.addEventListener('keydown', e => {
+  if (!fullscreenOverlay.classList.contains('active')) return;
+
+  switch (e.key) {
+    case 'ArrowRight':
+      nextBtn.click();
+      break;
+    case 'ArrowLeft':
+      prevBtn.click();
+      break;
+    case '+':
+    case '=':
+      zoomInBtn.click();
+      break;
+    case '-':
+      zoomOutBtn.click();
+      break;
+    case 'Escape':
+      closeBtn.click();
+      break;
+  }
+});
+
+// Confetti effect for Halloween celebration
+const confettiCanvas = document.getElementById('confetti');
+const ctx = confettiCanvas.getContext('2d');
+let confettiPieces = [];
+let confettiAnimationId;
+
+function randomRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+class ConfettiPiece {
+  constructor() {
+    this.x = randomRange(0, window.innerWidth);
+    this.y = randomRange(-20, -100);
+    this.size = randomRange(7, 12);
+    this.speed = randomRange(1, 3);
+    this.angle = randomRange(0, 2 * Math.PI);
+    this.angularSpeed = randomRange(0.02, 0.05);
+    // Halloween colors: orange, black, purple
+    const colors = ['#ff7518', '#000000', '#800080'];
+    this.color = colors[Math.floor(randomRange(0, colors.length))];
+    this.tilt = randomRange(-10, 10);
+  }
+  update() {
+    this.y += this.speed;
+    this.angle += this.angularSpeed;
+    this.x += Math.sin(this.angle) * 0.5;
+    if (this.y > window.innerHeight) {
+      this.y = randomRange(-20, -100);
+      this.x = randomRange(0, window.innerWidth);
+    }
+  }
+  draw(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(this.size, this.tilt);
+    ctx.lineTo(this.size, this.size + this.tilt);
+    ctx.lineTo(0, this.size);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function initConfetti() {
+  confettiPieces = [];
+  for (let i = 0; i < 120; i++) {
+    confettiPieces.push(new ConfettiPiece());
+  }
+}
+
+function resizeCanvas() {
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function animateConfetti() {
+  ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  confettiPieces.forEach(piece => {
+    piece.update();
+    piece.draw(ctx);
+  });
+  confettiAnimationId = requestAnimationFrame(animateConfetti);
+}
+
+function startConfetti() {
+  initConfetti();
+  animateConfetti();
+  confettiCanvas.style.display = 'block';
+}
+
+function stopConfetti() {
+  cancelAnimationFrame(confettiAnimationId);
+  ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  confettiCanvas.style.display = 'none';
+}
+</script>
+
+</body>
+</html>

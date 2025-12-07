@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>selfie</title>
+  <style>
+    /* Performance‑oriented minimal CSS */
+    html,body{margin:0;padding:0;background:#111;color:#eee;font-family:Arial,Helvetica,sans-serif}
+    .wrap{max-width:900px;margin:0 auto;padding:10px}
+    .viewer{position:relative;width:100%;height:480px;background:#000;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
+    .slide.active{opacity:1}
+    .slide img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;pointer-events:none;user-select:none;}
+    .zoom-wrap{touch-action:none;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+    button{padding:6px 10px;margin:2px;background:#222;color:#eee;border:1px solid #555;cursor:pointer}
+    button:hover{background:#333}
+    .thumbs{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+    .thumb{width:60px;height:45px;border:2px solid transparent;opacity:.6}
+    .thumb.active{border-color:#0af;opacity:1}
+    .thumb img{width:100%;height:100%;object-fit:cover}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <button id="prev">Prev</button>
+    <button id="next">Next</button>
+    <button id="fit">Reset</button>
+    <button id="zin">+</button>
+    <button id="zout">-</button>
+  </div>
+
+  <div id="viewer" class="viewer"></div>
+  <div id="thumbs" class="thumbs"></div>
+</div>
+
+<script>
+  const images=['1slf001.jpg','1slf002.jpg'];
+  const viewer=document.getElementById('viewer');
+  const thumbs=document.getElementById('thumbs');
+
+  let idx=0,scale=1,tx=0,ty=0,isPan=false,sx=0,sy=0;
+
+  function mk(){
+    images.forEach((src,i)=>{
+      const s=document.createElement('div'); s.className='slide'; s.dataset.i=i;
+      const w=document.createElement('div'); w.className='zoom-wrap';
+      const img=document.createElement('img'); img.src=src; img.alt='';
+      w.appendChild(img); s.appendChild(w); viewer.appendChild(s);
+
+      // thumb
+      const t=document.createElement('div'); t.className='thumb';
+      t.innerHTML=`<img src="${src}">`;
+      t.onclick=()=>go(i);
+      thumbs.appendChild(t);
+
+      // panning
+      w.onpointerdown=e=>{ if(scale<=1)return; isPan=true; sx=e.clientX-tx; sy=e.clientY-ty; w.setPointerCapture(e.pointerId); };
+      w.onpointermove=e=>{ if(!isPan)return; tx=e.clientX-sx; ty=e.clientY-sy; w.style.transform=`translate(${tx}px,${ty}px) scale(${scale})`; };
+      w.onpointerup=e=>{ isPan=false; w.releasePointerCapture(e.pointerId); };
+    });
+  }
+
+  function show(){
+    document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
+    const s=document.querySelector(`.slide[data-i="${idx}"]`);
+    if(!s)return; s.classList.add('active');
+    scale=1; tx=ty=0;
+    s.querySelector('.zoom-wrap').style.transform='scale(1)';
+    thumbs.querySelectorAll('.thumb').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  }
+
+  function go(i){ idx=(i+images.length)%images.length; show(); }
+  function next(){ go(idx+1); }
+  function prev(){ go(idx-1); }
+  function setScale(v){ scale=v; const w=document.querySelector('.slide.active .zoom-wrap'); if(w) w.style.transform=`scale(${scale})`; }
+
+  document.getElementById('next').onclick=next;
+  document.getElementById('prev').onclick=prev;
+  document.getElementById('fit').onclick=()=>{ setScale(1); tx=ty=0; };
+  document.getElementById('zin').onclick=()=>setScale(Math.min(3,scale+0.25));
+  document.getElementById('zout').onclick=()=>setScale(Math.max(1,scale-0.25));
+
+  window.onkeydown=e=>{ if(e.key==='ArrowRight')next(); if(e.key==='ArrowLeft')prev(); };
+
+  mk(); show();
+</script>
+</body>
+</html>

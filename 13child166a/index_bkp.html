@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ferty Farty</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #fff8db 0%, #f7e07a 100%);
+      font-family: 'Trebuchet MS', Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      color: #6a4a00;
+      padding: 40px 20px 60px;
+      user-select: none;
+      overflow-x: hidden;
+    }
+    .title-container {
+      position: relative;
+      margin-top: 25px;
+      margin-bottom: 30px;
+      cursor: pointer;
+      user-select: none;
+      width: 280px;
+      height: 280px;
+    }
+    .title {
+      font-size: 3.8em;
+      font-weight: 900;
+      text-align: center;
+      color: #a57f00;
+      letter-spacing: 5px;
+      text-shadow:
+        2px 2px 0 #f7e07a,
+        4px 4px 8px #8f6f00aa;
+      line-height: 1;
+      padding-top: 90px;
+      position: relative;
+      z-index: 10;
+      animation: pulse 2.3s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    /* Animated corn cobs ring around title */
+    .corn-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 280px;
+      height: 280px;
+      margin-left: -140px;
+      margin-top: -140px;
+      pointer-events: none;
+      animation: slow-spin 24s linear infinite;
+      z-index: 1;
+    }
+    .corn-cob {
+      position: absolute;
+      width: 60px;
+      height: 120px;
+      filter: drop-shadow(0 0 3px #a57f0022);
+      transform-origin: center bottom;
+      cursor: default;
+    }
+    /* Position 8 corn cobs evenly around circle */
+    .cob1 { transform: rotate(0deg) translateY(-110px) rotate(15deg);}
+    .cob2 { transform: rotate(45deg) translateY(-110px) rotate(15deg);}
+    .cob3 { transform: rotate(90deg) translateY(-110px) rotate(15deg);}
+    .cob4 { transform: rotate(135deg) translateY(-110px) rotate(15deg);}
+    .cob5 { transform: rotate(180deg) translateY(-110px) rotate(15deg);}
+    .cob6 { transform: rotate(225deg) translateY(-110px) rotate(15deg);}
+    .cob7 { transform: rotate(270deg) translateY(-110px) rotate(15deg);}
+    .cob8 { transform: rotate(315deg) translateY(-110px) rotate(15deg);}
+    @keyframes slow-spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    /* Popcorn kernel icon */
+    .popcorn-icon {
+      margin-bottom: 32px;
+      width: 130px;
+      height: 130px;
+      cursor: pointer;
+      animation: popcorn-wave 3.5s ease-in-out infinite;
+      user-select: none;
+      filter: drop-shadow(0 1px 2px #a57f0022);
+    }
+    @keyframes popcorn-wave {
+      0%, 100% { transform: translateY(0) rotate(0deg);}
+      25% { transform: translateY(-8px) rotate(6deg);}
+      50% { transform: translateY(4px) rotate(-6deg);}
+      75% { transform: translateY(-4px) rotate(3deg);}
+    }
+
+    /* Text block */
+    .main-text {
+      max-width: 520px;
+      font-size: 1.22em;
+      background: #fff9d4;
+      padding: 26px 32px;
+      border-radius: 20px;
+      box-shadow: 0 7px 18px #bfae4188;
+      border: 3px solid #d2c56a;
+      line-height: 1.65;
+      color: #6a4a00;
+      user-select: text;
+      white-space: pre-line;
+      text-align: center;
+      font-weight: 600;
+      font-style: italic;
+      font-family: 'Georgia', serif;
+    }
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      z-index: 9999;
+    }
+    @media (max-width: 600px) {
+      .title { font-size: 2.8em; padding-top: 70px; }
+      .popcorn-icon { width: 90px; height: 90px; }
+      .main-text { font-size: 1em; max-width: 90vw; padding: 18px 20px; }
+      .corn-ring { width: 180px; height: 180px; margin-left: -90px; margin-top: -90px; }
+      .corn-cob { width: 38px; height: 76px; }
+      .cob1, .cob2, .cob3, .cob4, .cob5, .cob6, .cob7, .cob8 {
+        transform-origin: center bottom;
+        transform: none; /* will be overridden below */
+      }
+      .cob1 { transform: rotate(0deg) translateY(-70px) rotate(15deg);}
+      .cob2 { transform: rotate(45deg) translateY(-70px) rotate(15deg);}
+      .cob3 { transform: rotate(90deg) translateY(-70px) rotate(15deg);}
+      .cob4 { transform: rotate(135deg) translateY(-70px) rotate(15deg);}
+      .cob5 { transform: rotate(180deg) translateY(-70px) rotate(15deg);}
+      .cob6 { transform: rotate(225deg) translateY(-70px) rotate(15deg);}
+      .cob7 { transform: rotate(270deg) translateY(-70px) rotate(15deg);}
+      .cob8 { transform: rotate(315deg) translateY(-70px) rotate(15deg);}
+    }
+  </style>
+</head>
+<body>
+  <div class="confetti"></div>
+
+  <div class="title-container" title="Click me for some corn magic!">
+    <div class="title">Ferty Farty</div>
+    <div class="corn-ring" aria-hidden="true" aria-label="Rotating corn cobs decoration">
+      <!-- Corn cobs - stylized SVGs -->
+      <svg class="corn-cob cob1" viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" >
+        <rect x="10" y="10" width="40" height="100" rx="14" ry="14" fill="#f9e07a" stroke="#a58200" stroke-width="3"/>
+        <!-- kernels pattern -->
+        <circle cx="20" cy="25" r="4.5" fill="#f6d85a"/>
+        <circle cx="35" cy="40" r="5" fill="#f6d85a"/>
+        <circle cx="45" cy="60" r="4" fill="#f6d85a"/>
+        <circle cx="25" cy="80" r="5.2" fill="#f6d85a"/>
+        <circle cx="40" cy="95" r="4.3" fill="#f6d85a"/>
+      </svg>
+      <svg class="corn-cob cob2" viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" >
+        <rect x="10" y="10" width="40" height="100" rx="14" ry="14" fill="#f9e07a" stroke="#a58200" stroke-width="3"/>
+        <circle cx="18" cy="30" r="5" fill="#f6d85a"/>
+        <circle cx="38" cy="45" r="4.5" fill="#f6d85a"/>
+        <circle cx="44" cy="70" r="4.2" fill="#f6d85a"/>
+        <circle cx="30" cy="90" r="4.8" fill="#f6d85a"/>
+        <circle cx="40" cy="105" r="4" fill="#f6d85a"/>
+      </svg>
+      <svg class="corn-cob cob3" viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" >
+        <rect x="10" y="10" width="40" height="100" rx="14" ry="14" fill="#f9e07a" stroke="#a58200" stroke-width="3"/>
+        <circle cx="22" cy="20" r="4.5" fill="#f6d85a"/>
+        <circle cx="33" cy="42" r="5" fill="#f6d85a"/>
+        <circle cx="43" cy="68" r="4" fill="#f6d85a"/>
+        <circle cx="27" cy="85" r="5" fill="#f6d85a"/>
+        <circle cx="39" cy="100" r="4.5" fill="#f6d85a"/>
+      </svg>
+      <svg class="corn-cob cob4" viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" >
+        <rect x="10" y="10" width="40" height="100" rx="14" ry="14" fill="#f9e07a" stroke="#a58200" stroke-width="3"/>
+        <circle cx="19" cy="22" r="5" fill="#f6d85a"/>
+        <circle cx="37" cy="48" r="4.5" fill="#f6d85a"/>
+        <circle cx="44" cy="65" r="4.3" fill="#f6d85a"/>
+        <circle cx="25" cy="88" r="5.1" fill="#f6d85a"/>
+        <circle cx="38" cy="102" r="4" fill="#f6d85a"/>
+      </svg>
+      <svg class="corn-cob cob5" viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" >
+        <rect x="10" y="10" width="40" height="100" rx="14" ry="14" fill="#f9e07a" stroke="#a58200" stroke-width="3"/>
+        <circle cx="21" cy="25" r="4.8" fill="#f6d85a"/>
+        <circle cx="36" cy="40" r="4.6" fill="#f6d85a"/>
+        <circle cx="43" cy="62" r="4.4" fill="#f6d85a"/>
+        <circle cx="28" cy="82" r="5" fill="#f6d85a"/>
+        <circle cx="41" cy="98" r="4.1" fill="#f6d85a"/>
+      </svg>
+      <svg class="corn-cob cob6" viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" >
+        <rect x="10" y="10" width="40" height="100" rx="14" ry="14" fill="#f9e07a" stroke="#a58200" stroke-width="3"/>
+        <circle cx="20" cy="28" r="4.9" fill="#f6d85a"/>
+        <circle cx="38" cy="46" r="4.7" fill="#f6d85a"/>
+        <circle cx="44" cy="70" r="4.3" fill="#f6d85a"/>
+        <circle cx="30" cy="90" r="5.1" fill="#f6d85a"/>
+        <circle cx="39" cy="105" r="4.2" fill="#f6d85a"/>
+      </svg>
+      <svg class="corn-cob cob7" viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" >
+        <rect x="10" y="10" width="40" height="100" rx="14" ry="14" fill="#f9e07a" stroke="#a58200" stroke-width="3"/>
+        <circle cx="23" cy="27" r="4.6" fill="#f6d85a"/>
+        <circle cx="34" cy="43" r="4.8" fill="#f6d85a"/>
+        <circle cx="44" cy="63" r="4.4" fill="#f6d85a"/>
+        <circle cx="27" cy="85" r="5" fill="#f6d85a"/>
+        <circle cx="39" cy="100" r="4.3" fill="#f6d85a"/>
+      </svg>
+      <svg class="corn-cob cob8" viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" >
+        <rect x="10" y="10" width="40" height="100" rx="14" ry="14" fill="#f9e07a" stroke="#a58200" stroke-width="3"/>
+        <circle cx="18" cy="25" r="5" fill="#f6d85a"/>
+        <circle cx="37" cy="42" r="5" fill="#f6d85a"/>
+        <circle cx="43" cy="65" r="4.5" fill="#f6d85a"/>
+        <circle cx="25" cy="87" r="4.9" fill="#f6d85a"/>
+        <circle cx="38" cy="102" r="4" fill="#f6d85a"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Popcorn kernel SVG icon -->
+  <svg class="popcorn-icon" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-label="Popcorn kernel icon" role="img" >
+    <circle cx="64" cy="64" r="52" fill="#f7e87a" stroke="#a57f00" stroke-width="6"/>
+    <path fill="#fff9d8" stroke="#a57f00" stroke-width="4" d="M40 70c5-25 40-25 45 0 0 0 5 40-20 40s-25-40-25-40z"/>
+    <circle cx="46" cy="54" r="10" fill="#f7e87a" />
+    <circle cx="82" cy="56" r="9" fill="#f7e87a" />
+    <circle cx="70" cy="80" r="11" fill="#f7e87a" />
+  </svg>
+
+  <div class="main-text" tabindex="0">
+Ferty Farty.
+
+The cruisial role of fertility in 3D modeling
+and web building? Girl did Max 3D just rigged you
+that hard? Max 3D give the girl some jiggle physics for dat
+you piece of pussy corn and popcorn filled cum machine!
+  </div>
+
+  <script>
+    // Corn-themed confetti colors
+    const confettiColors = ['#f7e07a', '#d9c052', '#a58200', '#fff3a3', '#e4d65e', '#bba21a', '#fdf7b5'];
+    const confettiContainer = document.querySelector('.confetti');
+
+    function createConfettiPiece() {
+      const confetti = document.createElement('div');
+      const size = Math.random() * 14 + 8;
+      confetti.style.width = confetti.style.height = size + 'px';
+      confetti.style.position = 'absolute';
+      confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '20%';
+      confetti.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.top = '-30px';
+      confetti.style.opacity = 0.85;
+      confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+      confetti.style.filter = 'drop-shadow(0 0 1px #a5820022)';
+      confetti.style.transition = 'top 3s linear, transform 2.5s ease-in-out';
+      setTimeout(() => {
+        confetti.style.top = '110vh';
+        confetti.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random()})`;
+      }, 10);
+      setTimeout(() => confetti.remove(), 3400);
+      return confetti;
+    }
+
+    function launchConfettiBurst(count = 28) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          confettiContainer.appendChild(createConfettiPiece());
+        }, i * 30);
+      }
+    }
+
+    // Sound effect on click - gentle corn tone
+    function playCornSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(330, ctx.currentTime);
+        const gainNode = ctx.createGain();
+        gainNode.gain.setValueAtTime(0.15, ctx.currentTime);
+        osc.connect(gainNode).connect(ctx.destination);
+        osc.start();
+        osc.frequency.exponentialRampToValueAtTime(660, ctx.currentTime + 0.3);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+        osc.stop(ctx.currentTime + 0.36);
+        setTimeout(() => ctx.close(), 400);
+      } catch (e) {}
+    }
+
+    // Interactivity: click title or popcorn icon for confetti & sound
+    const titleContainer = document.querySelector('.title-container');
+    const popcornIcon = document.querySelector('.popcorn-icon');
+
+    function onClickHandler() {
+      launchConfettiBurst(30);
+      playCornSound();
+    }
+
+    titleContainer.addEventListener('click', onClickHandler);
+    popcornIcon.addEventListener('click', onClickHandler);
+  </script>
+</body>
+</html>

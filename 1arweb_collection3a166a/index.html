@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>updated collection</title>
+  <style>
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at center, #222 0%, #000 80%);
+    }
+    h1 {
+      margin-bottom: 1rem;
+      font-weight: 900;
+      font-size: 3rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #f0a500;
+      text-shadow: 0 0 10px #f0a500aa;
+    }
+    .archive-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      width: 100%;
+      max-width: 600px;
+    }
+    .archive-button {
+      background: linear-gradient(135deg, #f0a500, #ff6f00);
+      border: none;
+      border-radius: 12px;
+      padding: 2rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #121212;
+      cursor: pointer;
+      box-shadow: 0 6px 15px #ff6f0055;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-align: center;
+      user-select: none;
+      text-decoration: none;
+      display: block;
+    }
+    .archive-button:hover,
+    .archive-button:focus {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px #f0a500cc;
+      outline: none;
+    }
+    footer {
+      margin-top: auto;
+      font-size: 0.9rem;
+      color: #555;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Found on Internet</h1>
+  <div class="archive-container">
+    <a
+      href="https://l.forever.com/A7pMIRMN"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="archive-button"
+      aria-label="Open link 1"
+      >https://l.forever.com/A7pMIRMN</a
+    >
+    <a
+      href="https://drive.google.com/drive/folders/14fR3grasHOsee-yBmz8QzEuSvXrjjdIz?usp=sharing"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="archive-button"
+      aria-label="Open Google Drive folder"
+      >Google Drive Folder</a
+    >
+    <a
+      href="https://archive.org/details/collection5541a_arch.7z"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="archive-button"
+      aria-label="Open Internet Archive collection"
+      >Internet Archive Collection (.7z)</a
+    >
+  </div>
+  <footer>Updated Collection &mdash; Interactive Archive</footer>
+</body>
+</html>

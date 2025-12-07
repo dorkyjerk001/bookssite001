@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ton of Toons</title>
+  <style>
+    /* Overall page styling */
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #001f7f, #b30000);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      user-select: none;
+    }
+
+    /* Logo styling */
+    .logo {
+      max-width: 300px;
+      width: 80vw;
+      border: 5px solid white;
+      border-radius: 20px;
+      box-shadow: 0 0 25px 5px #ff0000cc;
+      margin: 0 auto 2rem;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .logo:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 0 40px 8px #0000ffcc;
+    }
+
+    /* Container for all text */
+    .text-block {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Each phrase styling */
+    .phrase {
+      font-size: 1.4rem;
+      margin: 1rem 0;
+      padding: 0.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Hover effect for text */
+    .phrase:hover {
+      color: #001f7f;
+      background-color: #ff4444;
+      transform: scale(1.05);
+      text-shadow: 1px 1px 2px white;
+    }
+
+    /* Special interactive effect on click using checkbox hack */
+    input[type="checkbox"] {
+      display: none;
+    }
+    input[type="checkbox"]:checked + label {
+      color: #ffdd00;
+      background-color: #00008b;
+      transform: scale(1.1) rotate(-3deg);
+      text-shadow: 1px 1px 5px #ffdd00;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ton of Toons</h1>
+
+  <!-- Logo -->
+  <img src="1fre001.jpg" alt="Ton of Toons Logo" class="logo" title="Ton of Toons Logo" />
+
+  <div class="text-block">
+    <!-- Original phrases -->
+    <input type="checkbox" id="p1" />
+    <label for="p1" class="phrase" tabindex="0">What's your problem, Nurse</label>
+
+    <input type="checkbox" id="p2" />
+    <label for="p2" class="phrase" tabindex="0">They furry - they're cocky - they're just a bit unlucky</label>
+
+    <input type="checkbox" id="p3" />
+    <label for="p3" class="phrase" tabindex="0">Inglorious bad bad toon goon goonies</label>
+
+    <input type="checkbox" id="p4" />
+    <label for="p4" class="phrase" tabindex="0">babster and buzz bunny - not your damn bussiness, cousin</label>
+
+    <input type="checkbox" id="p5" />
+    <label for="p5" class="phrase" tabindex="0">It's a f..cked up world of fun</label>
+
+    <!-- New quotes -->
+    <input type="checkbox" id="p6" />
+    <label for="p6" class="phrase" tabindex="0">not a single duck was given to me this way</label>
+
+    <input type="checkbox" id="p7" />
+    <label for="p7" class="phrase" tabindex="0">we need meth</label>
+
+    <input type="checkbox" id="p8" />
+    <label for="p8" class="phrase" tabindex="0">I'm Shirly Stupid and i'm a misfortune... but i'm a best damn thing that your eyes had ever seen</label>
+  </div>
+</body>
+</html>

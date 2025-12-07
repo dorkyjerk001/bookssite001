@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Almost my Room</title>
+<style>
+:root{
+  --bg:#0f1724;
+  --accent:#7ed957;
+  --muted:#9aa7b8;
+}
+html,body{height:100%;margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;}
+body{
+  background:radial-gradient(circle at 10% 10%,rgba(126,217,87,.06),transparent 30%),var(--bg);
+  color:#e6f0ea;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+  overflow:hidden;
+}
+.page{
+  width:min(1200px,95%);
+  display:flex;
+  gap:2rem;
+  background:rgba(255,255,255,0.03);
+  border-radius:1.5rem;
+  padding:1.5rem;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5);
+}
+.sidebar{width:60%;}
+.gallery-wrap{width:40%;}
+h1{margin:0;font-size:2rem;color:var(--accent);}
+p{color:var(--muted);}
+button{cursor:pointer;border:none;border-radius:10px;padding:.6rem 1rem;margin-right:.3rem}
+.primary{background:var(--accent);color:#022004;font-weight:700}
+.ghost{background:rgba(255,255,255,0.05);color:#fff}
+.gallery{
+  position:relative;
+  width:100%;
+  background:rgba(255,255,255,0.02);
+  border-radius:1rem;
+  overflow:hidden;
+}
+.frame{
+  position:relative;
+  padding-top:66.6%;
+  overflow:hidden;
+}
+.frame img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:stretch;
+  transition:opacity .5s ease,transform .5s ease;
+  user-select:none;
+}
+.nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(0,0,0,.4);border:none;color:white;font-size:1.2rem;
+  padding:.6rem;border-radius:10px;cursor:pointer;
+}
+.nav.left{left:10px;}
+.nav.right{right:10px;}
+.thumbs{
+  display:flex;overflow-x:auto;gap:.3rem;padding:.4rem;background:rgba(0,0,0,.2)
+}
+.thumbs img{width:60px;height:40px;object-fit:stretch;border-radius:6px;opacity:.7;cursor:pointer;}
+.thumbs img.active{opacity:1;outline:2px solid var(--accent);}
+.gallery.fs{
+  width:100vw;height:100vh;position:fixed;left:0;top:0;z-index:100;background:#000;
+  border-radius:0;margin:0;padding:0;
+}
+.gallery.fs .frame{padding-top:0;height:100vh;}
+/* zoom helper */
+.zooming img{cursor:grab;}
+.zooming img:active{cursor:grabbing;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="sidebar">
+    <h1>Almost my Room</h1>
+    <p>This fun gallery sits at 40% of the page. Click an image to enter fullscreen and zoom in or out with the mouse wheel or pinch on touch devices. Drag to pan, press Esc or double-click to reset.</p>
+    <div>
+      <button class="primary" id="playBtn">▶ Play</button>
+      <button class="ghost" id="prevBtn">◀ Prev</button>
+      <button class="ghost" id="nextBtn">Next ▶</button>
+    </div>
+  </div>
+  <div class="gallery-wrap">
+    <div class="gallery" id="gallery">
+      <div class="frame" id="frame"></div>
+      <button class="nav left" id="prev">◀</button>
+      <button class="nav right" id="next">▶</button>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const imgs=[
+ "1room003.jpg","1room006.jpg","1room009.jpg",
+ "1room001.jpg","1room004.jpg","1room007.jpg",
+ "1room002.jpg","1room005.jpg","1room008.jpg"
+];
+const frame=document.getElementById('frame');
+const thumbs=document.getElementById('thumbs');
+const gallery=document.getElementById('gallery');
+let index=0,playing=false,timer=null;
+const main=document.createElement('img');
+frame.appendChild(main);
+
+imgs.forEach((src,i)=>{
+ const t=document.createElement('img');
+ t.src=src; t.addEventListener('click',()=>show(i));
+ thumbs.appendChild(t);
+});
+function updateThumbs(){
+ [...thumbs.children].forEach((t,i)=>t.classList.toggle('active',i===index));
+}
+function show(i){
+ index=(i+imgs.length)%imgs.length;
+ main.style.opacity=0;
+ setTimeout(()=>{main.src=imgs[index];main.style.opacity=1;},200);
+ updateThumbs();
+}
+function next(){show(index+1);}
+function prev(){show(index-1);}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+document.getElementById('nextBtn').onclick=next;
+document.getElementById('prevBtn').onclick=prev;
+document.getElementById('playBtn').onclick=()=>{
+ playing=!playing;
+ if(playing){timer=setInterval(next,3000);playBtn.textContent='⏸ Pause';}
+ else{clearInterval(timer);playBtn.textContent='▶ Play';}
+};
+show(0);
+
+/* === Fullscreen & Zoom === */
+let zoom=1, origin={x:0,y:0}, last={x:0,y:0}, dragging=false;
+function enterFS(){
+  if(!document.fullscreenElement) gallery.requestFullscreen();
+  gallery.classList.add('fs');
+  zoom=1;main.style.transform=`scale(${zoom})`;
+}
+function exitFS(){
+  if(document.fullscreenElement) document.exitFullscreen();
+  gallery.classList.remove('fs');
+  zoom=1;main.style.transform=`scale(${zoom}) translate(0,0)`;
+}
+main.addEventListener('dblclick',()=>{
+ if(!gallery.classList.contains('fs')) enterFS(); else exitFS();
+});
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape') exitFS();
+});
+/* zoom via wheel */
+main.addEventListener('wheel',e=>{
+ if(!gallery.classList.contains('fs')) return;
+ e.preventDefault();
+ const delta=Math.sign(e.deltaY)*-0.1;
+ zoom=Math.min(Math.max(1,zoom+delta),4);
+ main.style.transform=`scale(${zoom})`;
+});
+/* drag pan */
+main.addEventListener('mousedown',e=>{
+ if(!gallery.classList.contains('fs')||zoom===1) return;
+ dragging=true;gallery.classList.add('zooming');
+ origin.x=e.clientX;origin.y=e.clientY;
+});
+window.addEventListener('mouseup',()=>{dragging=false;gallery.classList.remove('zooming');});
+window.addEventListener('mousemove',e=>{
+ if(!dragging) return;
+ const dx=(e.clientX-origin.x)/zoom, dy=(e.clientY-origin.y)/zoom;
+ last.x+=dx; last.y+=dy;
+ origin.x=e.clientX; origin.y=e.clientY;
+ main.style.transform=`scale(${zoom}) translate(${last.x}px,${last.y}px)`;
+});
+/* reset when exit fullscreen */
+document.addEventListener('fullscreenchange',()=>{
+ if(!document.fullscreenElement){zoom=1;last={x:0,y:0};main.style.transform='none';}
+});
+</script>
+</body>
+</html>

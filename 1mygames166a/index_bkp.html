@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>my current laptop games</title><style>
+*{box-sizing:border-box;}
+body,html{margin:0;padding:0;height:100%;background:
+repeating-linear-gradient(45deg,#220022,#220022 10px,#440044 10px,#440044 20px);
+font-family:'Courier New',Courier,monospace;color:#ffcc00;overflow-y:scroll;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;background:
+url('https://www.transparenttextures.com/patterns/pw-maze-white.png') repeat;opacity:.1;z-index:0;}
+h1{text-align:center;margin:1rem 0;font-size:2.5rem;text-shadow:1px 1px 0 #ff0044,2px 2px 0 #4400ff;position:relative;z-index:1;}
+.gallery{max-width:90vw;max-height:80vh;margin:1rem auto;display:flex;flex-wrap:wrap;overflow-y:auto;gap:10px;padding:10px;border:2px solid #ff0044;background:rgba(255 192 203 / 0.85);box-shadow:inset 0 0 10px #ff00ff;scroll-behavior:smooth;scroll-snap-type:y mandatory;perspective:1200px;position:relative;z-index:1;}
+.gallery::-webkit-scrollbar{width:10px;}
+.gallery::-webkit-scrollbar-track{background:transparent;}
+.gallery::-webkit-scrollbar-thumb{background:#ff0044aa;border-radius:5px;}
+.gallery a{flex:0 0 18vh;scroll-snap-align:center;display:block;border:1px solid #ff0044;border-radius:6px;box-shadow:0 0 8px #ff004488;background:#220022;cursor:zoom-in;position:relative;transform-style:preserve-3d;transition:transform .3s ease;width:30%;max-width:30%;}
+.gallery img{width:100%;height:100%;object-fit:contain;border-radius:6px;display:block;}
+.gallery a:focus,.gallery a:hover{outline:2px solid #ff0044;box-shadow:0 0 12px #ff0044cc;transform:scale(1.05) rotateY(8deg);z-index:10;}
+.fullscreen{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(50,0,50,.95);display:none;justify-content:center;align-items:center;z-index:9999;overflow:auto;scroll-behavior:smooth;}
+.fullscreen:target{display:flex;}
+.fullscreen img{max-width:90vw;max-height:90vh;border:4px solid #ff0044;border-radius:6px;box-shadow:0 0 20px #ff00ffcc;cursor:grab;user-select:none;touch-action:none;transition:transform .3s ease;}
+.close-btn{position:fixed;top:20px;right:30px;font-size:2rem;font-weight:bold;color:#ffcc00;background:#440044;border-radius:50%;width:40px;height:40px;line-height:40px;text-align:center;text-decoration:none;box-shadow:0 0 8px #ff00ffaa;z-index:10000;}
+.close-btn:hover{background:#ff0044;}
+.nav-arrow{position:fixed;top:50%;transform:translateY(-50%);font-size:3rem;font-weight:bold;color:#ffcc00;background:#440044;border-radius:50%;width:50px;height:50px;line-height:50px;text-align:center;text-decoration:none;box-shadow:0 0 8px #ff00ffaa;z-index:10000;user-select:none;}
+.nav-arrow:hover{background:#ff0044;}
+.nav-prev{left:20px;}
+.nav-next{right:20px;}
+.caption{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);color:#ffcc00;font-size:1rem;font-style:italic;text-shadow:1px 1px 0 #440044;user-select:none;z-index:10000;}
+@media(max-width:700px){.gallery{max-width:95vw;max-height:70vh;}.gallery a{flex:0 0 20vh;}.nav-arrow{font-size:2rem;width:40px;height:40px;line-height:40px;}}
+</style></head><body>
+<h1>my current laptop games</h1>
+<div class="gallery" aria-label="Games images gallery">
+  <a href="#img1" aria-label="Open image 1 fullscreen"><img src="mygames1.jpg" alt="Game Image 01"/></a>
+  <a href="#img2" aria-label="Open image 2 fullscreen"><img src="mygames2.jpg" alt="Game Image 02"/></a>
+  <a href="#img3" aria-label="Open image 3 fullscreen"><img src="mygames3.jpg" alt="Game Image 03"/></a>
+  <a href="#img4" aria-label="Open image 4 fullscreen"><img src="mygames4.jpg" alt="Game Image 04"/></a>
+  <a href="#img5" aria-label="Open image 5 fullscreen"><img src="mygames5.jpg" alt="Game Image 05"/></a>
+  <a href="#img6" aria-label="Open image 6 fullscreen"><img src="mygames6.jpg" alt="Game Image 06"/></a>
+  <a href="#img7" aria-label="Open image 7 fullscreen"><img src="mygames7.jpg" alt="Game Image 07"/></a>
+  <a href="#img8" aria-label="Open image 8 fullscreen"><img src="mygames8.jpg" alt="Game Image 08"/></a>
+  <a href="#img9" aria-label="Open image 9 fullscreen"><img src="mygames9.jpg" alt="Game Image 09"/></a>
+  <a href="#img10" aria-label="Open image 10 fullscreen"><img src="mygames10.jpg" alt="Game Image 10"/></a>
+  <a href="#img11" aria-label="Open image 11 fullscreen"><img src="mygames11.jpg" alt="Game Image 11"/></a>
+  <a href="#img12" aria-label="Open image 12 fullscreen"><img src="mygames12.jpg" alt="Game Image 12"/></a>
+  <a href="#img13" aria-label="Open image 13 fullscreen"><img src="mygames13.jpg" alt="Game Image 13"/></a>
+  <a href="#img14" aria-label="Open image 14 fullscreen"><img src="mygames14.jpg" alt="Game Image 14"/></a>
+  <a href="#img15" aria-label="Open image 15 fullscreen"><img src="mygames15.jpg" alt="Game Image 15"/></a>
+</div>
+
+<!-- Fullscreen overlays with pan & zoom -->
+<script>
+document.querySelectorAll('.fullscreen img').forEach(img=>{
+  let scale=1, posX=0, posY=0, startX=0, startY=0, dragging=false;
+  img.style.transform='translate(0px,0px) scale(1)';
+  img.onwheel=e=>{
+    e.preventDefault();
+    scale+=e.deltaY*-0.0015;
+    scale=Math.min(Math.max(.5,scale),5);
+    img.style.transform=`translate(${posX}px,${posY}px) scale(${scale})`;
+  };
+  img.onpointerdown=e=>{
+    e.preventDefault();
+    dragging=true;startX=e.clientX-posX;startY=e.clientY-posY;img.setPointerCapture(e.pointerId);
+  };
+  img.onpointermove=e=>{
+    if(!dragging)return;
+    posX=e.clientX-startX;posY=e.clientY-startY;
+    img.style.transform=`translate(${posX}px,${posY}px) scale(${scale})`;
+  };
+  img.onpointerup=e=>{
+    dragging=false;img.releasePointerCapture(e.pointerId);
+  };
+  img.onpointercancel=e=>{dragging=false;img.releasePointerCapture(e.pointerId);}
+});
+</script>
+
+<div id="img1" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 1">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img15" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames1.jpg" alt="Game Image 01 Fullscreen"/>
+  <a href="#img2" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img2" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 2">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img1" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames2.jpg" alt="Game Image 02 Fullscreen"/>
+  <a href="#img3" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img3" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 3">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img2" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames3.jpg" alt="Game Image 03 Fullscreen"/>
+  <a href="#img4" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img4" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 4">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img3" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames4.jpg" alt="Game Image 04 Fullscreen"/>
+  <a href="#img5" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img5" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 5">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img4" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames5.jpg" alt="Game Image 05 Fullscreen"/>
+  <a href="#img6" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img6" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 6">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img5" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames6.jpg" alt="Game Image 06 Fullscreen"/>
+  <a href="#img7" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img7" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 7">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img6" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames7.jpg" alt="Game Image 07 Fullscreen"/>
+  <a href="#img8" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img8" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 8">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img7" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames8.jpg" alt="Game Image 08 Fullscreen"/>
+  <a href="#img9" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img9" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 9">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img8" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames9.jpg" alt="Game Image 09 Fullscreen"/>
+  <a href="#img10" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img10" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 10">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img9" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames10.jpg" alt="Game Image 10 Fullscreen"/>
+  <a href="#img11" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img11" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 11">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img10" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames11.jpg" alt="Game Image 11 Fullscreen"/>
+  <a href="#img12" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img12" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 12">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img11" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames12.jpg" alt="Game Image 12 Fullscreen"/>
+  <a href="#img13" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img13" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 13">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img12" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames13.jpg" alt="Game Image 13 Fullscreen"/>
+  <a href="#img14" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img14" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 14">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img13" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames14.jpg" alt="Game Image 14 Fullscreen"/>
+  <a href="#img15" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+<div id="img15" class="fullscreen" role="dialog" aria-modal="true" aria-label="Fullscreen image 15">
+  <a href="#!" class="close-btn" aria-label="Close fullscreen">&times;</a>
+  <a href="#img14" class="nav-arrow nav-prev" aria-label="Previous image">&#10094;</a>
+  <img src="mygames15.jpg" alt="Game Image 15 Fullscreen"/>
+  <a href="#img1" class="nav-arrow nav-next" aria-label="Next image">&#10095;</a>
+</div>
+
+<div class="caption">Click an image to view fullscreen. Use arrows to navigate. Scroll or pinch to zoom and pan.</div>
+</body></html>

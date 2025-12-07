@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My ceasefire conditions</title>
+<style>
+  /* Reset & base */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    background: #0b0c10;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #eee;
+    overflow-y: auto; /* enable vertical scroll */
+    perspective: 1000px;
+  }
+
+  /* Container with fake 3D */
+  .container {
+    position: relative;
+    max-width: 900px;
+    margin: 3em auto 6em auto;
+    padding: 3em 3.5em;
+    background:
+      linear-gradient(135deg, #1f2833 0%, #45a29e 100%);
+    border-radius: 25px;
+    box-shadow:
+      0 0 30px #45a29e88,
+      0 20px 40px #0008 inset;
+    transform-style: preserve-3d;
+    animation: float3d 6s ease-in-out infinite;
+    z-index: 10;
+  }
+
+  @keyframes float3d {
+    0%, 100% {
+      transform: rotateX(1deg) rotateY(-2deg) translateZ(0);
+      box-shadow:
+        0 0 35px #45a29ecc,
+        0 22px 45px #000a inset;
+    }
+    50% {
+      transform: rotateX(-2deg) rotateY(3deg) translateZ(10px);
+      box-shadow:
+        0 0 45px #3fc1c9ff,
+        0 25px 50px #000c inset;
+    }
+  }
+
+  /* Title with shader text effect */
+  h1 {
+    font-size: 3.3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 1rem;
+    background: linear-gradient(270deg, #45a29e, #66fcf1, #45a29e);
+    background-size: 600% 600%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hueShift 20s linear infinite;
+    text-shadow:
+      0 0 6px #66fcf1aa,
+      0 0 12px #45a29eee,
+      0 0 20px #1f2833ff;
+  }
+
+  @keyframes hueShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 600% 50%;
+    }
+  }
+
+  /* Text block with subtle 3D shadow */
+  .content {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    letter-spacing: 0.025em;
+    text-shadow:
+      1px 1px 5px #0f20220a,
+      2px 2px 8px #0f20220f,
+      3px 3px 12px #0f20220f;
+    filter: drop-shadow(0 0 2px #45a29eaa);
+    user-select: text;
+    transform: translateZ(20px);
+  }
+
+  /* Particle background */
+  #particles {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Particle style */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: #45a29e;
+    opacity: 0.7;
+    filter: drop-shadow(0 0 3px #45a29ecc);
+    will-change: transform, opacity;
+  }
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<div class="container" role="main" aria-label="My ceasefire conditions statement">
+  <h1>My ceasefire conditions</h1>
+  <p class="content">
+    Hi. Im kindly here without any offence to release<br>
+    a statement and a cease fire condition.<br><br>
+
+    I am to ask people to stop protecting me from Izrael army<br>
+    because i am fully satisfied by my ukrainian emergency state<br>
+    before gathering unneeded mass media attention such as<br>
+    illegal immigrant reporters trying to share the message<br>
+    of helping me out by their unnecesary presense and presense<br>
+    of other people i never saw that not anyhow involved in<br>
+    the main cast of series i never asked for.<br>
+    About a main cast that owe me one for keeping a production<br>
+    in my protest im not releasing them to free and wild.<br>
+    Anyhow any attempt to escape is the direct sign you are lazy<br>
+    and unresponsible person. Contract established.
+  </p>
+</div>
+
+<script>
+  // Particle system
+  const particleCount = 60;
+  const particles = [];
+
+  const container = document.getElementById('particles');
+  const colors = ['#45a29e', '#66fcf1', '#1f2833'];
+
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  class Particle {
+    constructor() {
+      this.el = document.createElement('div');
+      this.el.className = 'particle';
+      this.size = randomRange(4, 10);
+      this.el.style.width = this.size + 'px';
+      this.el.style.height = this.size + 'px';
+      this.el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      this.x = Math.random() * window.innerWidth;
+      this.y = Math.random() * window.innerHeight;
+      this.speedX = randomRange(-0.15, 0.15);
+      this.speedY = randomRange(-0.15, 0.15);
+      this.opacity = randomRange(0.3, 0.75);
+      this.el.style.opacity = this.opacity;
+      container.appendChild(this.el);
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      if (this.x < 0) this.x = window.innerWidth;
+      if (this.x > window.innerWidth) this.x = 0;
+      if (this.y < 0) this.y = window.innerHeight;
+      if (this.y > window.innerHeight) this.y = 0;
+
+      this.el.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
+    }
+  }
+
+  for(let i=0; i<particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  function animate() {
+    particles.forEach(p => p.update());
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  window.addEventListener('resize', () => {
+    particles.forEach(p => {
+      p.x = Math.min(p.x, window.innerWidth);
+      p.y = Math.min(p.y, window.innerHeight);
+    });
+  });
+</script>
+
+</body>
+</html>
